@@ -2,21 +2,16 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Welcome from "@/Components/Welcome.vue";
 import Hero from "@/Components/Hero.vue";
+import NewAppLayout from "@/Layouts/newAppLayout.vue";
 
 export default {
     name: "Home",
-    components: {Hero, Welcome, AppLayout}
+    components: {NewAppLayout, Hero, Welcome, AppLayout}
 }
 </script>
 
 <template>
-    <AppLayout title="Home">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
-            </h2>
-        </template>
-
+    <newAppLayout>
         <hero>
 
         </hero>
@@ -27,7 +22,7 @@ export default {
 <!--                </div>-->
 <!--            </div>-->
 <!--        </div>-->
-    </AppLayout>
+    </newAppLayout>
 </template>
 
 <style scoped>

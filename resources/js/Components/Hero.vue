@@ -1,24 +1,38 @@
 <script>
 export default {
-name: "Hero"
+name: "Hero",
+
 }
 </script>
-
-<!-- Hero.vue -->
 <template>
-  <div class="bg-blue-500 py-16">
-    <div class="container mx-auto text-center text-white">
-      <h1 class="text-4xl font-bold mb-4">Welcome to our website</h1>
-      <p class="text-lg">Discover amazing content and more!</p>
-    </div>
-  </div>
+        <div class="px-4 md:block">
+            <div class="pb-8 mt-auto">
+                <div class="text-center">
+                    <h1 class="text-2xl md:text-3xl mb-8 mt-16 font-serif max-w-3xl mx-auto">Discover Memorable Date Spots Near You</h1>
+
+                    <div class="md:max-w-2xl mx-auto">
+                        <p class="text-gray-800">
+                            Elevate Your Date Nights with Date Spots - Your Perfect Guide to Romantic Adventures                        </p>
+                    </div>
+                    <!-- Address Input and Search Button -->
+                    <div class="mb-6 mt-12">
+                        <div class="flex items-center justify-center">
+                            <input
+                                type="text"
+                                class="w-half px-4 py-2 border rounded-md mr-4 focus:outline-none"
+                                placeholder="Enter your location"
+                            />
+                            <button
+                                class="px-6 py-2 text-white bg-roseGold rounded-md hover:bg-rose-700 focus:outline-none"
+                            >
+                                Find Date Spots
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </template>
-
-<style scoped>
-
-</style>
-
-
 <style scoped>
 
 </style>
