@@ -1,27 +1,24 @@
 <script>
-import AppLayout from "@/Layouts/AppLayout.vue";
-import Welcome from "@/Components/Welcome.vue";
 import Hero from "@/Components/Hero.vue";
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
+import HowItWorks from "@/Components/HowItWorks.vue";
 
 export default {
     name: "Home",
-    components: {NewAppLayout, Hero, Welcome, AppLayout}
+    components: {HowItWorks, NewAppLayout, Hero}
 }
 </script>
 
 <template>
     <newAppLayout>
-        <hero>
+        <div class="flex flex-col">
+            <hero>
 
-        </hero>
-<!--        <div class="py-12">-->
-<!--            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">-->
-<!--                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">-->
-<!--                    <Welcome />-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+            </hero>
+            <howItWorks>
+
+            </howItWorks>
+        </div>
     </newAppLayout>
 </template>
 

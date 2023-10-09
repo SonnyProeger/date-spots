@@ -12,7 +12,7 @@ export default {
 <template>
     <div id="app" class="min-h-screen bg-cream text-gray-800 border-b-2">
         <div class="container mx-auto">
-            <header class="md:mb-8 py-4 px-4 flex justify-between items-center select-none">
+            <header class="md:mb-8 pt-4 px-4 flex justify-between items-center select-none">
                 <div class="text-2xl font-semibold flex justify-between items-center">
                     <a href="/">
                         LOGO
@@ -46,11 +46,11 @@ export default {
                 <!-- Desktop Links -->
                 <div class="hidden md:block text-sm">
                     <a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
-                        Countries
+                        Placeholder
                     </a>
 
                     <a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
-                        Cities
+                        Placeholder
                     </a>
 
                     <a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
@@ -68,7 +68,7 @@ export default {
 
             <!-- Mobile Links -->
             <div
-                class="bg-white px-4 py-4 select-none border-b md:hidden"
+                class="bg-white px-4 pt-4 select-none border-b md:hidden"
                 v-if="isOpen"
             >
                 <a
