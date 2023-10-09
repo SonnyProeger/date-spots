@@ -21,7 +21,7 @@ export default {
                     <div class="flex items-center justify-center">
                         <input
                             type="text"
-                            class="w-half px-4 py-2 border rounded-md mr-4 focus:outline-none"
+                            class="w-1/2 px-4 py-2 border rounded-md mr-4 focus:outline-none"
                             placeholder="Enter your location"
                         />
                         <button
