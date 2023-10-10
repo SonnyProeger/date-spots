@@ -4,16 +4,26 @@ export default {
   mounted() {
     let addressField = document.getElementById("addressSearchBar");
     let autocomplete;
-       autocomplete = new google.maps.places.Autocomplete(
-           addressField,
-           {
-             componentRestrictions: {
-               country: ['nl']
-             },
-             // types: ['address', 'cities'],
-           }
-       );
-  }
+    let location;
+    autocomplete = new google.maps.places.Autocomplete(
+       addressField,
+       {
+         componentRestrictions: {
+           country: ['nl']
+         },
+       }
+    );
+    autocomplete.addListener("place_changed", () => {
+      const selectedPlace = autocomplete.getPlace();
+      if (selectedPlace.geometry){
+        location = [selectedPlace.geometry.location.lat(),selectedPlace.geometry.location.lng()]
+        this.$emit("address-updated", location)
+      }
+      else {
+        console.error("Invalid geometry information for the selected place:", selectedPlace);
+      }
+    });
+  },
 }
 </script>
 

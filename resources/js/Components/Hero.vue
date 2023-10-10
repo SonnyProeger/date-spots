@@ -1,9 +1,21 @@
 <script>
 import AddressForm from "@/Components/AddressForm.vue";
+import SearchButton from "@/Components/SearchButton.vue";
 
 export default {
     name: "Hero",
-    components: {AddressForm},
+    components: {SearchButton, AddressForm},
+    data() {
+        return {
+            location: null,
+        }
+    },
+    methods: {
+        handleAddressUpdated(place) {
+            this.location = place;
+            console.log("Address updated:", this.location);
+        },
+    },
 };
 </script>
 
@@ -22,12 +34,13 @@ export default {
                 <!-- Address Input and Search Button -->
                 <div class="mb-6 mt-12">
                     <div class="flex items-center justify-center">
-                        <AddressForm></AddressForm>
-                        <button
+                        <AddressForm @address-updated="handleAddressUpdated"></AddressForm>
+                        <SearchButton
+                            :location = location
                             class="px-6 py-2 text-white bg-roseGold rounded-md hover:bg-rose-700 focus:outline-none"
                         >
                             Find Date Spots
-                        </button>
+                        </SearchButton>
                     </div>
                 </div>
             </div>
