@@ -1,6 +1,9 @@
 <script>
+import AddressForm from "@/Components/AddressForm.vue";
+
 export default {
     name: "Hero",
+    components: {AddressForm},
 };
 </script>
 
@@ -19,11 +22,7 @@ export default {
                 <!-- Address Input and Search Button -->
                 <div class="mb-6 mt-12">
                     <div class="flex items-center justify-center">
-                        <input
-                            type="text"
-                            class="w-1/2 px-4 py-2 border rounded-md mr-4 focus:outline-none"
-                            placeholder="Enter your location"
-                        />
+                        <AddressForm></AddressForm>
                         <button
                             class="px-6 py-2 text-white bg-roseGold rounded-md hover:bg-rose-700 focus:outline-none"
                         >
