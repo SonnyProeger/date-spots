@@ -16,12 +16,13 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('home');
+    return Inertia::render('Home');
 });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+
 
 Route::middleware([
     'auth:sanctum',
