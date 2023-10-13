@@ -45,8 +45,8 @@ export default {
 
                 <!-- Desktop Links -->
                 <div class="hidden md:block text-sm">
-                    <a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
-                        Placeholder
+                    <a href="/spots" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+                        Spots
                     </a>
 
                     <a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
