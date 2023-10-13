@@ -72,31 +72,31 @@ export default {
                 v-if="isOpen"
             >
                 <a
-                    href="#"
-                    class="block mb-2 font-semibold text-gray-800 py-2 px-3 hover:bg-gray-200 rounded cursor-pointer"
+                    href="/spots"
+                    class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
                 >
-                    Blog
+                    Spots
                 </a>
 
                 <a
                     href="#"
-                    class="block mb-2 font-semibold text-gray-800 py-2 px-3 hover:bg-gray-200 rounded cursor-pointer"
+                    class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
                 >
-                    Github
+                    Placeholder
                 </a>
 
                 <a
                     href="#"
-                    class="block mb-2 font-semibold text-gray-800 py-2 px-3 hover:bg-gray-200 rounded cursor-pointer"
+                    class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
                 >
-                    Forum
+                    Placeholder
                 </a>
 
                 <a
                     href="#"
-                    class="block font-semibold text-gray-800 py-2 px-3 hover:bg-gray-200 rounded cursor-pointer"
+                    class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
                 >
-                    Documentation
+                    Login
                 </a>
             </div>
         </div>
