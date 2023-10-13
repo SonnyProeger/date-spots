@@ -10,16 +10,16 @@ export default {
 </script>
 
 <template>
-    <newAppLayout>
+    <NewAppLayout>
         <div class="flex flex-col">
-            <hero>
+            <Hero>
 
-            </hero>
-            <howItWorks>
+            </Hero>
+            <HowItWorks>
 
-            </howItWorks>
+            </HowItWorks>
         </div>
-    </newAppLayout>
+    </NewAppLayout>
 </template>
 
 <style scoped>
