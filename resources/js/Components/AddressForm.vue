@@ -2,17 +2,21 @@
 export default {
   name: "AddressForm",
   mounted() {
-    let addressField = document.getElementById("addressSearchBar");
     let autocomplete;
     let location;
+    let addressField = document.getElementById("addressSearchBar");
+    const options = {
+      types: ['(cities)'],
+      componentRestrictions: {
+            country: ['nl']
+          }
+    };
+
     autocomplete = new google.maps.places.Autocomplete(
-       addressField,
-       {
-         componentRestrictions: {
-           country: ['nl']
-         },
-       }
+      addressField,
+      options,
     );
+
     autocomplete.addListener("place_changed", () => {
       const selectedPlace = autocomplete.getPlace();
       if (selectedPlace.geometry){
@@ -32,7 +36,7 @@ export default {
       id="addressSearchBar"
       type="text"
       class="w-1/2 px-4 py-2 border rounded-md mr-4 focus:outline-none"
-      placeholder="Enter your location"
+      placeholder="Enter your location (city)"
   />
 </template>
 
