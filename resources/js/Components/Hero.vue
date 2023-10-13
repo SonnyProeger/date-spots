@@ -21,7 +21,7 @@ export default {
 
 <template>
     <div class="min-h-screen flex grow items-center justify-center bg-cream ">
-        <div class="mb-40 inset-0 flex items-center justify-center border-solid border-2 border-red-600">
+        <div class="mb-40 inset-0 flex items-center justify-center">
             <div class="text-center">
                 <h1 class="text-2xl md:text-3xl mb-8 font-serif max-w-3xl mx-auto">
                     Discover Memorable Date Spots Near You
@@ -33,7 +33,7 @@ export default {
                 </div>
                 <!-- Address Input and Search Button -->
                 <div class="md: mb-6 mt-12">
-                    <div class="flex items-center justify-center sm: flex-col  ">
+                    <div class="flex items-center justify-center sm: flex-col">
                         <AddressForm @address-updated="handleAddressUpdated"></AddressForm>
                         <SearchButton
                             :location = location
