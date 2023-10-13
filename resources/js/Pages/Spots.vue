@@ -13,7 +13,7 @@ name: "Spots",
     <div class="container mx-auto">
     <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
           <SpotCard
-            :spot-name="'string'"
+            :spot-name="'Romantic Restaurant'"
             :spot-description="'a cozy little place in the heart of amsterdam'"
             :image-src="'test'"
             :city="'Amsterdam'"

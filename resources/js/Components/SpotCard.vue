@@ -18,7 +18,7 @@ name: "SpotCard",
 }
 </script>
 <template>
-  <div class="bg-white rounded-lg shadow-md p-4">
+  <div class="bg-white rounded-lg shadow-md">
     <div class="w-full md:flex md:flex-col">
       <!-- Spot Image-->
       <img
