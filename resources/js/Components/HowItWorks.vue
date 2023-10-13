@@ -27,7 +27,7 @@ export default {
                         <img src="../../../public/images/answer.png" alt="Search Icon" class="w-16 h-16 mx-auto" />
                         <!-- Step 2 Description -->
                         <p class="mt-2 text-lg font-medium text-white">2. Find Date Spot</p>
-                        <p class="mt-1 text-black">Browse our romantic date spot recommendations.</p>
+                        <p class="mt-1 text-black">Browse our amazing date spot recommendations.</p>
                     </div>
                 </div>
 
