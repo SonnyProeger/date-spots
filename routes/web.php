@@ -23,6 +23,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
+Route::get('/spots', function () {
+    return Inertia::render('Spots');
+});
 
 Route::middleware([
     'auth:sanctum',
