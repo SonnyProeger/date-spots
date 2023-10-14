@@ -32,12 +32,12 @@ export default {
                     </p>
                 </div>
                 <!-- Address Input and Search Button -->
-                <div class="md: mb-6 mt-12">
-                    <div class="flex items-center justify-center sm: flex-col">
+                <div class="mb-6 mt-12">
+                    <div class="flex items-center justify-center flex-wrap sm:flex-row flex-col">
                         <AddressForm @address-updated="handleAddressUpdated"></AddressForm>
                         <SearchButton
                             :location = location
-                            class="px-6 py-2 text-white bg-roseGold rounded-md hover:bg-rose-700 focus:outline-none sm: mt-4"
+                            class="px-6 py-2 text-white bg-roseGold rounded-md hover:bg-rose-700 focus:outline-none sm:mt-0 mt-4"
                         >
                             Find Date Spots
                         </SearchButton>
