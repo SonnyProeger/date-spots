@@ -26,7 +26,6 @@ export default {
                 icon-src="/images/location.png"
                 alt-text="Location Icon"
                 >
-
                 </StepCard>
 
                 <StepCard
@@ -35,8 +34,8 @@ export default {
                     icon-src="/images/answer.png"
                     alt-text="Search Icon"
                 >
-
                 </StepCard>
+
                 <StepCard
                     step-title="3. Go on a Date"
                     step-description="Plan your perfect date night, make lasting memories."
@@ -44,6 +43,7 @@ export default {
                     alt-text="D Iatecon"
                 >
                 </StepCard>
+
                 <StepCard
                     stepTitle="4. Leave a Review"
                     stepDescription="Share your experience and help others discover great date spots."

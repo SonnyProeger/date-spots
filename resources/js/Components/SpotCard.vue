@@ -20,15 +20,16 @@ name: "SpotCard",
 <template>
   <div class="bg-white rounded-lg shadow-md">
     <div class="w-full md:flex md:flex-col">
-      <!-- Spot Image-->
-      <img
-          :src="imageURL"
-          alt="Spot Image"
-          class="w-full h-32 object-cover rounded-t-lg"
-      />
-
-      <div class="p-4">
-<!--        Spot name and Review SVG-->
+      <div>
+        <!-- Spot Image-->
+        <img
+            :src="imageURL"
+            alt="Spot Image"
+            class="w-full h-32 object-cover rounded-t-lg"
+        />
+      </div>
+      <div class="p-4 ">
+      <!-- Spot name and Review SVG-->
         <div class="flex justify-between">
 
         <!-- Spot Name -->
@@ -63,12 +64,11 @@ name: "SpotCard",
         </div>
 
         <!-- Description centered -->
-        <div class="flex justify-center">
-        <p class="text-gray-600 text-center md:text-left mb-2">{{ spotDescription }}</p>
+        <div class="flex justify-center mt-4">
+        <p class="text-gray-600 text-center md:text-left mb-2">"{{ spotDescription }}"</p>
         </div>
 
         <!-- Additional Spot Details Here -->
-
         <button class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700">
           Explore Date Spot
         </button>
