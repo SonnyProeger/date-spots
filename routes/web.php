@@ -23,9 +23,13 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/spots', function () {
-    return Inertia::render('Spots');
+Route::get('/date-spots', function () {
+    return Inertia::render('DateSpots');
 });
+
+Route::get('/date-spot/{type}/{id}-{name}', 'DateSpotController@show')->name('date-spots.show');
+
+
 
 Route::middleware([
     'auth:sanctum',

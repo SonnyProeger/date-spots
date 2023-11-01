@@ -1,11 +1,16 @@
 <script>
+import { Link } from '@inertiajs/vue3';
+import NavLink from "@/Components/NavLink.vue";
+
 export default {
     name: "newAppLayout",
+    components: {NavLink},
     data() {
         return {
             isOpen: false,
         };
     },
+
 };
 </script>
 
@@ -45,9 +50,12 @@ export default {
 
                 <!-- Desktop Links -->
                 <div class="hidden md:block text-sm">
-                    <a href="/spots" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
-                        Spots
-                    </a>
+                    <NavLink :href="'/date-spots'">
+                        <div class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer">
+                            Go to DateSpots
+                        </div>
+                    </NavLink>
+
 
                     <a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
                         Placeholder
@@ -71,12 +79,13 @@ export default {
                 class="bg-white px-4 pt-4 select-none border-b md:hidden"
                 v-if="isOpen"
             >
-                <a
-                    href="/spots"
-                    class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
-                >
-                    Spots
-                </a>
+
+                <Link :href="'/date-spots'">
+                    <div class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer">
+                        Go to DateSpots
+                    </div>
+                </Link>
+
 
                 <a
                     href="#"

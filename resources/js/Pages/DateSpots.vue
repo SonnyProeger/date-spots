@@ -1,10 +1,10 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
-import SpotCard from "@/Components/SpotCard.vue";
+import DateSpotCard from "@/Components/DateSpotCard.vue";
 
 export default {
-name: "Spots",
-  components: {SpotCard, NewAppLayout}
+name: "DateSpots",
+  components: {DateSpotCard, NewAppLayout}
 }
 </script>
 
@@ -25,54 +25,54 @@ name: "Spots",
       </div>
       <div class="w-3/4 p-4 pl-0">
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
-          <SpotCard
+          <DateSpotCard
             :spot-name="'Asian Fantasy'"
             :spot-description="'Asian Surinamese'"
             :image-src="'test'"
             :city="'Amsterdam'"
             :star-ratings="4"
             :reviews-count="6">
-          </SpotCard>
-          <SpotCard
+          </DateSpotCard>
+          <DateSpotCard
               :spot-name="'Blue Pepper Restaurant'"
               :spot-description="'Asian Surinamese'"
               :image-src="'test'"
               :city="'Amsterdam'"
               :star-ratings="4"
               :reviews-count="6">
-          </SpotCard>
-          <SpotCard
+          </DateSpotCard>
+          <DateSpotCard
               :spot-name="'Blue Pepper Restaurant And Candlelight Cruises'"
               :spot-description="'a cozy little place in the heart of amsterdam'"
               :image-src="'test'"
               :city="'Amsterdam'"
               :star-ratings="4"
               :reviews-count="6">
-          </SpotCard>
-          <SpotCard
+          </DateSpotCard>
+          <DateSpotCard
+              :spot-name="'Blue Pepper Restaurant And Candlelight Cruises'"
+              :dateSpot-description="'a cozy little place in the heart of amsterdam'"
+              :image-src="'test'"
+              :city="'Amsterdam'"
+              :star-ratings="4"
+              :reviews-count="6">
+          </DateSpotCard>
+          <DateSpotCard
               :spot-name="'Blue Pepper Restaurant And Candlelight Cruises'"
               :spot-description="'a cozy little place in the heart of amsterdam'"
               :image-src="'test'"
               :city="'Amsterdam'"
               :star-ratings="4"
               :reviews-count="6">
-          </SpotCard>
-          <SpotCard
+          </DateSpotCard>
+          <DateSpotCard
               :spot-name="'Blue Pepper Restaurant And Candlelight Cruises'"
               :spot-description="'a cozy little place in the heart of amsterdam'"
               :image-src="'test'"
               :city="'Amsterdam'"
               :star-ratings="4"
               :reviews-count="6">
-          </SpotCard>
-          <SpotCard
-              :spot-name="'Blue Pepper Restaurant And Candlelight Cruises'"
-              :spot-description="'a cozy little place in the heart of amsterdam'"
-              :image-src="'test'"
-              :city="'Amsterdam'"
-              :star-ratings="4"
-              :reviews-count="6">
-          </SpotCard>
+          </DateSpotCard>
         </div>
       </div>
     </div>

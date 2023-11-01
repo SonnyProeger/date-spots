@@ -1,11 +1,11 @@
 <script>
 export default {
-name: "SpotCard",
+name: "DateSpotCard",
   props: {
-    spotName: String,
+    dateSpotName: String,
     imageSrc: String,
     starRatings: Number,
-    spotDescription: String,
+    dateSpotDescription: String,
     reviewsCount: Number,
     city: String
   },
@@ -33,7 +33,7 @@ name: "SpotCard",
         <div class="flex justify-between">
 
         <!-- Spot Name -->
-        <h2 class="text-xl font-semibold">{{ spotName }}</h2>
+        <h2 class="text-xl font-semibold">{{ dateSpotName }}</h2>
 
         <!-- Review Stars svg -->
         <div class="flex items-center">
