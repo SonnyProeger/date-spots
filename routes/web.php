@@ -23,11 +23,20 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/date-spots', function () {
-    return Inertia::render('DateSpots');
-});
+Route::get('/date-spots', 'App\Http\Controllers\DateSpotController@index');
 
-Route::get('/date-spot/{type}/{id}-{name}', 'DateSpotController@show')->name('date-spots.show');
+Route::get('/date-spot/{type}/{id}-{name}', 'App\Http\Controllers\DateSpotController@show')->name('date-spots.show');
+
+Route::get('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
+
+// TODO
+//Route::get('/date-spots/{country}/{province}/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
+
+
+
+
+
+
 
 
 
