@@ -54,7 +54,7 @@ export default {
         </div>
         <div class="text-center mt-8">
             <!-- CTA Button -->
-            <a @click="scrollToTop" class="text-white bg-roseGold hover:bg-rose-700 px-6 py-3 rounded-md text-lg font-medium transition duration-300 ease-in-out">
+            <a @click="scrollToTop" class="text-white bg-roseGold hover:bg-rose-700 px-6 py-3 rounded-md text-lg font-medium transition duration-300 ease-in-out cursor-pointer">
                 Get Started
             </a>
         </div>
