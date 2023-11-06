@@ -5,7 +5,7 @@ name: "DateSpotCard",
     dateSpotName: String,
     imageSrc: String,
     starRatings: Number,
-    dateSpotDescription: String,
+    dateSpotTagline: String,
     reviewsCount: Number,
     city: String
   },
@@ -65,7 +65,7 @@ name: "DateSpotCard",
 
         <!-- Description centered -->
         <div class="flex justify-center mt-4">
-        <p class="text-gray-600 text-center md:text-left mb-2">"{{ spotDescription }}"</p>
+        <p class="text-gray-600 text-center md:text-left mb-2">"{{ dateSpotTagline }}"</p>
         </div>
 
         <!-- Additional Spot Details Here -->
