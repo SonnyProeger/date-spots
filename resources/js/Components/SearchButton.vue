@@ -6,30 +6,32 @@ export default {
   },
   methods: {
     findDateSpots() {
-      if (this.location) {
-        let placesService;
-        const lat = this.location[0];
-        const lng = this.location[1];
-        const location = new google.maps.LatLng(lat, lng);
-        const request = {
-          location: location,
-          // Radius in meters
-          radius: '5000',
-          keyword: 'romantic'
-        };
+    //   if (this.location) {
+    //     let placesService;
+    //     const lat = this.location[0];
+    //     const lng = this.location[1];
+    //     const location = new google.maps.LatLng(lat, lng);
+    //     const request = {
+    //       location: location,
+    //       // Radius in meters
+    //       radius: '5000',
+    //       keyword: 'romantic'
+    //     };
+    //
+    //     placesService = new google.maps.places.PlacesService(document.createElement("div"));
+    //     placesService.nearbySearch(request, (results, status) => {
+    //       if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //         // Handle the results here
+    //         console.log("Date spots found:", results);
+    //       } else {
+    //         console.error("Error performing nearby search:", status);
+    //       }
+    //     });
+    //   } else {
+    //     console.error("Location is not available");
+    //   }
 
-        placesService = new google.maps.places.PlacesService(document.createElement("div"));
-        placesService.nearbySearch(request, (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            // Handle the results here
-            console.log("Date spots found:", results);
-          } else {
-            console.error("Error performing nearby search:", status);
-          }
-        });
-      } else {
-        console.error("Location is not available");
-      }
+    this.$inertia.visit(`/date-spots/${this.location}`)
     },
 
   }
