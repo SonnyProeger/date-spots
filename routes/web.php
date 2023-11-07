@@ -30,6 +30,7 @@ Route::get('/date-spot/{type}/{id}-{name}', 'App\Http\Controllers\DateSpotContro
 Route::get('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
 
 // TODO
+//Route::get('/date-spots/{city}/{type}/{category}/{sub-category}', 'App\Http\Controllers\DateSpotController@showByLocation');
 //Route::get('/date-spots/{country}/{province}/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
 
 
