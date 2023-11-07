@@ -2,18 +2,33 @@
 export default {
 name: "DateSpotCard",
   props: {
+    dateSpotId: Number,
     dateSpotName: String,
-    imageSrc: String,
-    starRatings: Number,
+    dateSpotType: Array,
     dateSpotTagline: String,
+    city: String,
+    imageSrc: String,
     reviewsCount: Number,
-    city: String
+    starRatings: Number,
   },
   data() {
     return {
       imageURL: 'https://lh3.googleusercontent.com/places/ANXAkqHMtdv-0Lgtb08rKatMMCJ97kCQnm0QlQAiOWNy90yhK7BWs7E3ATHnTs65S0Lt38ZV4hIEY0bIAW_eV9NgkDjnVWf80qvSCtc=s1600-w4032',
     };
-  }
+  },
+computed: {
+    dateSpotLink() {
+        const formattedName = this.dateSpotName.replace(/\s+/g, '-'); // Replace spaces with dashes
+
+        if (this.dateSpotType && this.dateSpotType.length > 0) {
+            return `/date-spot/${this.dateSpotType[0]['name']}/${this.dateSpotId}-${formattedName}`;
+        }
+
+        // Handle the case when this.dateSpotType is undefined or empty
+        return `/date-spot/${this.dateSpotId}-${formattedName}`;
+    },
+
+},
 
 }
 </script>
@@ -69,9 +84,12 @@ name: "DateSpotCard",
         </div>
 
         <!-- Additional Spot Details Here -->
-        <button class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700">
-          Explore Date Spot
-        </button>
+          <a :href="dateSpotLink"
+             class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700"
+          >
+              Explore Date Spots
+          </a>
+
       </div>
     </div>
   </div>
