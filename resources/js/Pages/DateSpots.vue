@@ -32,6 +32,8 @@ name: "DateSpots",
           <DateSpotCard
               v-for="dateSpot in dateSpots"
               :key="dateSpot.id"
+              :date-spot-type="dateSpot.types"
+              :date-spot-id="dateSpot.id"
               :date-spot-name="dateSpot.name"
               :date-spot-tagline="dateSpot.tagline"
               :image-src="dateSpot.photo_url"
