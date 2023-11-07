@@ -13,12 +13,14 @@ class DateSpotController extends Controller
      */
     public function index()
     {
-        $dateSpots = DateSpot::all();
+        $dateSpots = DateSpot::with('types')->get();
 
         foreach ($dateSpots as $dateSpot) {
-
             $dateSpot->reviews_count = $dateSpot->getReviewsCountAttribute();
+
+//            $dateSpot->types = $dateSpot->types();
         }
+
 
         return Inertia::render('DateSpots', [
             'dateSpots' => $dateSpots,
@@ -64,16 +66,17 @@ class DateSpotController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($type, $id, $name)
     {
         // Use the $id to fetch the Spot from the database
         $dateSpot = dateSpot::query()->findOrFail($id);
 
-        // You can access the $type and $name directly from the URL parameters
+        if ($dateSpot['name'] == $name){
+            return Inertia::render('DateSpotDetail', [
+                'dateSpot' => $dateSpot,
+            ]);
+        }
 
-        return Inertia::render('DateSpotDetail', [
-            'dateSpot' => $dateSpot,
-        ]);
     }
 
 
