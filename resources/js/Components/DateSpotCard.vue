@@ -20,11 +20,6 @@ computed: {
     dateSpotLink() {
         const formattedName = this.dateSpotName.replace(/\s+/g, '-'); // Replace spaces with dashes
 
-        if (this.dateSpotType && this.dateSpotType.length > 0) {
-            return `/date-spot/${this.dateSpotType[0]['name']}/${this.dateSpotId}-${formattedName}`;
-        }
-
-        // Handle the case when this.dateSpotType is undefined or empty
         return `/date-spot/${this.dateSpotId}-${formattedName}`;
     },
 

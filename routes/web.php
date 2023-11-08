@@ -25,7 +25,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/date-spots', 'App\Http\Controllers\DateSpotController@index');
 
-Route::get('/date-spot/{type}/{id}-{name}', 'App\Http\Controllers\DateSpotController@show')->name('date-spots.show');
+Route::get('/date-spot/{id}-{name}', 'App\Http\Controllers\DateSpotController@show')->name('date-spots.show');
 
 Route::get('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
 

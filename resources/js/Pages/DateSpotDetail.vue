@@ -1,15 +1,19 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
+import Hero from "@/Components/Hero.vue";
 
 export default {
 name: "DateSpotDetail",
-  components: {NewAppLayout}
+  components: {Hero, NewAppLayout},
+    props:{
+        dateSpot: Array,
+    }
 }
 </script>
 
 <template>
   <NewAppLayout>
-
+    <hero></hero>
   </NewAppLayout>
 </template>
 

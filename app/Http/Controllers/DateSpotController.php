@@ -66,17 +66,15 @@ class DateSpotController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($type, $id, $name)
+    public function show($id, $name)
     {
         // Use the $id to fetch the Spot from the database
         $dateSpot = dateSpot::query()->findOrFail($id);
 
-        if ($dateSpot['name'] == $name){
-            return Inertia::render('DateSpotDetail', [
-                'dateSpot' => $dateSpot,
-            ]);
-        }
 
+        return Inertia::render('DateSpotDetail', [
+            'dateSpot' => $dateSpot,
+        ]);
     }
 
 
