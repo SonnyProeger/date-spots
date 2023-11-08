@@ -19,8 +19,50 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $categories = [
+            'food',
+            'outdoor',
+            'entertainment',
+            'activities',
+            'special occasions',
+            'restaurant',
+            'cafe',
+            'coffee shops',
+            'take-out',
+            'delivery',
+            'parks',
+            'nature',
+            'beaches',
+            'waterfront',
+            'hiking',
+            'adventure',
+            'botanical gardens',
+            'picnic spots',
+            'movie theaters',
+            'live music',
+            'concerts',
+            'art galleries',
+            'museums',
+            'comedy clubs',
+            'arcades',
+            'gaming',
+            'spa',
+            'wellness',
+            'cooking classes',
+            'dance classes',
+            'escape rooms',
+            'anniversary',
+            'birthday celebrations',
+            'engagement locations',
+            'wedding venues',
+            'family gatherings',
+        ];
+
+
+        $randomCategory = $this->faker->randomElement($categories);
+
         return [
-            'name' => $this->faker->word,
+            'name' => $randomCategory,
         ];
     }
 }
