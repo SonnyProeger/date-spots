@@ -18,12 +18,13 @@ return new class extends Migration
             $table->string('tagline');
             $table->decimal('lat', 10, 7);
             $table->decimal('lng', 10, 7);
-            $table->string('address');
+            $table->string('street_name');
+            $table->string('house_number');
             $table->string('postal_code');
             $table->string('city');
             $table->string('province');
             $table->string('country');
-            $table->float('rating');
+            $table->string('phone_number');
             $table->string('business_status');
             $table->boolean('open_now');
             $table->string('photo_url');
