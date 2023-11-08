@@ -33,7 +33,7 @@ class DateSpotFactory extends Factory
             'tagline' => "A small cozy business in a nice city",
             'lat' => $faker->latitude,
             'lng' => $faker->longitude,
-            'city' => $faker->city,
+            'city' => $faker->dutchCity,
             'postal_code' => $faker->postcode,
             'country' => 'Netherlands',
             'province' => $faker->dutchState,
