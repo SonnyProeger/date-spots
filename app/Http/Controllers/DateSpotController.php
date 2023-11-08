@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\StringHelper;
 use App\Models\DateSpot;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Psy\Util\Str;
 
 class DateSpotController extends Controller
 {
@@ -68,14 +70,19 @@ class DateSpotController extends Controller
      */
     public function show($id, $name)
     {
-        // Use the $id to fetch the Spot from the database
-        $dateSpot = dateSpot::query()->findOrFail($id);
+        $dateSpot = DateSpot::query()->findOrFail($id);
+        $formattedName = StringHelper::replaceHyphensWithSpaces($name);
 
+        // Check if the name matches the name in the database
+        if ($dateSpot->name !== $formattedName) {
+            return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
+        }
 
         return Inertia::render('DateSpotDetail', [
             'dateSpot' => $dateSpot,
         ]);
     }
+
 
 
     /**
