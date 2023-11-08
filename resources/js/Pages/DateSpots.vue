@@ -6,7 +6,7 @@ export default {
 name: "DateSpots",
   components: {DateSpotCard, NewAppLayout},
   props: {
-    dateSpots: Array,
+    dateSpots: Object,
     city: String,
   },
 }
@@ -38,7 +38,7 @@ name: "DateSpots",
               :date-spot-tagline="dateSpot.tagline"
               :image-src="dateSpot.photo_url"
               :city="dateSpot.city"
-              :star-ratings="dateSpot.rating"
+              :rating="dateSpot.rating"
               :reviews-count="dateSpot.reviews_count"
           ></DateSpotCard>
         </div>

@@ -1,19 +1,26 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
 import Hero from "@/Components/Hero.vue";
+import DateSpotDetailHeader from "@/Components/DateSpotDetailHeader.vue";
+import DateSpotCard from "@/Components/DateSpotCard.vue";
 
 export default {
 name: "DateSpotDetail",
-  components: {Hero, NewAppLayout},
+  components: {DateSpotCard, Hero, NewAppLayout, DateSpotDetailHeader},
     props:{
-        dateSpot: Array,
+        dateSpot: Object,
     }
 }
 </script>
 
 <template>
   <NewAppLayout>
-    <hero></hero>
+      <div class="container mx-auto flex">
+          <DateSpotDetailHeader
+            :date-spot="dateSpot"
+          ></DateSpotDetailHeader>
+
+      </div>
   </NewAppLayout>
 </template>
 
