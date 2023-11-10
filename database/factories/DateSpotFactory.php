@@ -9,7 +9,7 @@ use Faker\Factory as FakerFactory;
 use Faker\Generator;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DateSpot>
+ * @extends Factory<DateSpot>
  */
 class DateSpotFactory extends Factory
 {

@@ -73,7 +73,7 @@ class DateSpotController extends Controller
         $dateSpot = DateSpot::query()->findOrFail($id);
         $formattedName = StringHelper::replaceHyphensWithSpaces($name);
 
-        // Check if the name matches the name in the database
+        // Check if the name from the url matches the name in the database
         if ($dateSpot->name !== $formattedName) {
             return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
         }
