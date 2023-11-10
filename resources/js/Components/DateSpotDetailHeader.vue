@@ -9,7 +9,6 @@ export default {
 	},
 	computed: {
 		getDirectionsLink() {
-			// Form the directions link using template literals
 			return `https://www.google.com/maps/dir/?api=1&destination=${this.dateSpot.lat},${this.dateSpot.lng}`;
 		},
 		formattedAddress() {
@@ -43,7 +42,7 @@ export default {
 			<h1 class="text-2xl font-bold">{{ dateSpot.name }}</h1>
 		</div>
 		<!--		review save and share-->
-		<div class="flex items-center space-x-2">
+		<div class="hidden md:flex items-center space-x-2">
 			<a class="text-roseGold hover:underline flex items-center space-x-1" href="#" target="_blank">
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
 				     stroke-width="2" viewBox="0 0 24 24">
@@ -78,23 +77,23 @@ export default {
 	<!--below title-->
 	<div class="flex flex-col bg-white pb-2 pl-2 pr-2">
 		<!--		reviews spotranking and categories-->
-		<div class="flex">
+		<div class="md:flex">
 			<div class="flex flex-row gap-1">
 				<HeartRatingComponent
 						:rating="dateSpot.rating"
 				>
 				</HeartRatingComponent>
-				<b class="pb-2 text-md">{{ dateSpot.reviews_count }} reviews</b>
+				<b class="md:pb-2 text-md">{{ dateSpot.reviews_count }} reviews</b>
 			</div>
 
 			<!--			TODO fix vertical separator, not showing up-->
 			<!-- vertical separator -->
-			<div class="border-l mx-2 my-1 h-4"></div>
+			<div class="hidden md:block border-l mx-2 my-1 h-4"></div>
 
-			<p><span class="font-bold">#1</span> of #1234 datespots in Amsterdam</p>
+			<p class="hidden md:block "><span class="font-bold">#1</span> of #1234 datespots in Amsterdam</p>
 
 			<!-- vertical separator -->
-			<div class="border-l mx-2 my-1 h-4"></div>
+			<div class="hidden md:block border-l mx-2 my-1 h-4"></div>
 
 			<div class="flex flex-row">
 				<p> {{ formattedCategories }} </p>
@@ -102,7 +101,7 @@ export default {
 		</div>
 
 		<!--		address-->
-		<div class="text-sm flex flex-row">
+		<div class="hidden md:flex flex-row text-sm">
 			<div class="flex items-center space-x-1">
 				<svg class="d Vb icjEL" height="20px" viewBox="0 0 24 24" width="20px">
 					<path
@@ -135,7 +134,7 @@ export default {
 			</div>
 
 			<!-- vertical separator -->
-			<div class="border-l mx-2 my-1 h-4"></div>
+			<div class=" border-l mx-2 my-1 h-4"></div>
 
 			<!--			website url-->
 			<div class="flex items-center space-x-1">
