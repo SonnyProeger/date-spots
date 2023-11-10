@@ -40,7 +40,7 @@ export default {
 	<div class="flex justify-between bg-white p-2">
 		<!--		title-->
 		<div>
-			<h1 class="text-2xl font-bold">Graham's Kitchen</h1>
+			<h1 class="text-2xl font-bold">{{ dateSpot.id }}</h1>
 		</div>
 		<!--		review save and share-->
 		<div class="flex items-center space-x-2">
