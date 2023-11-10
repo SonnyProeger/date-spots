@@ -89,12 +89,12 @@ export default {
 
 			<!--			TODO fix vertical separator, not showing up-->
 			<!-- vertical separator -->
-			<div class="border-l mx-2 h-full"></div>
+			<div class="border-l mx-2 my-1 h-4"></div>
 
 			<p><span class="font-bold">#1</span> of #1234 datespots in Amsterdam</p>
 
 			<!-- vertical separator -->
-			<div class="border-l mx-2 h-full border-black"></div>
+			<div class="border-l mx-2 my-1 h-4"></div>
 
 			<div class="flex flex-row">
 				<p> {{ formattedCategories }} </p>
@@ -119,7 +119,7 @@ export default {
 			</div>
 
 			<!-- vertical separator -->
-			<div class="border-l mx-2 h-full"></div>
+			<div class="border-l mx-2 my-1 h-4"></div>
 
 			<!--			phone number-->
 			<div class="flex items-center space-x-1">
@@ -130,12 +130,14 @@ export default {
 					</path>
 				</svg>
 				<a class="hover:underline"
-				   href="tel:{{dateSpot.phone_number }}"
+				   :href="'tel:'+dateSpot.phone_number"
 				> {{ dateSpot.phone_number }}</a>
 			</div>
 
+			<!-- vertical separator -->
+			<div class="border-l mx-2 my-1 h-4"></div>
+
 			<!--			website url-->
-			<div class="border-l mx-2 h-full "></div>
 			<div class="flex items-center space-x-1">
 				<svg class="d Vb icjEL" height="20px" viewBox="0 0 24 24" width="20px">
 					<path clip-rule="evenodd"
