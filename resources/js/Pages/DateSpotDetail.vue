@@ -11,10 +11,12 @@ export default {
 	components: {HeartRatingComponent, DateSpotCard, Hero, NewAppLayout, DateSpotDetailHeader},
 	props: {
 		dateSpot: Object,
+		totalDateSpots: Number,
 	},
 	mixins: [dateSpotDetailMixin],
 	created() {
 		console.log(this.dateSpot)
+		console.log(this.totalDateSpots)
 	}
 }
 </script>
@@ -24,11 +26,12 @@ export default {
 		<div class="container mx-auto flex flex-col">
 			<DateSpotDetailHeader
 					:date-spot="dateSpot"
+					:total-date-spots="totalDateSpots"
 			>
 			</DateSpotDetailHeader>
 			<div>
 				<div class="h-1/4 md:pb-2 md:pt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-0.5">
-					<!--					images-->
+					<!--images-->
 					<img v-for="(image, index) in dateSpot.images"
 					     :key="index"
 					     :src="image.url"
@@ -93,11 +96,10 @@ export default {
 							<div class="text-xl font-bold pr-2">{{ dateSpot.rating }}</div>
 							<div class="flex items-center pr-2">
 								<heart-rating-component :rating="dateSpot.rating"></heart-rating-component>
-								<span class="ml-1 font-bold text-sm">1,111 reviews</span>
+								<span class="ml-1 font-bold text-sm">{{ dateSpot.reviews_count }} reviews</span>
 							</div>
 						</div>
-						<div class="text-gray-600 mt-2"><span class="font-bold">#1</span> of 1,111 Date Spots in {{ dateSpot.city }}
-						</div>
+						<p v-html="formattedPosition" class="text-gray-600 mt-2"></p>
 						<hr class="my-4 border-gray-200">
 						<div>
 							<p class="font-semibold">Ratings:</p>
@@ -139,7 +141,7 @@ export default {
 							<p class="pl-2">{{ formattedAddress }}</p>
 						</a>
 						<div class="flex flex-row py-2  w-3/4 justify-between">
-							<a :href="dateSpot.website_url" class="flex flex-row pr-2 hover:underline" target="_blank">
+							<a :href="dateSpot.website" class="flex flex-row pr-2 hover:underline" target="_blank">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 								     stroke="currentColor" class="w-6 h-6">
 									<path stroke-linecap="round" stroke-linejoin="round"
@@ -148,7 +150,7 @@ export default {
 								<p class="pl-2">Website</p>
 							</a>
 
-							<a :href="dateSpot.email" class="flex flex-row px-2 hover:underline">
+							<a :href="'mailto:'+dateSpot.email" class="flex flex-row px-2 hover:underline">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 								     stroke="currentColor" class="w-6 h-6">
 									<path stroke-linecap="round" stroke-linejoin="round"

@@ -12,6 +12,9 @@ export const dateSpotDetailMixin = {
         },
     },
     computed: {
+        formattedPosition() {
+            return `<span class="font-bold">#${this.dateSpot.position}</span> of ${this.totalDateSpots} Date Spots in ${this.dateSpot.city}`;
+        },
         getDirectionsLink() {
             return `https://www.google.com/maps/dir/?api=1&destination=${this.dateSpot.lat},${this.dateSpot.lng}`;
         },

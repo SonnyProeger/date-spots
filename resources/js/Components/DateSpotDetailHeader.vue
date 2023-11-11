@@ -7,6 +7,7 @@ export default {
 	components: {HeartRatingComponent},
 	props: {
 		dateSpot: Object,
+		totalDateSpots: Number,
 	},
 	mixins: [dateSpotDetailMixin],
 }
@@ -64,11 +65,10 @@ export default {
 				<b class="md:pb-2 text-md">{{ dateSpot.reviews_count }} reviews</b>
 			</div>
 
-			<!--			TODO fix vertical separator, not showing up-->
 			<!-- vertical separator -->
 			<div class="hidden md:block border-l mx-2 my-1 h-4"></div>
 
-			<p class="hidden md:block "><span class="font-bold">#1</span> of #1234 datespots in Amsterdam</p>
+			<p v-html="formattedPosition" class="hidden md:block "></p>
 
 			<!-- vertical separator -->
 			<div class="hidden md:block border-l mx-2 my-1 h-4"></div>
