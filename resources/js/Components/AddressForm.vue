@@ -41,7 +41,7 @@ export default {
 	<input
 			id="addressSearchBar"
 			type="text"
-			class="w-2/3 md:w-1/2 px-4 py-2 border rounded-md mr-4 focus:outline-none"
+			class="w-2/3 text-center md:text-left md:w-1/2 px-4 py-2 border rounded-md mr-4 focus:outline-none"
 			placeholder="Enter your location (city)"
 	/>
 </template>
