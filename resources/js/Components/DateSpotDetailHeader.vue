@@ -1,5 +1,6 @@
 <script>
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
+import {dateSpotDetailMixin} from "@/mixins/dateSpotMixin.js";
 
 export default {
 	name: "Header",
@@ -7,30 +8,7 @@ export default {
 	props: {
 		dateSpot: Object,
 	},
-	computed: {
-		getDirectionsLink() {
-			return `https://www.google.com/maps/dir/?api=1&destination=${this.dateSpot.lat},${this.dateSpot.lng}`;
-		},
-		formattedAddress() {
-			return `${this.dateSpot.house_number} ${this.dateSpot.street_name}, ${this.dateSpot.postal_code} ${this.dateSpot.city}`;
-		},
-		formattedCategories() {
-			if (this.dateSpot.categories.length === 0) {
-				return "No categories available";
-			}
-
-			const categoryNames = this.dateSpot.categories.map((category) => category.name);
-			const lastCategory = categoryNames.pop(); // Remove the last category
-
-			// If there's only one category, return it as is
-			if (categoryNames.length === 0) {
-				return lastCategory;
-			}
-
-			// Join all categories with commas and add the last one
-			return categoryNames.join(", ") + ", " + lastCategory;
-		},
-	},
+	mixins: [dateSpotDetailMixin],
 }
 
 </script>

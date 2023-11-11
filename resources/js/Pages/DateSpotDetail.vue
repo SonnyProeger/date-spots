@@ -4,6 +4,7 @@ import Hero from "@/Components/Hero.vue";
 import DateSpotDetailHeader from "@/Components/DateSpotDetailHeader.vue";
 import DateSpotCard from "@/Components/DateSpotCard.vue";
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
+import {dateSpotDetailMixin} from "@/mixins/dateSpotMixin.js";
 
 export default {
 	name: "DateSpotDetail",
@@ -11,44 +12,7 @@ export default {
 	props: {
 		dateSpot: Object,
 	},
-	computed: {
-		getDirectionsLink() {
-			return `https://www.google.com/maps/dir/?api=1&destination=${this.dateSpot.lat},${this.dateSpot.lng}`;
-		},
-		formattedAddress() {
-			return `${this.dateSpot.house_number} ${this.dateSpot.street_name}, ${this.dateSpot.postal_code} ${this.dateSpot.city}`;
-		},
-		formattedCategories() {
-			if (this.dateSpot.categories.length === 0) {
-				return "No categories available";
-			}
-
-			const categoryNames = this.dateSpot.categories.map((category) => category.name);
-			const lastCategory = categoryNames.pop(); // Remove the last category
-
-			// If there's only one category, return it as is
-			if (categoryNames.length === 0) {
-				return lastCategory;
-			}
-
-			// Join all categories with commas and add the last one
-			return categoryNames.join(", ") + ", " + lastCategory;
-		},
-		getDirectionsLink() {
-			return `https://www.google.com/maps/dir/?api=1&destination=${this.dateSpot.lat},${this.dateSpot.lng}`;
-		},
-	},
-	methods: {
-		getStaticMapUrl() {
-			const baseUrl = 'https://maps.googleapis.com/maps/api/staticmap';
-			const center = `${this.dateSpot.lat},${this.dateSpot.lng}`;
-			const markers = `color:red|label:A|${this.dateSpot.lat},${this.dateSpot.lng}`;
-			const googleApiKey = this.$inertia.page.props.GOOGLE_API_KEY;
-
-			return `${baseUrl}?center=${center}&zoom=15&size=347x147&maptype=roadmap&markers=${markers}&key=${googleApiKey}`;
-		},
-	},
-
+	mixins: [dateSpotDetailMixin],
 	created() {
 		console.log(this.dateSpot)
 	}
@@ -64,19 +28,18 @@ export default {
 			</DateSpotDetailHeader>
 			<div>
 				<div class="h-1/4 md:pb-2 md:pt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-0.5">
-					<!-- Main Picture -->
-					<img src="https://placehold.co/600x400" alt="Main Picture" class="w-full h-64 object-cover">
-
-					<!-- Additional Pictures-->
-					<img src="https://placehold.co/600x400" alt="Additional Picture"
-					     class="hidden md:block w-full h-64 object-cover">
-					<img src="https://placehold.co/600x400" alt="Additional Picture"
-					     class="hidden md:block w-full h-64 object-cover">
+					<!--					images-->
+					<img v-for="(image, index) in dateSpot.images"
+					     :key="index"
+					     :src="image.url"
+					     :alt="'Image ' + (index + 1)"
+					     :class="{'hidden md:block': index !== 0, 'w-full': true,  'h-64': true, 'object-cover': true}"
+					>
 				</div>
 
 				<!--				mobile only!-->
 				<div class="md:hidden grid grid-cols-4 gap-4 bg-white p-4">
-					<!-- Call -->
+					<!-- Phone -->
 					<a :href="'tel:'+dateSpot.phone_number" class="flex flex-col items-center text-gray-600 text-center">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						     stroke="currentColor" class="w-6 h-6">
@@ -99,7 +62,7 @@ export default {
 					</a>
 
 					<!-- Website -->
-					<a :href="dateSpot.website_url"
+					<a :href="dateSpot.website"
 					   class="flex flex-col items-center text-gray-600 hqTWt" target="_blank">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						     stroke="currentColor" class="w-6 h-6">
