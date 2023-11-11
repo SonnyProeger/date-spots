@@ -15,13 +15,6 @@ class DateSpotController extends Controller
 	public function index()
 	{
 		$dateSpots = DateSpot::with('types')->get();
-//
-//        foreach ($dateSpots as $dateSpot) {
-//            $dateSpot->reviews_count = $dateSpot->getReviewsCountAttribute();
-//
-////            $dateSpot->types = $dateSpot->types();
-//        }
-
 
 		return Inertia::render('DateSpots', [
 			'dateSpots' => $dateSpots,
@@ -69,6 +62,7 @@ class DateSpotController extends Controller
 	 */
 	public function show($id, $name)
 	{
+		$totalDateSpots = DateSpot::count();
 		$dateSpot = DateSpot::query()->findOrFail($id);
 		$formattedName = StringHelper::replaceHyphensWithSpaces($name);
 
@@ -77,8 +71,10 @@ class DateSpotController extends Controller
 			return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
 		}
 
+
 		return Inertia::render('DateSpotDetail', [
 			'dateSpot' => $dateSpot,
+			'totalDateSpots' => $totalDateSpots,
 		]);
 	}
 

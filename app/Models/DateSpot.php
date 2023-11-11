@@ -12,6 +12,26 @@ class DateSpot extends Model
 {
 	use HasFactory;
 
+	protected $fillable = [
+		'date_spot_id',
+		'name',
+		'tagline',
+		'lat',
+		'lng',
+		'street_name',
+		'house_number',
+		'postal_code',
+		'city',
+		'province',
+		'country',
+		'phone_number',
+		'business_status',
+		'website',
+		'email',
+		'open_now',
+		'icon_url',
+		'position',
+	];
 	protected $appends = ['rating', 'reviews_count', 'categories', 'images'];
 
 	public function getReviewsCountAttribute(): int

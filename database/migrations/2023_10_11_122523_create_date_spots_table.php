@@ -26,9 +26,10 @@ return new class extends Migration {
 			$table->string('phone_number');
 			$table->string('business_status');
 			$table->string('website');
-			$table->string('email');
+			$table->string('email')->unique();
 			$table->boolean('open_now');
 			$table->string('icon_url');
+			$table->integer('position')->nullable()->unique();
 			$table->timestamps();
 		});
 	}
