@@ -35,7 +35,7 @@ class DateSpotController extends Controller
 
 		$dateSpots = $query->get();
 
-		return Inertia::render('DateSpots', [
+		return Inertia::render('DateSpotsCity', [
 			'dateSpots' => $dateSpots,
 			'city' => $city,
 		]);

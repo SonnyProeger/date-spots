@@ -21,21 +21,55 @@ export const dateSpotDetailMixin = {
         formattedAddress() {
             return `${this.dateSpot.house_number} ${this.dateSpot.street_name}, ${this.dateSpot.postal_code} ${this.dateSpot.city}`;
         },
+        formattedTypes() {
+            const types = this.dateSpot.types.map((type) => type.name);
+
+            if (types.length === 0) {
+                return "No types available";
+            }
+
+            return types.join(", ");
+        },
         formattedCategories() {
-            if (this.dateSpot.categories.length === 0) {
+            const categories = this.dateSpot.types.reduce((acc, type) => {
+                // Check if the type has categories
+                if (type.categories.length > 0) {
+                    // Map the category names for this type
+                    const categoryNames = type.categories.map((category) => category.name);
+                    acc.push(...categoryNames);
+                }
+                return acc;
+            }, []);
+
+            if (categories.length === 0) {
                 return "No categories available";
             }
 
-            const categoryNames = this.dateSpot.categories.map((category) => category.name);
-            const lastCategory = categoryNames.pop(); // Remove the last category
+            // Join all categories with commas
+            return categories.join(", ");
+        },
+        formattedSubCategories() {
+            const subCategories = this.dateSpot.types.reduce((acc, type) => {
+                // Check if the type has categories
+                if (type.categories.length > 0) {
+                    // Map the subcategory names for each category
+                    const subCategoryNames = type.categories.reduce((subAcc, category) => {
+                        if (category.subCategories.length > 0) {
+                            subAcc.push(...category.subCategories.map((subCategory) => subCategory.name));
+                        }
+                        return subAcc;
+                    }, []);
 
-            // If there's only one category, return it as is
-            if (categoryNames.length === 0) {
-                return lastCategory;
+                    acc.push(...subCategoryNames);
+                }
+                return acc;
+            }, []);
+
+            if (subCategories.length === 0) {
+                return "No subcategories available";
             }
 
-            // Join all categories with commas and add the last one
-            return categoryNames.join(", ") + ", " + lastCategory;
-        },
+            return subCategories.join(", ");
+        }
     },
 };

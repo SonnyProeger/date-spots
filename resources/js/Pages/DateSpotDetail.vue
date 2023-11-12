@@ -5,10 +5,12 @@ import DateSpotDetailHeader from "@/Components/DateSpotDetailHeader.vue";
 import DateSpotCard from "@/Components/DateSpotCard.vue";
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
 import {dateSpotDetailMixin} from "@/mixins/dateSpotMixin.js";
+import {Link} from "@inertiajs/vue3";
+
 
 export default {
 	name: "DateSpotDetail",
-	components: {HeartRatingComponent, DateSpotCard, Hero, NewAppLayout, DateSpotDetailHeader},
+	components: {HeartRatingComponent, DateSpotCard, Hero, NewAppLayout, DateSpotDetailHeader, Link},
 	props: {
 		dateSpot: Object,
 		totalDateSpots: Number,
@@ -16,7 +18,6 @@ export default {
 	mixins: [dateSpotDetailMixin],
 	created() {
 		console.log(this.dateSpot)
-		console.log(this.totalDateSpots)
 	}
 }
 </script>
@@ -76,8 +77,8 @@ export default {
 					</a>
 
 					<!-- Review -->
-					<a href="#"
-					   class="flex flex-col items-center text-gray-600 hqTWt" target="_blank"
+					<Link href="#"
+					      class="flex flex-col items-center text-gray-600 hqTWt" target="_blank"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						     stroke="currentColor" class="w-6 h-6">
@@ -85,12 +86,12 @@ export default {
 							      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
 						</svg>
 						<div class="">Review</div>
-					</a>
+					</Link>
 				</div>
 
-				<div class="h-1/4 grid grid-cols-1 lg:grid-cols-3 gap-3.5">
+				<div class="h-1/4 grid grid-cols-1 lg:grid-cols-3 md:gap-3.5 gap-2">
 					<!-- Card 1 -->
-					<div class="bg-white p-4 my-2">
+					<div class="bg-white p-4 md:my-2 mt-2 ">
 						<p class="font-semibold pb-4">Reviews and Ratings:</p>
 						<div class="flex flex-row">
 							<div class="text-xl font-bold pr-2">{{ dateSpot.rating }}</div>
@@ -112,18 +113,20 @@ export default {
 					</div>
 
 					<!-- Card 2 -->
-					<div class="bg-white p-4 my-2">
+					<div class="bg-white p-4 md:my-2">
 						<h2 class="text-lg font-semibold pb-4">Details:</h2>
 						<p class="text-md font-bold">Price Range</p>
 						<div class="text-gray-600 mt-2">$0 - $100</div>
 						<p class="text-md font-bold mt-2">Type</p>
-						<div class="text-gray-600 mt-2">Food</div>
+						<div class="text-gray-600 mt-2">{{ formattedTypes }}</div>
 						<p class="text-md font-bold mt-2">Categories</p>
 						<div class="text-gray-600 mt-2">{{ formattedCategories }}</div>
+						<p class="text-md font-bold mt-2">Sub Categories</p>
+						<div class="text-gray-600 mt-2">{{ formattedSubCategories }}</div>
 					</div>
 
 					<!-- Card 3 -->
-					<div class="bg-white p-4 my-2">
+					<div class="bg-white p-4 md:my-2">
 						<h2 class="text-lg font-semibold pb-4">Contact and Location</h2>
 
 						<img

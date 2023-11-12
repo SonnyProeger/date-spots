@@ -10,24 +10,24 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TypeFactory extends Factory
 {
-    protected $model = Type::class;
+	protected $model = Type::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
+	/**
+	 * Define the model's default state.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function definition(): array
+	{
 
-        $types = [
-            'food','activities','entertainment','outdoor','special occasions',
-        ];
+		$types = [
+			'Food', 'Activities', 'Entertainment', 'Outdoor', 'Special Occasions',
+		];
 
-        $randomType = $this->faker->randomElement($types);
+		$randomType = $this->faker->randomElement($types);
 
-        return [
-            'name' => $randomType,
-        ];
-    }
+		return [
+			'name' => $randomType,
+		];
+	}
 }

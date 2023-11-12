@@ -32,7 +32,7 @@ class DateSpot extends Model
 		'icon_url',
 		'position',
 	];
-	protected $appends = ['rating', 'reviews_count', 'categories', 'images'];
+	protected $appends = ['rating', 'reviews_count', 'images', 'types'];
 
 	public function getReviewsCountAttribute(): int
 	{
@@ -58,11 +58,11 @@ class DateSpot extends Model
 	}
 
 
-	public function getCategoriesAttribute(): Collection
+	public function getTypesAttribute(): Collection
 	{
-
-		return $this->categories()->get();
+		return $this->types()->get();
 	}
+
 
 	public function getImagesAttribute(): Collection
 	{
@@ -83,6 +83,11 @@ class DateSpot extends Model
 	public function categories(): BelongsToMany
 	{
 		return $this->belongsToMany(Category::class, 'date_spot_category');
+	}
+
+	public function subCategories()
+	{
+		return $this->belongsToMany(SubCategory::class);
 	}
 
 	public function types(): BelongsToMany
