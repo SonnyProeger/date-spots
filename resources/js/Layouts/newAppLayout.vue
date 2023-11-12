@@ -1,6 +1,9 @@
 <script>
+import {Link} from "@inertiajs/vue3";
+
 export default {
 	name: "newAppLayout",
+	components: {Link},
 	data() {
 		return {
 			isOpen: false,
@@ -14,9 +17,9 @@ export default {
 		<div class="container mx-auto">
 			<header class="md:mb-8 md:pt-4 md:py-0 py-4 px-2 flex justify-between items-center select-none">
 				<div class="text-2xl font-semibold flex justify-between items-center">
-					<a href="/">
+					<Link href="/">
 						DATE SPOTS
-					</a>
+					</Link>
 				</div>
 
 				<div class="text-gray-800 sm:block md:hidden">
@@ -45,24 +48,27 @@ export default {
 
 				<!-- Desktop Links -->
 				<div class="hidden md:block text-sm">
-					<a href="/date-spots" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+					<Link href="/date-spots" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
 						Date Spots
-					</a>
+					</Link>
 
-					<a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+					<Link href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
 						Placeholder
-					</a>
+					</Link>
 
-					<a href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+					<Link href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
 						Placeholder
-					</a>
+					</Link>
 
-					<a
-							href="#"
+					<Link
+							href="/login"
 							class="py-2 px-3 ml-2 hover:bg-rose-700 bg-roseGold rounded shadow-lg border text-white"
+
 					>
 						Login
-					</a>
+
+					</Link>
+
 				</div>
 			</header>
 
@@ -71,33 +77,33 @@ export default {
 					class="bg-white px-4 pt-4 select-none border-b md:hidden"
 					v-if="isOpen"
 			>
-				<a
+				<Link
 						href="/date-spots"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
 					Spots
-				</a>
+				</Link>
 
-				<a
+				<Link
 						href="#"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
 					Placeholder
-				</a>
+				</Link>
 
-				<a
+				<Link
 						href="#"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
 					Placeholder
-				</a>
+				</Link>
 
-				<a
+				<Link
 						href="#"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
 					Login
-				</a>
+				</Link>
 			</div>
 		</div>
 		<main>
