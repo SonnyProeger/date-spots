@@ -14,8 +14,6 @@ class AppServiceProvider extends ServiceProvider
 	{
 		//
 		Inertia::share('GOOGLE_API_KEY', config('app.google_api_key'));
-// I'm using config, but your could use env
-
 	}
 
 	/**
