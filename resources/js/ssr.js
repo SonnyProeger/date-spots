@@ -5,6 +5,7 @@ import {createInertiaApp} from '@inertiajs/vue3'
 import createServer from '@inertiajs/vue3/server'
 import {renderToString} from '@vue/server-renderer'
 import {createSSRApp, h} from 'vue'
+import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 
 createServer(page =>
@@ -19,6 +20,10 @@ createServer(page =>
             return createSSRApp({
                 render: () => h(App, props),
             }).use(plugin)
+                .use(ZiggyVue, {
+                    ...page.props.ziggy,
+                    location: new URL(page.props.ziggy.location),
+                });
         },
         progress: {
             color: '#4B5563',
