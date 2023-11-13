@@ -2,7 +2,7 @@
 export default {
 	name: "SearchButton",
 	props: {
-		location: Object,
+		location: String,
 	},
 	methods: {
 		findDateSpots() {
