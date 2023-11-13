@@ -48,28 +48,28 @@ export const dateSpotDetailMixin = {
             // Join all categories with commas
             return categories.join(", ");
         },
-        formattedSubCategories() {
-            const subCategories = this.dateSpot.types.reduce((acc, type) => {
+        formattedSubcategories() {
+            const subcategories = this.dateSpot.types.reduce((acc, type) => {
                 // Check if the type has categories
                 if (type.categories.length > 0) {
                     // Map the subcategory names for each category
-                    const subCategoryNames = type.categories.reduce((subAcc, category) => {
-                        if (category.subCategories.length > 0) {
-                            subAcc.push(...category.subCategories.map((subCategory) => subCategory.name));
+                    const subcategoryNames = type.categories.reduce((subAcc, category) => {
+                        if (category.subcategories.length > 0) {
+                            subAcc.push(...category.subcategories.map((subcategory) => subcategory.name));
                         }
                         return subAcc;
                     }, []);
 
-                    acc.push(...subCategoryNames);
+                    acc.push(...subcategoryNames);
                 }
                 return acc;
             }, []);
 
-            if (subCategories.length === 0) {
+            if (subcategories.length === 0) {
                 return "No subcategories available";
             }
 
-            return subCategories.join(", ");
+            return subcategories.join(", ");
         }
     },
 };

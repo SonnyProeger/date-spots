@@ -28,17 +28,17 @@ export const dateSpotCityFilterMixin = {
             const categoryId = `${type.id}-${category.id}`
             // Check if all subcategories within the given category are already selected
             if (this.isCategorySelected(categoryId)) {
-                // If not all are selected, select all subcategories by adding to the selectedSubCategories array
+                // If not all are selected, select all subcategories by adding to the selectedSubcategories array
                 // Filter the ones that are already added, so no duplicates
 
-                const newSubcategories = category.subCategories
+                const newSubcategories = category.subcategories
                     .map(subcategory => `${category.id}-${subcategory.id}`)
-                    .filter(subcategory => !this.selectedSubCategories.includes(subcategory));
+                    .filter(subcategory => !this.selectedSubcategories.includes(subcategory));
 
-                this.selectedSubCategories = [...this.selectedSubCategories, ...newSubcategories];
+                this.selectedSubcategories = [...this.selectedSubcategories, ...newSubcategories];
             } else {
-                // If all are selected, deselect them by removing from the selectedSubCategories array
-                this.selectedSubCategories = this.selectedSubCategories.filter(value => {
+                // If all are selected, deselect them by removing from the selectedSubcategories array
+                this.selectedSubcategories = this.selectedSubcategories.filter(value => {
                     return !value.startsWith(`${category.id}-`);
                 });
             }
@@ -64,7 +64,7 @@ export const dateSpotCityFilterMixin = {
             if (categoriesForType.every(category =>
                 this.selectedCategories.includes(category)
             )) {
-                // If all subCategories are selected and the Category is not already selected, select the Category
+                // If all subcategories are selected and the Category is not already selected, select the Category
                 if (!this.selectedTypes.includes(typeId)) {
                     this.selectedTypes = [
                         ...this.selectedTypes,
@@ -74,26 +74,26 @@ export const dateSpotCityFilterMixin = {
             }
         },
 
-        checkIfAllSubCategoriesSelected(type, category, subCategory) {
+        checkIfAllSubcategoriesSelected(type, category, subcategory) {
             const categoryId = `${type.id}-${category.id}`;
 
             // Check if the Category is currently selected, and the specific subcategory is being deselected
             if (
                 this.selectedCategories.includes(categoryId) &&
-                !this.selectedSubCategories.includes(subCategory)
+                !this.selectedSubcategories.includes(subcategory)
             ) {
                 // Deselect the category
                 this.selectedCategories = this.selectedCategories.filter(value => value !== categoryId);
             }
 
             // Generate identifiers for all subcategories within the category
-            const subcategoriesForCategory = category.subCategories.map(subCategory => `${category.id}-${subCategory.id}`);
+            const subcategoriesForCategory = category.subcategories.map(subcategory => `${category.id}-${subcategory.id}`);
 
             // Check if all subcategories within the category are selected
-            if (subcategoriesForCategory.every(subCategory =>
-                this.selectedSubCategories.includes(subCategory)
+            if (subcategoriesForCategory.every(subcategory =>
+                this.selectedSubcategories.includes(subcategory)
             )) {
-                // If all subCategories are selected and the Category is not already selected, select the Category
+                // If all subcategories are selected and the Category is not already selected, select the Category
                 if (!this.selectedCategories.includes(categoryId)) {
                     this.selectedCategories = [
                         ...this.selectedCategories,
@@ -117,15 +117,15 @@ export const dateSpotCityFilterMixin = {
             }
         },
 
-        showSubCategoriesInFilter(CategoryId) {
-            const index = this.showSubCategories.indexOf(CategoryId);
+        showSubcategoriesInFilter(CategoryId) {
+            const index = this.showSubcategories.indexOf(CategoryId);
 
             if (index !== -1) {
                 // If the clicked type is already visible, hide it
-                this.showSubCategories.splice(index, 1);
+                this.showSubcategories.splice(index, 1);
             } else {
                 // If a different type is clicked, show its categories
-                this.showSubCategories.push(CategoryId);
+                this.showSubcategories.push(CategoryId);
             }
         },
 
@@ -143,8 +143,8 @@ export const dateSpotCityFilterMixin = {
             return this.showCategories.includes(typeId);
         },
 
-        isShowSubCategorySelected(categoryId) {
-            return this.showSubCategories.includes(categoryId);
+        isShowSubcategorySelected(categoryId) {
+            return this.showSubcategories.includes(categoryId);
         },
 
         toggleFilter() {

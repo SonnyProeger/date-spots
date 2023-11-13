@@ -1,5 +1,6 @@
 <script>
 import {dateSpotCityFilterMixin} from "@/mixins/dateSpotCityFilterMixin.js";
+import {router} from "@inertiajs/vue3";
 
 export default {
 	name: "DateSpotCityFilter",
@@ -11,21 +12,28 @@ export default {
 			isFilterVisible: false,
 			selectedTypes: [],
 			selectedCategories: [],
-			selectedSubCategories: [],
+			selectedSubcategories: [],
 			showCategories: [],
-			showSubCategories: [],
+			showSubcategories: [],
 		}
 	},
 
 	props: {
+		city: String,
 		types: Object,
 		categories: Object,
-		subCategories: Object,
+		subcategories: Object,
 	},
 
 	methods: {
 		saveAndCloseFilter() {
-			this.$emit('saveFilter');
+			const filterData = {
+				selectedTypes: this.selectedTypes,
+				selectedCategories: this.selectedCategories,
+				selectedSubcategories: this.selectedSubcategories,
+			};
+
+			router.post(`/date-spots/${this.city}`, filterData)
 			this.toggleFilter();
 		},
 	},
@@ -90,9 +98,9 @@ export default {
 									:value="`${type.id}-${category.id}`"
 									@change="selectAllSubcategories(type, category)"
 							/>
-							<div class="flex justify-between w-full" @click="showSubCategoriesInFilter(category.id)">
+							<div class="flex justify-between w-full" @click="showSubcategoriesInFilter(category.id)">
 								<p class="pl-2 text-md font-semibold">{{ category.name }}</p>
-								<svg v-if="isShowSubCategorySelected(category.id)" xmlns="http://www.w3.org/2000/svg" fill="none"
+								<svg v-if="isShowSubcategorySelected(category.id)" xmlns="http://www.w3.org/2000/svg" fill="none"
 								     viewBox="0 0 24 24"
 								     stroke-width="1.5"
 								     stroke="currentColor" class="w-6 h-6">
@@ -104,22 +112,22 @@ export default {
 								</svg>
 							</div>
 						</div>
-						<hr v-if="isCategorySelected(category) || isShowSubCategorySelected(category.id)" class="w-full m-1">
+						<hr v-if="isCategorySelected(category) || isShowSubcategorySelected(category.id)" class="w-full m-1">
 
 						<!--subcategory options-->
-						<div class="pl-4" v-if="isCategorySelected(category) || isShowSubCategorySelected(category.id)"
-						     v-for="subCategory in category.subCategories"
-						     :key="subCategory.id">
+						<div class="pl-4" v-if="isCategorySelected(category) || isShowSubcategorySelected(category.id)"
+						     v-for="subcategory in category.subcategories"
+						     :key="subcategory.id">
 							<div class="py-1 flex flex-row items-center">
 								<input
 										type="checkbox"
-										v-model="selectedSubCategories"
-										:value="`${category.id}-${subCategory.id}`"
-										@change="checkIfAllSubCategoriesSelected(type, category, subCategory)"
+										v-model="selectedSubcategories"
+										:value="`${category.id}-${subcategory.id}`"
+										@change="checkIfAllSubcategoriesSelected(type, category, subcategory)"
 								/>
 
 								<div class="flex justify-between w-full">
-									<p class="pl-2 text-md">{{ subCategory.name }}</p>
+									<p class="pl-2 text-md">{{ subcategory.name }}</p>
 								</div>
 							</div>
 						</div>
