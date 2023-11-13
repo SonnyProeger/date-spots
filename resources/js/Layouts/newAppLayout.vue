@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-	<div id="app" class="min-h-screen bg-cream text-gray-800 border-b-2">
+	<div id="app" class="min-h-screen bg-cream text-gray-800">
 		<div class="container mx-auto">
 			<header class="md:mb-8 md:pt-4 md:py-0 py-4 px-2 flex justify-between items-center select-none">
 				<div class="text-2xl font-semibold flex justify-between items-center">
@@ -109,7 +109,12 @@ export default {
 		<main>
 			<slot/>
 		</main>
+		<!-- Footer Section -->
+		<footer class="py-4 text-center text-gray-500 text-sm">
+			&copy; 2023 Date Spots. All rights reserved.
+		</footer>
 	</div>
+
 </template>
 
 <style scoped>
