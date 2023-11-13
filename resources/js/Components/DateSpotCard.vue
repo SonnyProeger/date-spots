@@ -24,7 +24,7 @@ export default {
 		dateSpotLink() {
 			const formattedName = this.dateSpotName.replace(/\s+/g, '-'); // Replace spaces with dashes
 
-			return `/date-spot/${this.dateSpotId}-${formattedName}`;
+			return formattedName;
 		},
 
 	},
@@ -70,7 +70,10 @@ export default {
 
 				<div class="flex justify-center">
 					<!-- Additional Spot Details Here -->
-					<Link :href="dateSpotLink"
+					<Link :href="route('date-spots.show',{
+						id:this.dateSpotId,
+						name:dateSpotLink,
+					})"
 					      class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700"
 					>
 						Explore Date Spot
