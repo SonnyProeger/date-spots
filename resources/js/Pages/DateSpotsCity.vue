@@ -7,7 +7,7 @@ export default {
 	name: "DateSpotsCity",
 	components: {DateSpotCityFilter, DateSpotCard, NewAppLayout},
 	created() {
-		console.log(this.categories)
+		console.log(this.dateSpots)
 	},
 	data() {
 		return {
@@ -40,7 +40,7 @@ export default {
 
 <template>
 	<NewAppLayout>
-		<div class="md:container md:mx-auto md:flex">
+		<div class="md:container md:mx-auto md:flex gap-4">
 
 			<DateSpotCityFilter
 					:types="types"

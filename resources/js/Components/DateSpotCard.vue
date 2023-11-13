@@ -42,7 +42,7 @@ export default {
 						class="w-full h-32 object-cover rounded-t-lg"
 				/>
 			</div>
-			<div class="p-4 ">
+			<div class="p-4">
 				<!-- Spot name and Review SVG-->
 				<div class="flex justify-between">
 
@@ -68,12 +68,15 @@ export default {
 					<p class="text-gray-600 text-center md:text-left mb-2">"{{ dateSpotTagline }}"</p>
 				</div>
 
-				<!-- Additional Spot Details Here -->
-				<Link :href="dateSpotLink"
-				      class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700"
-				>
-					Explore Date Spots
-				</Link>
+				<div class="flex justify-center">
+					<!-- Additional Spot Details Here -->
+					<Link :href="dateSpotLink"
+					      class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700"
+					>
+						Explore Date Spot
+					</Link>
+				</div>
+
 
 			</div>
 		</div>
