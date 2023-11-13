@@ -1,49 +1,47 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
 import DateSpotCard from "@/Components/DateSpotCard.vue";
+import DateSpotCityFilter from "@/Components/FilterComponents/DateSpotCityFilter.vue";
+import AddressForm from "@/Components/AddressForm.vue";
+import SearchButton from "@/Components/SearchButton.vue";
+import HowItWorks from "@/Components/HowItWorks.vue";
+import DateSpotsInCities from "@/Components/DateSpotsInCities.vue";
+import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
+import Hero from "@/Components/Hero.vue";
 
 export default {
 	name: "DateSpots",
-	components: {DateSpotCard, NewAppLayout},
+	components: {
+		Hero,
+		HeartRatingComponent,
+		DateSpotsInCities,
+		HowItWorks,
+		SearchButton,
+		AddressForm,
+		DateSpotCityFilter,
+		DateSpotCard,
+		NewAppLayout
+	},
 	props: {
 		dateSpots: Object,
-		city: String,
+		categories: Object,
+		subcategories: Object,
 	},
 }
 </script>
 
 <template>
 	<NewAppLayout>
-		<div class="container mx-auto flex">
-			<!-- Sidebar -->
-			<div class="hidden md:block w-1/4 p-4 bg-gray-100">
+		<Hero>
 
-				<!-- Settings options -->
-				<h2 class="text-lg font-semibold mb-4">Settings</h2>
+		</Hero>
+		<HowItWorks class="hidden md:block">
 
-				<!-- Example settings -->
-				<label for="setting-1">Setting 1</label>
-				<input id="setting-1" type="checkbox" v-model="setting1">
-				<!-- Add more settings as needed -->
+		</HowItWorks>
+		<date-spots-in-cities>
 
-			</div>
-			<div class="w-full md:w-3/4 p-4 md:pl-0">
-				<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
-					<DateSpotCard
-							v-for="dateSpot in dateSpots"
-							:key="dateSpot.id"
-							:date-spot-type="dateSpot.types"
-							:date-spot-id="dateSpot.id"
-							:date-spot-name="dateSpot.name"
-							:date-spot-tagline="dateSpot.tagline"
-							:image-src="dateSpot.photo_url"
-							:city="dateSpot.city"
-							:rating="dateSpot.rating"
-							:reviews-count="dateSpot.reviews_count"
-					></DateSpotCard>
-				</div>
-			</div>
-		</div>
+		</date-spots-in-cities>
+
 	</NewAppLayout>
 </template>
 
