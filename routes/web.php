@@ -3,7 +3,6 @@
 use App\Http\Controllers\DateSpotController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Spatie\ResponseCache\Middlewares\CacheResponse;
 
 
 /*
@@ -19,25 +18,20 @@ use Spatie\ResponseCache\Middlewares\CacheResponse;
 
 Route::get('/', function () {
 	return Inertia::render('Home');
-})->name('home')
-	->middleware(CacheResponse::class);
+})->name('home');
 
 Route::get('/date-spots', function () {
 	return Inertia::render('DateSpots');
-})->name('date-spots')
-	->middleware(CacheResponse::class);
+})->name('date-spots');
 
 Route::get('/date-spot/{id}-{name}', [DateSpotController::class, 'show'])
-	->name('date-spots.show')
-	->middleware(CacheResponse::class);
+	->name('date-spots.show');
 
-Route::get('/date-spot/{city}}', [DateSpotController::class, 'showByLocation'])
-	->name('date-spot.show-by-location')
-	->middleware(CacheResponse::class);
+Route::get('/date-spots/{city}', [DateSpotController::class, 'showByLocation'])
+	->name('date-spot.show-by-location');
 
 Route::post('/date-spots/{city}', [DateSpotController::class, 'filterByLocation'])
-	->name('date-spot.filter-by-location')
-	->middleware(CacheResponse::class);
+	->name('date-spot.filter-by-location');
 
 // TODO
 //Route::get('/date-spots/{country}/{province}/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');

@@ -18,8 +18,5 @@
     "tailwindcss": "^3.3.3",
     "vite": "^4.0.0",
     "vue": "^3.2.31"
-  },
-  "dependencies": {
-    "@vue/server-renderer": "^3.3.8"
   }
 }
