@@ -53,11 +53,11 @@ export default {
 					</Link>
 
 					<Link href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
-						Placeholder
+						Review
 					</Link>
 
-					<Link href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
-						Placeholder
+					<Link href="/register" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+						Register
 					</Link>
 
 					<Link
