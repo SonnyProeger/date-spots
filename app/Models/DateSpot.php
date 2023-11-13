@@ -40,21 +40,20 @@ class DateSpot extends Model
 		return $this->reviews()->count();
 	}
 
-	public function getRatingAttribute(): string
+	public function getRatingAttribute(): float
 	{
 		$reviews = $this->reviews;
 
 		if ($reviews->isEmpty()) {
-			return '0.0';
+			return 0.0;
 		}
 
 		$totalRating = $reviews->sum('rating');
 		$averageRating = $totalRating / $reviews->count();
 
 		$roundedRating = round($averageRating * 2) / 2;
-		$formattedRating = number_format($roundedRating, 1); // Ensure one decimal place.
 
-		return min($formattedRating, '5.0');
+		return min($roundedRating, 5.0);
 	}
 
 

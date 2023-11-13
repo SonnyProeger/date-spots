@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\StringHelper;
+use App\Models\Category;
 use App\Models\DateSpot;
+use App\Models\SubCategory;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -32,12 +35,18 @@ class DateSpotController extends Controller
 		if ($city) {
 			$query->where('city', $city);
 		}
+		$categories = Category::all();
+		$subCategories = SubCategory::all();
+		$types = Type::all();
 
 		$dateSpots = $query->get();
 
 		return Inertia::render('DateSpotsCity', [
 			'dateSpots' => $dateSpots,
 			'city' => $city,
+			'types' => $types,
+			'categories' => $categories,
+			'subCategories' => $subCategories,
 		]);
 	}
 
