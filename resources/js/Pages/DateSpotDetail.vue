@@ -122,7 +122,7 @@ export default {
 						<p class="text-md font-bold mt-2">Categories</p>
 						<div class="text-gray-600 mt-2">{{ formattedCategories }}</div>
 						<p class="text-md font-bold mt-2">Sub Categories</p>
-						<div class="text-gray-600 mt-2">{{ formattedSubCategories }}</div>
+						<div class="text-gray-600 mt-2">{{ formattedSubcategories }}</div>
 					</div>
 
 					<!-- Card 3 -->
