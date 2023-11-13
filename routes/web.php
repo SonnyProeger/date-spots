@@ -32,7 +32,8 @@ Route::get('/date-spot/{id}-{name}',
 Route::get('/date-spots/{city}',
 	'App\Http\Controllers\DateSpotController@showByLocation')->middleware(CacheResponse::class);
 
-Route::post('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@filterByLocation');
+Route::post('/date-spots/{city}',
+	'App\Http\Controllers\DateSpotController@filterByLocation')->middleware(CacheResponse::class);
 
 // TODO
 //Route::get('/date-spots/{city}/{type}/{category}/{sub-category}', 'App\Http\Controllers\DateSpotController@showByLocation');
