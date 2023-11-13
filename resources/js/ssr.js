@@ -1,6 +1,3 @@
-import './bootstrap';
-import '../css/app.css';
-
 import {createInertiaApp} from '@inertiajs/vue3'
 import createServer from '@inertiajs/vue3/server'
 import {renderToString} from '@vue/server-renderer'
