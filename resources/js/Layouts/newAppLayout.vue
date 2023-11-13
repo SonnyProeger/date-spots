@@ -56,14 +56,13 @@ export default {
 						Review
 					</Link>
 
-					<Link href="/register" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+					<Link :href="route('register')" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
 						Register
 					</Link>
 
 					<Link
-							href="/login"
+							:href="route('login')"
 							class="py-2 px-3 ml-2 hover:bg-rose-700 bg-roseGold rounded shadow-lg border text-white"
-
 					>
 						Login
 
@@ -81,25 +80,25 @@ export default {
 						href="/date-spots"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
-					Spots
+					Date Spots
 				</Link>
 
 				<Link
 						href="#"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
-					Placeholder
+					Review
 				</Link>
 
 				<Link
-						href="#"
+						:href="route('register')"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
-					Placeholder
+					Register
 				</Link>
 
 				<Link
-						href="#"
+						:href="route('login')"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
 					Login
@@ -109,12 +108,12 @@ export default {
 		<main>
 			<slot/>
 		</main>
-		<!-- Footer Section -->
-		<footer class="py-4 text-center text-gray-500 text-sm">
-			&copy; 2023 Date Spots. All rights reserved.
-		</footer>
-	</div>
 
+	</div>
+	<!-- Footer Section -->
+	<footer class="py-4 text-center text-gray-500 text-sm bg-cream">
+		&copy; 2023 Date Spots. All rights reserved.
+	</footer>
 </template>
 
 <style scoped>
