@@ -4,22 +4,22 @@ import NewAppLayout from "@/Layouts/newAppLayout.vue";
 import HowItWorks from "@/Components/HowItWorks.vue";
 
 export default {
-    name: "Home",
-    components: {HowItWorks, NewAppLayout, Hero}
+	name: "Home",
+	components: {HowItWorks, NewAppLayout, Hero}
 }
 </script>
 
 <template>
-    <NewAppLayout>
-        <div class="flex flex-col">
-            <Hero>
+	<NewAppLayout>
+		<div class="flex flex-col">
+			<Hero :homescreen="true">
 
-            </Hero>
-            <HowItWorks>
+			</Hero>
+			<HowItWorks>
 
-            </HowItWorks>
-        </div>
-    </NewAppLayout>
+			</HowItWorks>
+		</div>
+	</NewAppLayout>
 </template>
 
 <style scoped>
