@@ -53,7 +53,7 @@ export default {
 			<div class="w-full md:w-3/4 p-4 md:pl-0">
 				<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
 					<div v-if="noDateSpots">
-						<p>Sorry, we don't have Date Spots in {{ city }} for that.. yet!</p>
+						<p>Sorry, we don't have any Date Spots in {{ city }} for that.. yet!</p>
 					</div>
 					<DateSpotCard
 							v-for="dateSpot in dateSpots"
