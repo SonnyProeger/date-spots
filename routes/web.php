@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,11 +15,11 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Home');
+	return Inertia::render('Home');
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+	return Inertia::render('Dashboard');
 })->name('dashboard');
 
 Route::get('/date-spots', 'App\Http\Controllers\DateSpotController@index');
@@ -29,22 +28,17 @@ Route::get('/date-spot/{id}-{name}', 'App\Http\Controllers\DateSpotController@sh
 
 Route::get('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
 
+Route::post('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@filterByLocation');
+
 // TODO
 //Route::get('/date-spots/{city}/{type}/{category}/{sub-category}', 'App\Http\Controllers\DateSpotController@showByLocation');
 //Route::get('/date-spots/{country}/{province}/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
 
 
-
-
-
-
-
-
-
 Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
+	'auth:sanctum',
+	config('jetstream.auth_session'),
+	'verified',
 ])->group(function () {
 
 });
