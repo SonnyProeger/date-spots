@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,17 +18,19 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
 	return Inertia::render('Home');
-});
+})->middleware(CacheResponse::class);
 
 Route::get('/dashboard', function () {
 	return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/date-spots', 'App\Http\Controllers\DateSpotController@index');
+Route::get('/date-spots', 'App\Http\Controllers\DateSpotController@index')->middleware(CacheResponse::class);
 
-Route::get('/date-spot/{id}-{name}', 'App\Http\Controllers\DateSpotController@show')->name('date-spots.show');
+Route::get('/date-spot/{id}-{name}',
+	'App\Http\Controllers\DateSpotController@show')->name('date-spots.show')->middleware(CacheResponse::class);
 
-Route::get('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@showByLocation');
+Route::get('/date-spots/{city}',
+	'App\Http\Controllers\DateSpotController@showByLocation')->middleware(CacheResponse::class);
 
 Route::post('/date-spots/{city}', 'App\Http\Controllers\DateSpotController@filterByLocation');
 
