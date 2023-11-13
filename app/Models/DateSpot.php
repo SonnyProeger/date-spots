@@ -84,9 +84,9 @@ class DateSpot extends Model
 		return $this->belongsToMany(Category::class, 'date_spot_category');
 	}
 
-	public function subCategories()
+	public function subCategories(): BelongsToMany
 	{
-		return $this->belongsToMany(SubCategory::class);
+		return $this->belongsToMany(Subcategory::class);
 	}
 
 	public function types(): BelongsToMany

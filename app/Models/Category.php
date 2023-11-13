@@ -12,7 +12,7 @@ class Category extends Model
 {
 	use HasFactory;
 
-	protected $appends = ['subCategories'];
+	protected $appends = ['subcategories'];
 
 	public function places(): BelongsToMany
 	{
@@ -23,7 +23,7 @@ class Category extends Model
 
 	public function subCategories(): HasMany
 	{
-		return $this->hasMany(SubCategory::class);
+		return $this->hasMany(Subcategory::class);
 	}
 
 	public function getSubCategoriesAttribute(): Collection

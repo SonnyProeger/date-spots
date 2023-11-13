@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\SubCategory;
+use App\Models\DateSpot;
+use App\Models\Subcategory;
 use Illuminate\Database\Seeder;
 
 class SubCategoriesTableSeeder extends Seeder
@@ -13,14 +13,13 @@ class SubCategoriesTableSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		$subcategoriesCount = 3;
+		$dateSpots = DateSpot::all();
+		$subcategories = Subcategory::factory(10)->create();
 
-		$categories = Category::all();
+		$dateSpots->each(function ($dateSpot) use ($subcategories) {
+			$subcategoryIds = $subcategories->random(rand(1, 5))->pluck('id')->toArray();
 
-		foreach ($categories as $category) {
-			SubCategory::factory($subcategoriesCount)->create([
-				'category_id' => $category->id,
-			]);
-		}
+			$dateSpot->subCategories()->attach($subcategoryIds, ['created_at' => now(), 'updated_at' => now()]);
+		});
 	}
 }
