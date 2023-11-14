@@ -26,9 +26,6 @@ export default {
 			router.post(`/date-spots/${this.$route.query.city}`, filterData)
 		},
 	},
-	updated() {
-		console.log(this.dateSpots)
-	},
 	computed: {
 		noDateSpots: function () {
 			return Object.keys(this.dateSpots).length === 0;
