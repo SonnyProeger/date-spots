@@ -24,7 +24,7 @@ export default {
 
 <template>
 	<NewAppLayout>
-		<div class="container mx-auto flex flex-col">
+		<div class="container mx-auto flex flex-col md:w-4/5">
 			<DateSpotDetailHeader
 					:date-spot="dateSpot"
 					:total-date-spots="totalDateSpots"

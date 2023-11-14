@@ -37,7 +37,7 @@ export default {
 
 <template>
 	<NewAppLayout>
-		<div class="md:container md:mx-auto md:flex gap-4">
+		<div class="md:container md:mx-auto md:flex gap-4 md:w-4/5">
 
 			<DateSpotCityFilter
 					:city="city"

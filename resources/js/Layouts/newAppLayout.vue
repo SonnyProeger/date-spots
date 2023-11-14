@@ -1,9 +1,11 @@
 <script>
 import {Link} from "@inertiajs/vue3";
+import Dropdown from "@/Components/Dropdown.vue";
+import DropdownLink from "@/Components/DropdownLink.vue";
 
 export default {
 	name: "newAppLayout",
-	components: {Link},
+	components: {DropdownLink, Dropdown, Link},
 	data() {
 		return {
 			isOpen: false,
@@ -14,10 +16,11 @@ export default {
 
 <template>
 	<div id="app" class="min-h-screen bg-cream text-gray-800">
-		<div class="container mx-auto">
+		<div class="container md:w-4/5 mx-auto">
+
 			<header class="md:mb-8 md:pt-4 md:py-0 py-4 px-2 flex justify-between items-center select-none">
 				<div class="text-2xl font-semibold flex justify-between items-center">
-					<Link href="/">
+					<Link :href="route('home')">
 						DATE SPOTS
 					</Link>
 				</div>
@@ -47,8 +50,8 @@ export default {
 				</div>
 
 				<!-- Desktop Links -->
-				<div class="hidden md:block text-sm">
-					<Link href="/date-spots" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+				<div class="hidden md:block text-sm md:flex md:flex-row">
+					<Link :href="route('date-spots')" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
 						Date Spots
 					</Link>
 
@@ -56,18 +59,69 @@ export default {
 						Review
 					</Link>
 
-					<Link :href="route('register')" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+					<Link v-if="!$page.props.auth.user"
+					      :href="route('register')"
+					      class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
 						Register
 					</Link>
 
-					<Link
-							:href="route('login')"
-							class="py-2 px-3 ml-2 hover:bg-rose-700 bg-roseGold rounded shadow-lg border text-white"
+					<Link v-if="!$page.props.auth.user"
+					      :href="route('login')"
+					      class="py-2 px-3 ml-2 hover:bg-rose-700 bg-roseGold rounded shadow-lg border text-white"
 					>
 						Login
 
 					</Link>
 
+					<Dropdown class="pl-8" v-else>
+						<template #trigger>
+							<button v-if="$page.props.jetstream.managesProfilePhotos"
+							        class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-rose-700 transition duration-300 ease-in-out transform hover:border-rose-700 hover:scale-105">
+								<img class="h-8 w-8 rounded-full object-cover" :src="$page.props.auth.user.profile_photo_url"
+								     :alt="$page.props.auth.user.name">
+							</button>
+
+							<span v-else class="inline-flex rounded-md">
+                                            <button type="button"
+                                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                                {{ $page.props.auth.user.name }}
+
+                                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                                                </svg>
+                                            </button>
+                                        </span>
+						</template>
+
+						<template #content>
+							<!-- Account Management -->
+							<div class="block px-4 py-2 text-xs text-gray-400">
+								Manage Account
+							</div>
+
+							<DropdownLink :href="route('profile.show')"
+							              class=""
+							>
+								Profile
+							</DropdownLink>
+
+							<DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
+								API Tokens
+							</DropdownLink>
+
+							<div class="border-t border-gray-200"/>
+
+							<!-- Authentication -->
+							<form @submit.prevent="logout">
+								<DropdownLink as="button">
+									Log Out
+								</DropdownLink>
+							</form>
+						</template>
+					</Dropdown>
 				</div>
 			</header>
 
@@ -77,7 +131,7 @@ export default {
 					v-if="isOpen"
 			>
 				<Link
-						href="/date-spots"
+						:href="route('date-spots')"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
 					Date Spots

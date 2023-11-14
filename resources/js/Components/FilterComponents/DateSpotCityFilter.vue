@@ -75,9 +75,10 @@ export default {
 
 				<!--Type filter options-->
 				<div class="pb-4" v-for="type in types" :key="type.id">
-					<div class=" flex flex-row items-center">
-						<input type="checkbox" v-model="selectedTypes" :value="type.id" @change="selectAllCategories(type)">
-						<div class="flex justify-between w-full" @click="showCategoriesInFilter(type.id)">
+					<div class="flex flex-row items-center">
+						<input type="checkbox" v-model="selectedTypes" :value="type.id"
+						       @change="selectAllCategories(type)">
+						<div class="flex justify-between w-full hover:cursor-pointer" @click="showCategoriesInFilter(type.id)">
 							<p class="pl-2 text-md font-semibold">{{ type.name }}</p>
 							<svg v-if="isShowCategorySelected(type.id)" xmlns="http://www.w3.org/2000/svg" fill="none"
 							     viewBox="0 0 24 24"
@@ -94,7 +95,8 @@ export default {
 					<hr v-if="isShowCategorySelected(type.id)" class="w-full m-1">
 
 					<!-- Category filter options -->
-					<div class="pl-4" v-if="isShowCategorySelected(type.id)" v-for="category in type.categories"
+					<div class="pl-4" v-if="isShowCategorySelected(type.id)"
+					     v-for="category in type.categories"
 					     :key="category.id">
 
 						<div class="py-1 flex flex-row items-center">
@@ -104,7 +106,8 @@ export default {
 									:value="`${type.id}-${category.id}`"
 									@change="selectAllSubcategories(type, category)"
 							/>
-							<div class="flex justify-between w-full" @click="showSubcategoriesInFilter(category.id)">
+							<div class="flex justify-between w-full  hover:cursor-pointer"
+							     @click="showSubcategoriesInFilter(category.id)">
 								<p class="pl-2 text-md font-semibold">{{ category.name }}</p>
 								<svg v-if="isShowSubcategorySelected(category.id)" xmlns="http://www.w3.org/2000/svg" fill="none"
 								     viewBox="0 0 24 24"
@@ -142,7 +145,9 @@ export default {
 
 				<!-- Save and Close button -->
 				<div class="p-4 md:pb-4 md:pt-2 flex justify-center">
-					<button @click="saveAndCloseFilter" class="w-full bg-roseGold text-white px-3 py-1 rounded">Filter DateSpots
+					<button @click="saveAndCloseFilter"
+					        class="w-full bg-roseGold text-white px-3 py-1 rounded hover:bg-rose-700">
+						Filter Date Spots
 					</button>
 				</div>
 			</div>
