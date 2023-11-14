@@ -8,7 +8,6 @@ export default {
 	mixins: [dateSpotCityFilterMixin],
 	data() {
 		return {
-			isLargeScreen: window.innerWidth >= 768,
 			isFilterVisible: false,
 			selectedTypes: [],
 			selectedCategories: [],
@@ -16,6 +15,13 @@ export default {
 			showCategories: [],
 			showSubcategories: [],
 		}
+	},
+	computed: {
+		isLargeScreen() {
+			const element = document.documentElement; // Use an appropriate element
+			const width = element.clientWidth;
+			return width >= 768;
+		},
 	},
 
 	props: {
