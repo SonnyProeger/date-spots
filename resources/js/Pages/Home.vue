@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-	<NewAppLayout>
+	<NewAppLayout title="Date Spots">
 		<div class="flex flex-col">
 			<Hero :homescreen="true">
 

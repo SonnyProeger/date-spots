@@ -1,23 +1,25 @@
 <script>
-import {Link} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 
 export default {
 	name: "newAppLayout",
-	components: {DropdownLink, Dropdown, Link},
+	components: {DropdownLink, Dropdown, Link, Head},
 	data() {
 		return {
 			isOpen: false,
 		};
 	},
+	props: {
+		title: String,
+	}
 };
 </script>
 
 <template>
 	<div id="app" class="min-h-screen bg-cream text-gray-800">
 		<div class="container md:w-4/5 mx-auto">
-
 			<header class="md:mb-8 md:pt-4 md:py-0 py-4 px-2 flex justify-between items-center select-none">
 				<div class="text-2xl font-semibold flex justify-between items-center">
 					<Link :href="route('home')">
