@@ -10,13 +10,11 @@ class Subcategory extends Model
 {
 	use hasFactory;
 
-	public function places(): BelongsToMany
-	{
-		return $this->belongsToMany(DateSpot::class, 'date_spot_subcategory');
+	public function places(): BelongsToMany {
+		return $this->belongsToMany(Datespot::class, 'datespot_subcategory');
 	}
 
-	public function category()
-	{
+	public function category() {
 		return $this->belongsTo(Category::class);
 	}
 

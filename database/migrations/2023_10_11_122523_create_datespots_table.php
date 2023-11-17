@@ -10,9 +10,9 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('date_spots', function (Blueprint $table) {
+		Schema::create('datespots', function (Blueprint $table) {
 			$table->id();
-			$table->string('date_spot_id')->unique();
+			$table->string('datespot_id')->unique();
 			$table->string('name');
 			$table->string('tagline');
 			$table->decimal('lat', 10, 7);
@@ -30,6 +30,8 @@ return new class extends Migration {
 			$table->boolean('open_now');
 			$table->string('icon_url');
 			$table->integer('position')->nullable()->unique();
+			$table->unsignedBigInteger('company_id')->nullable();
+			$table->foreign('company_id')->references('id')->on('users');
 			$table->timestamps();
 		});
 	}
@@ -39,6 +41,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('date_spots');
+		Schema::dropIfExists('datespots');
 	}
 };

@@ -14,20 +14,17 @@ class Category extends Model
 
 	protected $appends = ['subcategories'];
 
-	public function places(): BelongsToMany
-	{
-		return $this->belongsToMany(DateSpot::class, 'date_spot_category');
+	public function places(): BelongsToMany {
+		return $this->belongsToMany(Datespot::class, 'datespot_category');
 	}
 
 	// Category.php
 
-	public function subCategories(): HasMany
-	{
+	public function subCategories(): HasMany {
 		return $this->hasMany(Subcategory::class);
 	}
 
-	public function getSubCategoriesAttribute(): Collection
-	{
+	public function getSubCategoriesAttribute(): Collection {
 		return $this->subCategories()->get();
 	}
 

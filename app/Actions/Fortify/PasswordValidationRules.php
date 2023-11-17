@@ -7,13 +7,12 @@ use Laravel\Fortify\Rules\Password;
 
 trait PasswordValidationRules
 {
-    /**
-     * Get the validation rules used to validate passwords.
-     *
-     * @return array<int, Rule|array|string>
-     */
-    protected function passwordRules(): array
-    {
-        return ['required', 'string', new Password, 'confirmed'];
-    }
+	/**
+	 * Get the validation rules used to validate passwords.
+	 *
+	 * @return array<int, Rule|array|string>
+	 */
+	protected function passwordRules(): array {
+		return ['required', 'string', new Password, 'confirmed'];
+	}
 }

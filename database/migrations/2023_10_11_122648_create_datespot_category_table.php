@@ -8,14 +8,11 @@ return new class extends Migration {
 	/**
 	 * Run the migrations.
 	 */
-	public function up(): void
-	{
-		Schema::create('reviews', function (Blueprint $table) {
+	public function up(): void {
+		Schema::create('datespot_category', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedBigInteger('user_id');
+			$table->unsignedBigInteger('category_id');
 			$table->unsignedBigInteger('datespot_id');
-			$table->text('content');
-			$table->integer('rating');
 			$table->timestamps();
 		});
 	}
@@ -23,8 +20,7 @@ return new class extends Migration {
 	/**
 	 * Reverse the migrations.
 	 */
-	public function down(): void
-	{
-		Schema::dropIfExists('reviews');
+	public function down(): void {
+		Schema::dropIfExists('datespot_category');
 	}
 };

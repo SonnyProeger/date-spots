@@ -10,10 +10,10 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('date_spot_subcategory', function (Blueprint $table) {
+		Schema::create('datespot_subcategory', function (Blueprint $table) {
 			$table->id();
 			$table->unsignedBigInteger('subcategory_id');
-			$table->unsignedBigInteger('date_spot_id');
+			$table->unsignedBigInteger('datespot_id');
 			$table->timestamps();
 		});
 	}
@@ -23,6 +23,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('date_spot_subcategory');
+		Schema::dropIfExists('datespot_subcategory');
 	}
 };

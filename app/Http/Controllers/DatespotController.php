@@ -4,33 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Helpers\StringHelper;
 use App\Models\Category;
-use App\Models\DateSpot;
+use App\Models\Datespot;
 use App\Models\Subcategory;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DateSpotController extends Controller
+class DatespotController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
-	{
-		$dateSpots = DateSpot::with('types')->get();
+	public function index() {
+		$datespots = Datespot::with('types')->get();
 
-		return Inertia::render('DateSpots', [
-			'dateSpots' => $dateSpots,
+		return Inertia::render('datespots', [
+			'datespots' => $datespots,
 		]);
 	}
+
+	/**
+	 * Display the specified resource.
+	 */
+	public
+	function show($id, $name) {
+		$totalDatespots = Datespot::count();
+		$datespot = Datespot::query()->findOrFail($id);
+		$formattedName = StringHelper::replaceHyphensWithSpaces($name);
+
+		// Check if the name from the url matches the name in the database
+		if ($datespot->name !== $formattedName) {
+			return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
+		}
+
+
+		return Inertia::render('DatespotDetail', [
+			'datespot' => $datespot,
+			'totalDatespots' => $totalDatespots,
+		]);
+	}
+
 
 	/**
 	 * Display a listing of the resource by location
 	 */
 
-	public function showByLocation($city)
-	{
-		$query = DateSpot::query();
+	public function showByLocation($city) {
+		$query = Datespot::query();
 
 		if ($city) {
 			$query->where('city', $city);
@@ -39,10 +59,10 @@ class DateSpotController extends Controller
 		$subcategories = Subcategory::all();
 		$types = Type::all();
 
-		$dateSpots = $query->get();
+		$datespots = $query->get();
 
-		return Inertia::render('DateSpotsCity', [
-			'dateSpots' => $dateSpots,
+		return Inertia::render('DatespotsCity', [
+			'datespots' => $datespots,
 			'city' => $city,
 			'types' => $types,
 			'categories' => $categories,
@@ -50,9 +70,8 @@ class DateSpotController extends Controller
 		]);
 	}
 
-	public function filterByLocation(Request $request, $city)
-	{
-		$query = DateSpot::query();
+	public function filterByLocation(Request $request, $city) {
+		$query = Datespot::query();
 
 		if ($city) {
 			$query->where('city', $city);
@@ -94,95 +113,19 @@ class DateSpotController extends Controller
 					});
 				}
 			}
-			$filteredDateSpots = $query->with('types', 'categories', 'subcategories')->get();
+			$filteredDatespots = $query->with('types', 'categories', 'subcategories')->get();
 
 		} else {
-			$filteredDateSpots = $query->get();
+			$filteredDatespots = $query->get();
 		}
 
 
-		return Inertia::render('DateSpotsCity', [
-			'dateSpots' => $filteredDateSpots,
+		return Inertia::render('DatespotsCity', [
+			'datespots' => $filteredDatespots,
 			'city' => $city,
 			'types' => $types,
 			'categories' => $categories,
 			'subcategories' => $subcategories,
 		]);
-	}
-
-
-	/**
-	 * Show the form for creating a new resource.
-	 */
-	public
-	function create()
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 */
-	public
-	function store(
-		Request $request
-	) {
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 */
-	public
-	function show(
-		$id,
-		$name
-	) {
-		$totalDateSpots = DateSpot::count();
-		$dateSpot = DateSpot::query()->findOrFail($id);
-		$formattedName = StringHelper::replaceHyphensWithSpaces($name);
-
-		// Check if the name from the url matches the name in the database
-		if ($dateSpot->name !== $formattedName) {
-			return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
-		}
-
-
-		return Inertia::render('DateSpotDetail', [
-			'dateSpot' => $dateSpot,
-			'totalDateSpots' => $totalDateSpots,
-		]);
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 */
-	public
-	function edit(
-		DateSpot $dateSpot
-	) {
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 */
-	public
-	function update(
-		Request $request,
-		DateSpot $dateSpot
-	) {
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 */
-	public
-	function destroy(
-		DateSpot $dateSpot
-	) {
-		//
 	}
 }

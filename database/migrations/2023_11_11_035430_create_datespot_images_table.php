@@ -10,9 +10,9 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('date_spot_images', function (Blueprint $table) {
+		Schema::create('datespot_images', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('date_spot_id')->constrained();
+			$table->foreignId('datespot_id')->constrained();
 			$table->string('url');
 			$table->timestamps();
 		});
@@ -23,6 +23,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('date_spot_images');
+		Schema::dropIfExists('datespot_images');
 	}
 };

@@ -2,25 +2,24 @@
 
 namespace Database\Factories;
 
-use App\Models\DateSpot;
+use App\Models\Datespot;
 use App\Providers\DutchFakerProvider;
 use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<DateSpot>
+ * @extends Factory<Datespot>
  */
-class DateSpotFactory extends Factory
+class datespotFactory extends Factory
 {
-	protected $model = DateSpot::class;
+	protected $model = Datespot::class;
 
 	/**
 	 * Define the model's default state.
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function definition(): array
-	{
+	public function definition(): array {
 		$faker = FakerFactory::create('nl_NL');
 
 		$dutchProvider = new DutchFakerProvider($faker);
@@ -28,7 +27,7 @@ class DateSpotFactory extends Factory
 		$faker->addProvider($dutchProvider);
 
 		return [
-			'date_spot_id' => $faker->unique()->uuid,
+			'datespot_id' => $faker->unique()->uuid,
 			'name' => $faker->company,
 			'tagline' => "A small cozy business in a nice city",
 			'lat' => $faker->latitude,

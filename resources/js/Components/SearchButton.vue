@@ -5,13 +5,13 @@ export default {
 		location: String,
 	},
 	methods: {
-		findDateSpots() {
+		finddatespots() {
 			if (!this.location) {
 				console.error("Please provide a valid location.");
 				return;
 			}
 
-			this.$inertia.visit(`/date-spots/${this.location}`);
+			this.$inertia.visit(`/datespots/${this.location}`);
 		},
 
 
@@ -22,7 +22,7 @@ export default {
 <template>
 	<button
 			class="px-6 py-2 text-white bg-roseGold rounded-md hover:bg-rose-700 focus:outline-none"
-			@click="findDateSpots()"
+			@click="finddatespots()"
 	>
 		Find Date Spots
 	</button>

@@ -1,11 +1,12 @@
 <script>
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, router} from "@inertiajs/vue3";
 import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
+import Logo from "@/Pages/Admin/Shared/Logo.vue";
 
 export default {
 	name: "newAppLayout",
-	components: {DropdownLink, Dropdown, Link, Head},
+	components: {Logo, DropdownLink, Dropdown, Link, Head, router},
 	data() {
 		return {
 			isOpen: false,
@@ -13,6 +14,11 @@ export default {
 	},
 	props: {
 		title: String,
+	},
+	methods: {
+		logout() {
+			router.post(route('logout'));
+		}
 	}
 };
 </script>
@@ -23,7 +29,7 @@ export default {
 			<header class="md:mb-8 md:pt-4 md:py-0 py-4 px-2 flex justify-between items-center select-none">
 				<div class="text-2xl font-semibold flex justify-between items-center">
 					<Link :href="route('home')">
-						DATE SPOTS
+						<Logo logo-color="black"/>
 					</Link>
 				</div>
 
@@ -53,7 +59,7 @@ export default {
 
 				<!-- Desktop Links -->
 				<div class="hidden md:block text-sm md:flex md:flex-row">
-					<Link :href="route('date-spots')" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
+					<Link :href="route('datespots')" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
 						Date Spots
 					</Link>
 
@@ -133,7 +139,7 @@ export default {
 					v-if="isOpen"
 			>
 				<Link
-						:href="route('date-spots')"
+						:href="route('datespots')"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
 					Date Spots

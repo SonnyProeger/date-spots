@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\DateSpotImage;
+use App\Models\datespotImage;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DateSpotImage>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\datespotImage>
  */
-class DateSpotImageFactory extends Factory
+class datespotImageFactory extends Factory
 {
 	/**
 	 * Define the model's default state.
@@ -16,7 +16,7 @@ class DateSpotImageFactory extends Factory
 	 * @return array<string, mixed>
 	 */
 
-	protected $model = DateSpotImage::class;
+	protected $model = datespotImage::class;
 
 	public function definition(): array
 	{

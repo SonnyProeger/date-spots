@@ -2,7 +2,7 @@
 import StepCard from "@/Components/StepCard.vue";
 
 export default {
-	name: "DateSpotsInCities",
+	name: "DatespotsInCities",
 	components: {StepCard}
 }
 </script>
@@ -17,7 +17,7 @@ export default {
 			<div class="mt-6 grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-4">
 				<div class="group relative">
 					<div
-							class="p-4 rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:bg-white hover:bg-opacity-50 hover:scale-105 hover:cursor-pointer">
+							class="rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:bg-white hover:bg-opacity-50 hover:scale-105 hover:cursor-pointer">
 						<img src="https://placehold.co/350x250" alt="altText"/>
 					</div>
 				</div>

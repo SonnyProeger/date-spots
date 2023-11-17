@@ -1,15 +1,15 @@
 <script>
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
-import {dateSpotDetailMixin} from "@/mixins/dateSpotMixin.js";
+import {DatespotDetailMixin} from "@/mixins/datespotMixin.js";
 
 export default {
 	name: "Header",
 	components: {HeartRatingComponent},
 	props: {
-		dateSpot: Object,
-		totalDateSpots: Number,
+		datespot: Object,
+		totalDatespots: Number,
 	},
-	mixins: [dateSpotDetailMixin],
+	mixins: [DatespotDetailMixin],
 }
 
 </script>
@@ -18,7 +18,7 @@ export default {
 	<div class="flex justify-between bg-white p-2">
 		<!--		title-->
 		<div>
-			<h1 class="text-2xl font-bold">{{ dateSpot.name }}</h1>
+			<h1 class="text-2xl font-bold">{{ datespot.name }}</h1>
 		</div>
 		<!--		review save and share-->
 		<div class="hidden md:flex items-center space-x-2">
@@ -59,10 +59,10 @@ export default {
 		<div class="md:flex">
 			<div class="flex flex-row gap-1">
 				<HeartRatingComponent
-						:rating="dateSpot.rating"
+						:rating="datespot.rating"
 				>
 				</HeartRatingComponent>
-				<b class="md:pb-2 text-md">{{ dateSpot.reviews_count }} reviews</b>
+				<b class="md:pb-2 text-md">{{ datespot.reviews_count }} reviews</b>
 			</div>
 
 			<!-- vertical separator -->
@@ -107,8 +107,8 @@ export default {
 					</path>
 				</svg>
 				<a class="hover:underline"
-				   :href="'tel:'+dateSpot.phone_number"
-				> {{ dateSpot.phone_number }}</a>
+				   :href="'tel:'+datespot.phone_number"
+				> {{ datespot.phone_number }}</a>
 			</div>
 
 			<!-- vertical separator -->
@@ -124,7 +124,7 @@ export default {
 				</svg>
 				<a class="hover:underline"
 				   target="_blank"
-				   href="{{dateSpot.website_url}}"
+				   href="{{datespot.website_url}}"
 				>
 					Website
 				</a>

@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class DateSpot extends Model
+class Datespot extends Model
 {
 	use HasFactory;
 
 	protected $fillable = [
-		'date_spot_id',
+		'datespot_id',
 		'name',
 		'tagline',
 		'lat',
@@ -34,14 +34,12 @@ class DateSpot extends Model
 	];
 	protected $appends = ['rating', 'reviews_count', 'images', 'types'];
 
-	public function getReviewsCountAttribute(): int
-	{
+	public function getReviewsCountAttribute(): int {
 
 		return $this->reviews()->count();
 	}
 
-	public function getRatingAttribute(): float
-	{
+	public function getRatingAttribute(): float {
 		$reviews = $this->reviews;
 
 		if ($reviews->isEmpty()) {
@@ -57,40 +55,33 @@ class DateSpot extends Model
 	}
 
 
-	public function getTypesAttribute(): Collection
-	{
+	public function getTypesAttribute(): Collection {
 		return $this->types()->get();
 	}
 
 
-	public function getImagesAttribute(): Collection
-	{
+	public function getImagesAttribute(): Collection {
 
 		return $this->images()->get();
 	}
 
-	public function images(): HasMany
-	{
-		return $this->hasMany(DateSpotImage::class);
+	public function images(): HasMany {
+		return $this->hasMany(datespotImage::class);
 	}
 
-	public function reviews(): HasMany
-	{
+	public function reviews(): HasMany {
 		return $this->hasMany(Review::class);
 	}
 
-	public function categories(): BelongsToMany
-	{
-		return $this->belongsToMany(Category::class, 'date_spot_category');
+	public function categories(): BelongsToMany {
+		return $this->belongsToMany(Category::class, 'datespot_category');
 	}
 
-	public function subCategories(): BelongsToMany
-	{
+	public function subCategories(): BelongsToMany {
 		return $this->belongsToMany(Subcategory::class);
 	}
 
-	public function types(): BelongsToMany
-	{
-		return $this->belongsToMany(Type::class, 'date_spot_type');
+	public function types(): BelongsToMany {
+		return $this->belongsToMany(Type::class, 'datespot_type');
 	}
 }

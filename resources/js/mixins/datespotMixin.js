@@ -1,11 +1,11 @@
-// dateSpotMixin.js
+// datespotMixin.js
 
-export const dateSpotDetailMixin = {
+export const DatespotDetailMixin = {
     methods: {
         getStaticMapUrl() {
             const baseUrl = 'https://maps.googleapis.com/maps/api/staticmap';
-            const center = `${this.dateSpot.lat},${this.dateSpot.lng}`;
-            const markers = `color:red|label:A|${this.dateSpot.lat},${this.dateSpot.lng}`;
+            const center = `${this.datespot.lat},${this.datespot.lng}`;
+            const markers = `color:red|label:A|${this.datespot.lat},${this.datespot.lng}`;
             const googleApiKey = this.$inertia.page.props.GOOGLE_API_KEY;
 
             return `${baseUrl}?center=${center}&zoom=15&size=370x147&maptype=roadmap&markers=${markers}&key=${googleApiKey}`;
@@ -13,16 +13,16 @@ export const dateSpotDetailMixin = {
     },
     computed: {
         formattedPosition() {
-            return `<span class="font-bold">#${this.dateSpot.position}</span> of ${this.totalDateSpots} Date Spots in ${this.dateSpot.city}`;
+            return `<span class="font-bold">#${this.datespot.position}</span> of ${this.totalDatespots} Date Spots in ${this.datespot.city}`;
         },
         getDirectionsLink() {
-            return `https://www.google.com/maps/dir/?api=1&destination=${this.dateSpot.lat},${this.dateSpot.lng}`;
+            return `https://www.google.com/maps/dir/?api=1&destination=${this.datespot.lat},${this.datespot.lng}`;
         },
         formattedAddress() {
-            return `${this.dateSpot.house_number} ${this.dateSpot.street_name}, ${this.dateSpot.postal_code} ${this.dateSpot.city}`;
+            return `${this.datespot.house_number} ${this.datespot.street_name}, ${this.datespot.postal_code} ${this.datespot.city}`;
         },
         formattedTypes() {
-            const types = this.dateSpot.types.map((type) => type.name);
+            const types = this.datespot.types.map((type) => type.name);
 
             if (types.length === 0) {
                 return "No types available";
@@ -31,7 +31,7 @@ export const dateSpotDetailMixin = {
             return types.join(", ");
         },
         formattedCategories() {
-            const categories = this.dateSpot.types.reduce((acc, type) => {
+            const categories = this.datespot.types.reduce((acc, type) => {
                 // Check if the type has categories
                 if (type.categories.length > 0) {
                     // Map the category names for this type
@@ -49,7 +49,7 @@ export const dateSpotDetailMixin = {
             return categories.join(", ");
         },
         formattedSubcategories() {
-            const subcategories = this.dateSpot.types.reduce((acc, type) => {
+            const subcategories = this.datespot.types.reduce((acc, type) => {
                 // Check if the type has categories
                 if (type.categories.length > 0) {
                     // Map the subcategory names for each category

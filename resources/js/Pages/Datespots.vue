@@ -1,29 +1,29 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
-import DateSpotCard from "@/Components/DateSpotCard.vue";
-import DateSpotCityFilter from "@/Components/FilterComponents/DateSpotCityFilter.vue";
+import DatespotCard from "@/Components/DatespotCard.vue";
+import DatespotCityFilter from "@/Components/FilterComponents/DatespotCityFilter.vue";
 import AddressForm from "@/Components/AddressForm.vue";
 import SearchButton from "@/Components/SearchButton.vue";
 import HowItWorks from "@/Components/HowItWorks.vue";
-import DateSpotsInCities from "@/Components/DateSpotsInCities.vue";
+import DatespotsInCities from "@/Components/DatespotsInCities.vue";
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
 import Hero from "@/Components/Hero.vue";
 
 export default {
-	name: "DateSpots",
+	name: "Datespots",
 	components: {
 		Hero,
 		HeartRatingComponent,
-		DateSpotsInCities,
+		DatespotsInCities,
 		HowItWorks,
 		SearchButton,
 		AddressForm,
-		DateSpotCityFilter,
-		DateSpotCard,
+		DatespotCityFilter,
+		DatespotCard,
 		NewAppLayout
 	},
 	props: {
-		dateSpots: Object,
+		datespots: Object,
 		categories: Object,
 		subcategories: Object,
 	},
@@ -38,9 +38,9 @@ export default {
 		<HowItWorks class="hidden md:block">
 
 		</HowItWorks>
-		<date-spots-in-cities>
+		<DatespotsInCities>
 
-		</date-spots-in-cities>
+		</DatespotsInCities>
 
 	</NewAppLayout>
 </template>

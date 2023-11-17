@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Models\DateSpot;
+use App\Models\Datespot;
 use Illuminate\Console\Command;
 
-class UpdateDateSpotRatings extends Command
+class UpdatedatespotRatings extends Command
 {
 	/**
 	 * The name and signature of the console command.
 	 *
 	 * @var string
 	 */
-	protected $signature = 'app:update-date-spot-ratings';
+	protected $signature = 'app:update-datespot-ratings';
 
 	/**
 	 * The console command description.
@@ -24,19 +24,18 @@ class UpdateDateSpotRatings extends Command
 	/**
 	 * Execute the console command.
 	 */
-	public function handle(): void
-	{
-		DateSpot::query()->update(['position' => null]); // Clear existing positions
+	public function handle(): void {
+		Datespot::query()->update(['position' => null]); // Clear existing positions
 
-		$dateSpots = DateSpot::query()
+		$datespots = Datespot::query()
 			->withAvg('reviews', 'rating')
 			->orderByDesc('reviews_avg_rating')
 			->get();
 
 
 		$position = 1;
-		foreach ($dateSpots as $dateSpot) {
-			$dateSpot->update(['position' => $position++]);
+		foreach ($datespots as $datespot) {
+			$datespot->update(['position' => $position++]);
 		}
 		$this->info('Positions updated successfully.');
 	}

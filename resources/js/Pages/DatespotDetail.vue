@@ -1,23 +1,23 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
 import Hero from "@/Components/Hero.vue";
-import DateSpotDetailHeader from "@/Components/DateSpotDetailHeader.vue";
-import DateSpotCard from "@/Components/DateSpotCard.vue";
+import DatespotDetailHeader from "@/Components/DatespotDetailHeader.vue";
+import DatespotCard from "@/Components/DatespotCard.vue";
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
-import {dateSpotDetailMixin} from "@/mixins/dateSpotMixin.js";
+import {DatespotDetailMixin} from "@/mixins/datespotMixin.js";
 import {Link} from "@inertiajs/vue3";
 
 
 export default {
-	name: "DateSpotDetail",
-	components: {HeartRatingComponent, DateSpotCard, Hero, NewAppLayout, DateSpotDetailHeader, Link},
+	name: "DatespotDetail",
+	components: {HeartRatingComponent, DatespotCard, Hero, NewAppLayout, DatespotDetailHeader, Link},
 	props: {
-		dateSpot: Object,
-		totalDateSpots: Number,
+		datespot: Object,
+		totalDatespots: Number,
 	},
-	mixins: [dateSpotDetailMixin],
+	mixins: [DatespotDetailMixin],
 	created() {
-		console.log(this.dateSpot)
+		console.log(this.datespot)
 	}
 }
 </script>
@@ -25,15 +25,15 @@ export default {
 <template>
 	<NewAppLayout>
 		<div class="container mx-auto flex flex-col md:w-4/5">
-			<DateSpotDetailHeader
-					:date-spot="dateSpot"
-					:total-date-spots="totalDateSpots"
+			<DatespotDetailHeader
+					:datespot="datespot"
+					:total-datespots="totalDatespots"
 			>
-			</DateSpotDetailHeader>
+			</DatespotDetailHeader>
 			<div>
 				<div class="h-1/4 md:pb-2 md:pt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-0.5">
 					<!--images-->
-					<img v-for="(image, index) in dateSpot.images"
+					<img v-for="(image, index) in datespot.images"
 					     :key="index"
 					     :src="image.url"
 					     :alt="'Image ' + (index + 1)"
@@ -44,7 +44,7 @@ export default {
 				<!--				mobile only!-->
 				<div class="md:hidden grid grid-cols-4 gap-4 bg-white p-4">
 					<!-- Phone -->
-					<a :href="'tel:'+dateSpot.phone_number" class="flex flex-col items-center text-gray-600 text-center">
+					<a :href="'tel:'+datespot.phone_number" class="flex flex-col items-center text-gray-600 text-center">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						     stroke="currentColor" class="w-6 h-6">
 							<path stroke-linecap="round" stroke-linejoin="round"
@@ -66,7 +66,7 @@ export default {
 					</a>
 
 					<!-- Website -->
-					<a :href="dateSpot.website"
+					<a :href="datespot.website"
 					   class="flex flex-col items-center text-gray-600 hqTWt" target="_blank">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						     stroke="currentColor" class="w-6 h-6">
@@ -94,10 +94,10 @@ export default {
 					<div class="bg-white p-4 md:my-2 mt-2 ">
 						<p class="font-semibold pb-4">Reviews and Ratings:</p>
 						<div class="flex flex-row">
-							<div class="text-xl font-bold pr-2">{{ dateSpot.rating }}</div>
+							<div class="text-xl font-bold pr-2">{{ datespot.rating }}</div>
 							<div class="flex items-center pr-2">
-								<heart-rating-component :rating="dateSpot.rating"></heart-rating-component>
-								<span class="ml-1 font-bold text-sm">{{ dateSpot.reviews_count }} reviews</span>
+								<heart-rating-component :rating="datespot.rating"></heart-rating-component>
+								<span class="ml-1 font-bold text-sm">{{ datespot.reviews_count }} reviews</span>
 							</div>
 						</div>
 						<p v-html="formattedPosition" class="text-gray-600 mt-2"></p>
@@ -144,7 +144,7 @@ export default {
 							<p class="pl-2">{{ formattedAddress }}</p>
 						</a>
 						<div class="flex flex-row py-2  w-3/4 justify-between">
-							<a :href="dateSpot.website" class="flex flex-row pr-2 hover:underline" target="_blank">
+							<a :href="datespot.website" class="flex flex-row pr-2 hover:underline" target="_blank">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 								     stroke="currentColor" class="w-6 h-6">
 									<path stroke-linecap="round" stroke-linejoin="round"
@@ -153,7 +153,7 @@ export default {
 								<p class="pl-2">Website</p>
 							</a>
 
-							<a :href="'mailto:'+dateSpot.email" class="flex flex-row px-2 hover:underline">
+							<a :href="'mailto:'+datespot.email" class="flex flex-row px-2 hover:underline">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 								     stroke="currentColor" class="w-6 h-6">
 									<path stroke-linecap="round" stroke-linejoin="round"
@@ -162,7 +162,7 @@ export default {
 								<p class="pl-2">Email</p>
 							</a>
 						</div>
-						<a :href="'tel:'+dateSpot.phone_number" class="flex flex-row py-2 hover:underline">
+						<a :href="'tel:'+datespot.phone_number" class="flex flex-row py-2 hover:underline">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 							     stroke="currentColor" class="w-6 h-6">
 								<path stroke-linecap="round" stroke-linejoin="round"

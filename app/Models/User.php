@@ -27,6 +27,7 @@ class User extends Authenticatable
 		'name',
 		'email',
 		'password',
+		'role_id',
 	];
 
 	/**
@@ -59,12 +60,15 @@ class User extends Authenticatable
 		'profile_photo_url',
 	];
 
-	protected function defaultProfilePhotoUrl(): string
-	{
+	protected function defaultProfilePhotoUrl(): string {
 		$name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
 			return mb_substr($segment, 0, 1);
 		})->join(' '));
 
 		return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=FFFFFF&background=B76E79';
+	}
+
+	public function role() {
+		return $this->belongsTo(Role::class);
 	}
 }

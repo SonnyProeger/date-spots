@@ -1,4 +1,4 @@
-export const dateSpotCityFilterMixin = {
+export const DatespotCityFilterMixin = {
     methods: {
         selectAllCategories(type) {
             // Check if all categories within the given type are already selected

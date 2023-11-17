@@ -14,18 +14,15 @@ class Type extends Model
 
 	protected $appends = ['categories'];
 
-	public function places(): BelongsToMany
-	{
-		return $this->belongsToMany(DateSpot::class, 'date_spot_type');
+	public function places(): BelongsToMany {
+		return $this->belongsToMany(Datespot::class, 'datespot_type');
 	}
 
-	public function categories(): HasMany
-	{
+	public function categories(): HasMany {
 		return $this->hasMany(Category::class);
 	}
 
-	public function getCategoriesAttribute(): Collection
-	{
+	public function getCategoriesAttribute(): Collection {
 
 		return $this->categories()->get();
 	}

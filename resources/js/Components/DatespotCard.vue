@@ -3,13 +3,13 @@ import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
 import {Link} from "@inertiajs/vue3";
 
 export default {
-	name: "DateSpotCard",
+	name: "DatespotCard",
 	components: {HeartRatingComponent, Link},
 	props: {
-		dateSpotId: Number,
-		dateSpotName: String,
-		dateSpotType: Array,
-		dateSpotTagline: String,
+		datespotId: Number,
+		datespotName: String,
+		datespotType: Array,
+		datespotTagline: String,
 		city: String,
 		imageSrc: String,
 		reviewsCount: Number,
@@ -21,8 +21,8 @@ export default {
 		};
 	},
 	computed: {
-		dateSpotLink() {
-			const formattedName = this.dateSpotName.replace(/\s+/g, '-'); // Replace spaces with dashes
+		datespotLink() {
+			const formattedName = this.datespotName.replace(/\s+/g, '-'); // Replace spaces with dashes
 
 			return formattedName;
 		},
@@ -47,7 +47,7 @@ export default {
 				<div class="flex justify-between">
 
 					<!-- Spot Name -->
-					<h2 class="text-xl font-semibold">{{ dateSpotName }}</h2>
+					<h2 class="text-xl font-semibold">{{ datespotName }}</h2>
 
 					<!-- Review Stars svg -->
 					<HeartRatingComponent
@@ -65,14 +65,14 @@ export default {
 
 				<!-- Description centered -->
 				<div class="flex justify-center mt-4">
-					<p class="text-gray-600 text-center md:text-left mb-2">"{{ dateSpotTagline }}"</p>
+					<p class="text-gray-600 text-center md:text-left mb-2">"{{ datespotTagline }}"</p>
 				</div>
 
 				<div class="flex justify-center">
 					<!-- Additional Spot Details Here -->
-					<Link :href="route('date-spots.show',{
-						id:this.dateSpotId,
-						name:dateSpotLink,
+					<Link :href="route('user-datespots.show',{
+						id:this.datespotId,
+						name:datespotLink,
 					})"
 					      class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700"
 					>

@@ -1,11 +1,11 @@
 <script>
-import {dateSpotCityFilterMixin} from "@/mixins/dateSpotCityFilterMixin.js";
+import {DatespotCityFilterMixin} from "@/mixins/DatespotCityFilterMixin.js";
 import {router} from "@inertiajs/vue3";
 
 export default {
-	name: "DateSpotCityFilter",
+	name: "DatespotCityFilter",
 	emits: ['saveFilter'],
-	mixins: [dateSpotCityFilterMixin],
+	mixins: [DatespotCityFilterMixin],
 	data() {
 		return {
 			isFilterVisible: false,
@@ -39,7 +39,7 @@ export default {
 				selectedSubcategories: this.selectedSubcategories,
 			};
 
-			router.post(`/date-spots/${this.city}`, filterData)
+			router.post(`/datespots/${this.city}`, filterData)
 			this.toggleFilter();
 		},
 	},

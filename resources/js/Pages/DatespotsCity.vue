@@ -1,15 +1,17 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
-import DateSpotCard from "@/Components/DateSpotCard.vue";
-import DateSpotCityFilter from "@/Components/FilterComponents/DateSpotCityFilter.vue";
+import DatespotCard from "@/Components/DatespotCard.vue";
+import DatespotCityFilter from "@/Components/FilterComponents/DatespotCityFilter.vue";
 import {router} from '@inertiajs/vue3'
 
 
 export default {
-	name: "DateSpotsCity",
-	components: {DateSpotCityFilter, DateSpotCard, NewAppLayout},
+	name: "DatespotsCity",
+	components: {DatespotCityFilter, DatespotCard, NewAppLayout},
+	created() {
+	},
 	props: {
-		dateSpots: Object,
+		datespots: Object,
 		city: String,
 		types: Object,
 		categories: Object,
@@ -22,13 +24,12 @@ export default {
 				selectedCategories: categories,
 				selectedSubcategories: subcategories,
 			};
-
-			router.post(`/date-spots/${this.$route.query.city}`, filterData)
+			router.post(route(`/datespots/${this.$route.query.city}`), filterData)
 		},
 	},
 	computed: {
-		noDateSpots: function () {
-			return Object.keys(this.dateSpots).length === 0;
+		noDatespots: function () {
+			return Object.keys(this.datespots).length === 0;
 		}
 	}
 
@@ -39,7 +40,7 @@ export default {
 	<NewAppLayout>
 		<div class="md:container md:mx-auto md:flex gap-4 md:w-4/5">
 
-			<DateSpotCityFilter
+			<DatespotCityFilter
 					:city="city"
 					:types="types"
 					:categories="categories"
@@ -49,21 +50,21 @@ export default {
 
 			<div class="w-full md:w-3/4 p-4 md:pl-0">
 				<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
-					<div v-if="noDateSpots">
+					<div v-if="noDatespots">
 						<p>Sorry, we don't have any Date Spots in {{ city }} for that.. yet!</p>
 					</div>
-					<DateSpotCard
-							v-for="dateSpot in dateSpots"
-							:key="dateSpot.id"
-							:date-spot-type="dateSpot.types"
-							:date-spot-id="dateSpot.id"
-							:date-spot-name="dateSpot.name"
-							:date-spot-tagline="dateSpot.tagline"
-							:image-src="dateSpot.photo_url"
-							:city="dateSpot.city"
-							:rating="dateSpot.rating"
-							:reviews-count="dateSpot.reviews_count"
-					></DateSpotCard>
+					<DatespotCard
+							v-for="datespot in datespots"
+							:key="datespot.id"
+							:datespot-type="datespot.types"
+							:datespot-id="datespot.id"
+							:datespot-name="datespot.name"
+							:datespot-tagline="datespot.tagline"
+							:image-src="datespot.photo_url"
+							:city="datespot.city"
+							:rating="datespot.rating"
+							:reviews-count="datespot.reviews_count"
+					></DatespotCard>
 				</div>
 			</div>
 		</div>

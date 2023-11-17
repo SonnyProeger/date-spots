@@ -54,7 +54,9 @@ export default {
 
                 // Accent Colors
                 gold: '#FFD700',
-                roseGold: '#B76E79', //
+                roseGold: '#B76E79',
+                darkRoseGold: '#4e272d',
+                lightRoseGold: '#EFD2CB',
             },
         },
     },
