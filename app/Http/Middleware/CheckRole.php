@@ -13,9 +13,8 @@ class CheckRole
 	 *
 	 * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
 	 */
-	public function handle(Request $request, Closure $next, string $role): Response {
-
-		$roles = [
+	public function handle(Request $request, Closure $next, ...$roles): Response {
+		$rolesMapping = [
 			'SuperAdmin' => 1,
 			'Admin' => 2,
 			'Company' => 3,
@@ -24,7 +23,15 @@ class CheckRole
 
 		$user = auth()->user();
 
-		if (!$user || !isset($roles[$role]) || $user->role_id != $roles[$role]) {
+		if (!$user) {
+			abort(403);
+		}
+
+		$allowedRoleIds = collect($roles)
+			->map(fn($role) => $rolesMapping[$role])
+			->toArray();
+
+		if (!in_array($user->role_id, $allowedRoleIds)) {
 			abort(403);
 		}
 
