@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Datespot;
 use Illuminate\Console\Command;
 
-class UpdatedatespotRatings extends Command
+class UpdateDatespotRatings extends Command
 {
 	/**
 	 * The name and signature of the console command.

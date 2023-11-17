@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<Datespot>
  */
-class datespotFactory extends Factory
+class DatespotFactory extends Factory
 {
 	protected $model = Datespot::class;
 

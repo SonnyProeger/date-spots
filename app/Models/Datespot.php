@@ -66,7 +66,7 @@ class Datespot extends Model
 	}
 
 	public function images(): HasMany {
-		return $this->hasMany(datespotImage::class);
+		return $this->hasMany(DatespotImage::class);
 	}
 
 	public function reviews(): HasMany {

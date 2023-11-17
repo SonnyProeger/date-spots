@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Datespot;
 use App\Models\User;
 
-class datespotPolicy
+class DatespotPolicy
 {
 	/**
 	 * Determine whether the user can view any models.
