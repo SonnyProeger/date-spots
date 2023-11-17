@@ -8,8 +8,7 @@ return new class extends Migration {
 	/**
 	 * Run the migrations.
 	 */
-	public function up(): void
-	{
+	public function up(): void {
 		Schema::create('datespots', function (Blueprint $table) {
 			$table->id();
 			$table->string('datespot_id')->unique();
@@ -29,9 +28,9 @@ return new class extends Migration {
 			$table->string('email')->unique();
 			$table->boolean('open_now');
 			$table->string('icon_url');
+			$table->unsignedBigInteger('user_id')->nullable();
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 			$table->integer('position')->nullable()->unique();
-			$table->unsignedBigInteger('company_id')->nullable();
-			$table->foreign('company_id')->references('id')->on('users');
 			$table->timestamps();
 		});
 	}
@@ -39,8 +38,10 @@ return new class extends Migration {
 	/**
 	 * Reverse the migrations.
 	 */
-	public function down(): void
-	{
+	public function down(): void {
+		Schema::table('datespots', function (Blueprint $table) {
+			$table->dropForeign(['user_id']);
+		});
 		Schema::dropIfExists('datespots');
 	}
 };
