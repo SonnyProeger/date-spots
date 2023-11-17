@@ -1,6 +1,6 @@
 <script>
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
-import {DatespotDetailMixin} from "@/mixins/datespotMixin.js";
+import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "Header",

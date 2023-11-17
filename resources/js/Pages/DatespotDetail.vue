@@ -4,7 +4,7 @@ import Hero from "@/Components/Hero.vue";
 import DatespotDetailHeader from "@/Components/DatespotDetailHeader.vue";
 import DatespotCard from "@/Components/DatespotCard.vue";
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
-import {DatespotDetailMixin} from "@/mixins/datespotMixin.js";
+import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
 import {Link} from "@inertiajs/vue3";
 
 

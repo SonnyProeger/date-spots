@@ -1,4 +1,4 @@
-// datespotMixin.js
+// DatespotMixin.js
 
 export const DatespotDetailMixin = {
     methods: {
