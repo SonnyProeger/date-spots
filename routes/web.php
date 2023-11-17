@@ -46,7 +46,7 @@ Route::prefix('admin')->middleware([
 	'auth:sanctum',
 	config('jetstream.auth_session'),
 	'verified',
-	'role:SuperAdmin,Admin,Company', // Allow SuperAdmin, Admin, and Company roles
+	'role:SuperAdmin,Admin,Company',
 ])->group(function () {
 	Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
@@ -56,7 +56,6 @@ Route::prefix('admin')->middleware([
 	Route::resource('subcategories', SubcategoryController::class);
 	Route::resource('types', TypeController::class);
 	Route::resource('users', UserController::class);
-
 });
 
 
