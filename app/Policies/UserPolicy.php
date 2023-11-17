@@ -11,7 +11,7 @@ class UserPolicy
 	 */
 	public function viewAny(User $user): bool {
 		//
-		return $user->role->name === 'SuperAdmin';
+		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
 	}
 
 	/**
@@ -19,8 +19,16 @@ class UserPolicy
 	 */
 	public function view(User $user, User $model): bool {
 		//
-		return $user->role->name === 'SuperAdmin';
+		if ($model->role) {
+			if ($user->role->name !== 'Superadmin' && $model->role->name === 'Superadmin') {
+				return false;
+			}
+			if ($user->role->name !== 'Superadmin' && $model->role->name === 'Admin') {
+				return false;
+			}
+		}
 
+		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
 	}
 
 	/**

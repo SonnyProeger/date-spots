@@ -46,7 +46,20 @@ export default {
 		reset() {
 			this.form = mapValues(this.form, () => null)
 		},
-
+		getRoleName(role_id) {
+			switch (role_id) {
+				case 1:
+					return 'SuperAdmin';
+				case 2:
+					return 'Admin';
+				case 3:
+					return 'Company';
+				case 4:
+					return 'User';
+				default:
+					return 'unknown';
+			}
+		},
 	},
 }
 </script>
@@ -105,7 +118,7 @@ export default {
 					</td>
 					<td class="border-t">
 						<Link class="flex items-center px-6 py-4" :href="`/users/${user.id}/edit`" tabindex="-1">
-							{{ user.role_id }}
+							{{ getRoleName(user.role_id) }}
 						</Link>
 					</td>
 					<td class="w-px border-t">

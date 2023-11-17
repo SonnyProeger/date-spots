@@ -18,8 +18,7 @@ class UserFactory extends Factory
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function definition(): array
-	{
+	public function definition(): array {
 		return [
 			'name' => $this->faker->name(),
 			'email' => $this->faker->unique()->safeEmail(),
@@ -30,15 +29,14 @@ class UserFactory extends Factory
 			'remember_token' => Str::random(10),
 			'profile_photo_path' => null,
 			'current_team_id' => null,
-			'role_id' => rand(1, 3),
+			'role_id' => rand(1, 4),
 		];
 	}
 
 	/**
 	 * Indicate that the model's email address should be unverified.
 	 */
-	public function unverified(): static
-	{
+	public function unverified(): static {
 		return $this->state(function (array $attributes) {
 			return [
 				'email_verified_at' => null,
@@ -49,8 +47,7 @@ class UserFactory extends Factory
 	/**
 	 * Indicate that the user should have a personal team.
 	 */
-	public function withPersonalTeam(callable $callback = null): static
-	{
+	public function withPersonalTeam(callable $callback = null): static {
 		if (!Features::hasTeamFeatures()) {
 			return $this->state([]);
 		}

@@ -23,6 +23,15 @@
 				</Link>
 			</div>
 		</div>
+		<div v-if="isCompany()" class="mb-4">
+			<Link class="group flex items-center py-3" :href="route('admin.dashboard')">
+				<icon name="dashboard" class="mr-2 w-4 h-4"
+				      :class="isUrl('') ? 'fill-white' : 'fill-lightRoseGold group-hover:fill-white'"/>
+				<div :class="isUrl('') ? 'text-white' : 'text-lightRoseGold group-hover:text-white'">
+					{{ this.$page.props.auth.user.role.name }}
+				</div>
+			</Link>
+		</div>
 	</div>
 </template>
 
@@ -36,6 +45,9 @@ export default {
 		Link,
 	},
 	methods: {
+		isCompany() {
+			return this.$page.props.auth.user.role.name === 'company'
+		},
 		capitalizeFirstLetter(word) {
 			return word.charAt(0).toUpperCase() + word.slice(1);
 		},

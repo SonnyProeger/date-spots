@@ -4,10 +4,6 @@ import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
 export default {
 	name: "AdminDashboard",
 	components: {AdminAppLayout},
-	// props: {
-	// 	can: Object,
-	// }
-
 }
 </script>
 

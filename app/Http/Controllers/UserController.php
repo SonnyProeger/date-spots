@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -14,9 +15,16 @@ class UserController extends Controller
 	public function index() {
 
 		$this->authorize('viewAny', User::class);
-
+		$user = Auth::user();
 		$usersQuery = User::query()
 			->orderBy('name');
+
+
+		if ($user->role_id === 2) {
+
+			// Admin can only view 'users' and 'companies'
+			$usersQuery->whereIn('role_id', [3, 4]);
+		}
 
 		$filters = Request::all('search', 'role', 'trashed');
 
@@ -43,25 +51,6 @@ class UserController extends Controller
 		return Inertia::render('Admin/Pages/Users/Index', [
 			'filters' => $filters,
 			'users' => $users,
-
-//			'users' => User::query()
-//				->orderByDesc('name')
-//				->when(Request::input('search'), function ($query, $search) {
-//					$query->where('name', 'like', "%$search%");
-//				})
-//				->when(Request::input('role_id'), function ($query, $role_id) {
-//					$query->where('role_id', $role_id);
-//				})
-//				->paginate(10)
-//				->withQueryString()
-//				->transform(fn($user) => [
-//					'id' => $user->id,
-//					'name' => $user->name,
-//					'email' => $user->email,
-//					'owner' => $user->owner,
-//					'photo' => $user->profile_photo_url,
-//					'deleted_at' => $user->deleted_at,
-//				]),
 		]);
 	}
 
