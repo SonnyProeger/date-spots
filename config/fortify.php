@@ -1,6 +1,5 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
 
 return [
@@ -74,7 +73,15 @@ return [
 	|
 	*/
 
-	'home' => RouteServiceProvider::HOME,
+	'home' => function () {
+
+		//or if you have a bunch of redirection options
+		if (Auth::user()->role->name === 'User') {
+			return route('home');
+		} else {
+			return route('admin.dashboard');
+		}
+	},
 
 	/*
 	|--------------------------------------------------------------------------
