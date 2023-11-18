@@ -28,10 +28,13 @@ class CheckRole
 		}
 
 		$allowedRoleIds = collect($roles)
+			->filter(function ($role) use ($rolesMapping) {
+				return isset($rolesMapping[$role]);
+			})
 			->map(fn($role) => $rolesMapping[$role])
 			->toArray();
 
-		if (!in_array($user->role_id, $allowedRoleIds)) {
+		if (empty($allowedRoleIds) || !in_array($user->role_id, $allowedRoleIds)) {
 			abort(403);
 		}
 
