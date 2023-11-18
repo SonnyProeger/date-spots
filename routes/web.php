@@ -55,7 +55,12 @@ Route::prefix('admin')->middleware([
 	Route::resource('reviews', ReviewController::class);
 	Route::resource('subcategories', SubcategoryController::class);
 	Route::resource('types', TypeController::class);
+
+//	Admin Users
 	Route::resource('users', UserController::class);
+	Route::put('users/{user}/restore', [UserController::class, 'restore'])
+		->name('user.restore')
+		->withTrashed();
 });
 
 
