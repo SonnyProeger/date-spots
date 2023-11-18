@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -16,27 +18,34 @@ class UserController extends Controller
 
 		$this->authorize('viewAny', User::class);
 		$user = Auth::user();
-		$usersQuery = User::query()
+		$query = User::query()
 			->orderBy('name');
 
 
 		if ($user->role_id === 2) {
 
 			// Admin can only view 'users' and 'companies'
-			$usersQuery->whereIn('role_id', [3, 4]);
+			$query->whereIn('role_id', [3, 4]);
 		}
 
 		$filters = Request::all('search', 'role', 'trashed');
 
-		if ($filters['search']) {
-			$usersQuery->where('name', 'like', '%'.$filters['search'].'%');
-		}
+		$query->when($filters['search'] ?? null, function ($query, $search) {
+			$query->where(function ($query) use ($search) {
+				$query->where('name', 'like', '%'.$search.'%')
+					->orWhere('email', 'like', '%'.$search.'%');
+			});
+		})->when($filters['role'] ?? null, function ($query, $role) {
+			$query->where('role_id', $role);
+		})->when($filters['trashed'] ?? null, function ($query, $trashed) {
+			if ($trashed === 'with') {
+				$query->withTrashed();
+			} elseif ($trashed === 'only') {
+				$query->onlyTrashed();
+			}
+		});
 
-		if ($filters['role']) {
-			$usersQuery->where('role_id', $filters['role']);
-		}
-
-		$users = $usersQuery->paginate(10)
+		$users = $query->paginate(10)
 			->withQueryString()
 			->through(function ($user) {
 				return [
@@ -58,41 +67,101 @@ class UserController extends Controller
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		//
+		$this->authorize('create', User::class);
+
+		return Inertia::render('Admin/Pages/Users/Create');
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request) {
-		//
+	public function store() {
+
+		$this->authorize('create', User::class);
+
+		Request::validate([
+			'name' => ['required', 'max:50'],
+			'email' => ['required', 'max:50', 'email', Rule::unique('users')],
+			'password' => ['required', 'min:8'],
+			'role_id' => ['required', 'int'],
+		]);
+
+		User::create([
+			'name' => Request::get('name'),
+			'email' => Request::get('email'),
+			'password' => Request::get('password'),
+			'role_id' => Request::get('role_id'),
+		]);
+
+		return Redirect::route('users.index')->with('success', 'User created.');
 	}
 
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(string $id) {
-		//
+	public function show(User $user) {
+
+
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
-		//
+		$user = User::withTrashed()->find($id);
+		$this->authorize('update', $user);
+
+		return Inertia::render('Admin/Pages/Users/Edit', [
+			'user' => $user,
+		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, string $id) {
-		//
+	public function update(User $user) {
+//		$user = User::findOrFail($id);
+		$this->authorize('update', $user);
+
+
+		Request::validate([
+			'name' => ['required', 'max:50'],
+			'email' => ['required', 'max:50', 'email'],
+			'password' => ['nullable',],
+			'role_id' => ['required', 'int'],
+		]);
+
+		// Conditionally modify email validation rule
+		if ($user->email !== request('email')) {
+			// Only apply unique rule if the email being updated is different from the user's current email
+			$rules['email'][] = Rule::unique('users');
+		}
+
+		$user->update(Request::only('name', 'email', 'role_id'));
+
+
+		if (Request::get('password')) {
+			$user->update(['password' => Request::get('password')]);
+		}
+
+		return Redirect::back()->with('success', 'User updated.');
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(string $id) {
-		//
+	public function destroy(User $user) {
+		$this->authorize('delete', $user);
+
+		$user->delete();
+
+		return Redirect::route('users.index')->with('success', "$user->name deleted.");
+	}
+
+	public function restore(User $user) {
+		$this->authorize('restore', $user);
+		$user->restore();
+
+		return Redirect::back()->with('success', 'User restored.');
 	}
 }

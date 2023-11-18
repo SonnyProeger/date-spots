@@ -1,14 +1,16 @@
 <script>
-import {Link} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import Icon from '@/Pages/Admin/Shared/Icon.vue'
 import Logo from '@/Pages/Admin/Shared/Logo.vue'
 import Dropdown from '@/Pages/Admin/Shared/Dropdown.vue'
 import MainMenu from '@/Pages/Admin/Shared/MainMenu.vue'
 import FlashMessages from '@/Pages/Admin/Shared/FlashMessages.vue'
+import DropdownLink from "@/Components/DropdownLink.vue";
 
 export default {
 	name: "AdminAppLayout",
 	components: {
+		DropdownLink,
 		Dropdown,
 		FlashMessages,
 		Icon,
@@ -18,6 +20,11 @@ export default {
 	},
 	props: {
 		auth: Object,
+	},
+	methods: {
+		logout() {
+			router.post(route('logout'));
+		}
 	},
 }
 </script>
@@ -31,8 +38,8 @@ export default {
 				<div class="md:flex md:flex-shrink-0">
 					<div
 							class="flex items-center justify-between px-6 py-4 bg-darkRoseGold md:flex-shrink-0 md:justify-center md:w-56">
-						<Link class="mt-1" href="/public">
-							<Logo logo-color="white"/>
+						<Link class="mt-1" :href="route('admin.dashboard')">
+							<Logo logo-color="white" width="120" height="28"/>
 						</Link>
 						<dropdown class="md:hidden" placement="bottom-end">
 							<template #default>
@@ -62,13 +69,14 @@ export default {
 							</template>
 							<template #dropdown>
 								<div class="mt-2 py-2 text-sm bg-white rounded shadow-xl">
-									<Link class="block px-6 py-2 hover:text-white hover:bg-indigo-500"
-									      :href="`/users/${$page.props.auth.user.id}/edit`">My Profile
-									</Link>
-									<Link class="block px-6 py-2 hover:text-white hover:bg-indigo-500" href="/users">Manage Users</Link>
-									<Link class="block px-6 py-2 w-full text-left hover:text-white hover:bg-indigo-500" href="/logout"
-									      method="delete" as="button">Logout
-									</Link>
+									<DropdownLink as="button" :href="`admin/users/${$page.props.auth.user.id}/edit`">
+										My Profile
+									</DropdownLink>
+									<form method="POST" @submit.prevent="logout()">
+										<DropdownLink as="button">
+											Log Out
+										</DropdownLink>
+									</form>
 								</div>
 							</template>
 						</dropdown>

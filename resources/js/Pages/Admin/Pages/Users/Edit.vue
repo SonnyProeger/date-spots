@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<Head :title="`${form.first_name} ${form.last_name}`"/>
+		<Head :title="`${form.name}`"/>
 		<div class="flex justify-start mb-8 max-w-3xl">
 			<h1 class="text-3xl font-bold">
-				<Link class="text-indigo-400 hover:text-indigo-600" href="/users">Users</Link>
+				<Link class="text-indigo-400 hover:text-indigo-600" :href="route('users.index')">Users</Link>
 				<span class="text-indigo-400 font-medium">/</span>
-				{{ form.first_name }} {{ form.last_name }}
+				{{ form.name }}
 			</h1>
 			<img v-if="user.photo" class="block ml-4 w-8 h-8 rounded-full" :src="user.photo"/>
 		</div>
@@ -14,25 +14,25 @@
 		<div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">
 			<form @submit.prevent="update">
 				<div class="flex flex-wrap -mb-8 -mr-6 p-8">
-					<text-input v-model="form.first_name" :error="form.errors.first_name" class="pb-8 pr-6 w-full lg:w-1/2"
-					            label="First name"/>
-					<text-input v-model="form.last_name" :error="form.errors.last_name" class="pb-8 pr-6 w-full lg:w-1/2"
-					            label="Last name"/>
+					<text-input v-model="form.name" :error="form.errors.name"
+					            class="pb-8 pr-6 w-full lg:w-1/2"
+					            label="Name"/>
 					<text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email"/>
 					<text-input v-model="form.password" :error="form.errors.password" class="pb-8 pr-6 w-full lg:w-1/2"
 					            type="password" autocomplete="new-password" label="Password"/>
-					<select-input v-model="form.owner" :error="form.errors.owner" class="pb-8 pr-6 w-full lg:w-1/2" label="Owner">
-						<option :value="true">Yes</option>
-						<option :value="false">No</option>
+					<select-input v-model="form.role_id" :error="form.errors.role_id" class="pb-8 pr-6 w-full lg:w-1/2"
+					              label="Role">
+						<option v-if="isSuperAdmin" value="1">SuperAdmin</option>
+						<option v-if="isSuperAdmin" value="2">Admin</option>
+						<option value="3">Company</option>
+						<option value="4">User</option>
 					</select-input>
-					<file-input v-model="form.photo" :error="form.errors.photo" class="pb-8 pr-6 w-full lg:w-1/2" type="file"
-					            accept="image/*" label="Photo"/>
 				</div>
 				<div class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
 					<button v-if="!user.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button"
 					        @click="destroy">Delete User
 					</button>
-					<loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Update User
+					<loading-button :loading="form.processing" class="btn-roseGold ml-auto" type="submit">Update User
 					</loading-button>
 				</div>
 			</form>
@@ -42,12 +42,13 @@
 
 <script>
 import {Head, Link} from '@inertiajs/vue3'
-import Layout from '@/Pages/Admin/Shared/Layout.vue'
 import TextInput from '@/Pages/Admin/Shared/TextInput.vue'
 import FileInput from '@/Pages/Admin/Shared/FileInput.vue'
 import SelectInput from '@/Pages/Admin/Shared/SelectInput.vue'
 import LoadingButton from '@/Pages/Admin/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Pages/Admin/Shared/TrashedMessage.vue'
+import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
+import {AdminUsersMixin} from "@/mixins/AdminUsersMixin.js";
 
 export default {
 	components: {
@@ -59,7 +60,8 @@ export default {
 		TextInput,
 		TrashedMessage,
 	},
-	layout: Layout,
+	layout: AdminAppLayout,
+	mixins: [AdminUsersMixin],
 	props: {
 		user: Object,
 	},
@@ -68,29 +70,27 @@ export default {
 		return {
 			form: this.$inertia.form({
 				_method: 'put',
-				first_name: this.user.first_name,
-				last_name: this.user.last_name,
+				name: this.user.name,
 				email: this.user.email,
 				password: '',
-				owner: this.user.owner,
-				photo: null,
+				role_id: this.user.role_id,
 			}),
 		}
 	},
 	methods: {
 		update() {
-			this.form.post(`/users/${this.user.id}`, {
+			this.form.post(`/admin/users/${this.user.id}`, {
 				onSuccess: () => this.form.reset('password', 'photo'),
 			})
 		},
 		destroy() {
 			if (confirm('Are you sure you want to delete this user?')) {
-				this.$inertia.delete(`/users/${this.user.id}`)
+				this.$inertia.delete(`/admin/users/${this.user.id}`)
 			}
 		},
 		restore() {
 			if (confirm('Are you sure you want to restore this user?')) {
-				this.$inertia.put(`/users/${this.user.id}/restore`)
+				this.$inertia.put(`/admin/users/${this.user.id}/restore`)
 			}
 		},
 	},

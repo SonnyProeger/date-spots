@@ -7,6 +7,7 @@ import Pagination from "@/Pages/Admin/Shared/Pagination.vue";
 import throttle from 'lodash/throttle'
 import mapValues from 'lodash/mapValues'
 import pickBy from "lodash/pickBy";
+import {AdminUsersMixin} from "@/mixins/AdminUsersMixin.js";
 
 export default {
 	components: {
@@ -16,6 +17,7 @@ export default {
 		Link,
 		SearchFilter,
 	},
+	mixins: [AdminUsersMixin],
 	layout: AdminAppLayout,
 	props: {
 		filters: Object,
@@ -46,20 +48,6 @@ export default {
 		reset() {
 			this.form = mapValues(this.form, () => null)
 		},
-		getRoleName(role_id) {
-			switch (role_id) {
-				case 1:
-					return 'SuperAdmin';
-				case 2:
-					return 'Admin';
-				case 3:
-					return 'Company';
-				case 4:
-					return 'User';
-				default:
-					return 'unknown';
-			}
-		},
 	},
 }
 </script>
@@ -74,10 +62,10 @@ export default {
 				<label class="block text-gray-700">Role:</label>
 				<select v-model="form.role" class="form-select mt-1 w-full">
 					<option :value="null"/>
-					<option v-if="$page.props.auth.user.role.name === 'SuperAdmin'"
+					<option v-if="isSuperAdmin"
 					        value="1">SuperAdmin
 					</option>
-					<option value="2">Admin</option>
+					<option v-if="isSuperAdmin" value="2">Admin</option>
 					<option value="3">Company</option>
 					<option value="4">User</option>
 
@@ -90,7 +78,7 @@ export default {
 					<option value="only">Only Trashed</option>
 				</select>
 			</search-filter>
-			<Link class="btn-roseGold" href="/users/create">
+			<Link class="btn-roseGold" :href="route('users.create')">
 				<span>Create</span>
 				<span class="hidden md:inline">&nbsp;User</span>
 			</Link>
@@ -104,7 +92,7 @@ export default {
 				</tr>
 				<tr v-for="user in users.data" :key="user.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
 					<td class="border-t">
-						<Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/users/${user.id}/edit`">
+						<Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="route('users.edit', user.id)">
 							<img v-if="user.profile_photo_url" class="block -my-2 mr-2 w-5 h-5 rounded-full"
 							     :src="user.profile_photo_url"/>
 							{{ user.name }}
@@ -112,17 +100,17 @@ export default {
 						</Link>
 					</td>
 					<td class="border-t">
-						<Link class="flex items-center px-6 py-4" :href="`/users/${user.id}/edit`" tabindex="-1">
+						<Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
 							{{ user.email }}
 						</Link>
 					</td>
 					<td class="border-t">
-						<Link class="flex items-center px-6 py-4" :href="`/users/${user.id}/edit`" tabindex="-1">
+						<Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
 							{{ getRoleName(user.role_id) }}
 						</Link>
 					</td>
 					<td class="w-px border-t">
-						<Link class="flex items-center px-4" :href="`/users/${user.id}/edit`" tabindex="-1">
+						<Link class="flex items-center px-4" :href="route('users.show', user.id)" tabindex="-1">
 							<icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
 						</Link>
 					</td>
