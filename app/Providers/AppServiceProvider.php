@@ -11,18 +11,14 @@ class AppServiceProvider extends ServiceProvider
 	/**
 	 * Register any application services.
 	 */
-	public function register(): void
-	{
-		//
+	public function register(): void {
 		Inertia::share('GOOGLE_API_KEY', config('app.google_api_key'));
 	}
 
 	/**
 	 * Bootstrap any application services.
 	 */
-	public function boot(): void
-	{
-		//
+	public function boot(): void {
 		if ($this->app->isProduction()) {
 			URL::forceScheme('https');
 		}
