@@ -17,7 +17,7 @@
 					</label>
 				</div>
 				<div class="flex px-10 py-4 bg-gray-100 border-t border-gray-100">
-					<loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Login</loading-button>
+					<loading-button :loading="form.processing" class="btn-roseGold ml-auto" type="submit">Login</loading-button>
 				</div>
 			</form>
 		</div>
