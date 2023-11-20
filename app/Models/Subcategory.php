@@ -12,8 +12,9 @@ class Subcategory extends Model
 	use hasFactory;
 	use SoftDeletes;
 
+	protected $fillable = ['name', 'category_id'];
 
-	public function places(): BelongsToMany {
+	public function datespots(): BelongsToMany {
 		return $this->belongsToMany(Datespot::class, 'datespot_subcategory');
 	}
 
