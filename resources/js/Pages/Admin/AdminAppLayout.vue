@@ -1,5 +1,5 @@
 <script>
-import {Link, router} from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import Icon from '@/Pages/Admin/Shared/Icon.vue'
 import Logo from '@/Pages/Admin/Shared/Logo.vue'
 import Dropdown from '@/Pages/Admin/Shared/Dropdown.vue'
@@ -23,7 +23,7 @@ export default {
 	},
 	methods: {
 		logout() {
-			router.post(route('logout'));
+			this.$inertia.post(route('logout'));
 		}
 	},
 }
