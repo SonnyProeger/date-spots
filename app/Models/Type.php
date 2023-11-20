@@ -20,16 +20,41 @@ class Type extends Model
 	protected $fillable = ['name'];
 
 	public function datespots(): BelongsToMany {
-		return $this->belongsToMany(Datespot::class, 'datespot_type');
+		return $this->belongsToMany(Datespot::class, 'datespot_type')->withTrashed();
 	}
 
+
 	public function categories(): HasMany {
-		return $this->hasMany(Category::class);
+		return $this->hasMany(Category::class)->withTrashed();
 	}
 
 	public function getCategoriesAttribute(): Collection {
 
 		return $this->categories()->get();
+	}
+
+	public function subcategories() {
+		return $this->hasManyThrough(Subcategory::class, Category::class);
+	}
+
+
+	protected static function boot() {
+		parent::boot();
+
+		static::deleting(function ($type) {
+			$type->categories->each->subcategories->each->delete();
+			$type->categories()->delete();
+		});
+
+		static::restoring(function ($type) {
+			$type->categories()->withTrashed()->restore();
+
+			$type->categories->each(function ($category) {
+				$category->subcategories()->withTrashed()->restore();
+			});
+
+		});
+
 	}
 
 
