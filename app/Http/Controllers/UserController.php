@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Traits\CrudOperationsTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -11,39 +12,25 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
+	use CrudOperationsTrait;
+
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-
 		$this->authorize('viewAny', User::class);
 		$user = Auth::user();
-		$query = User::query()
-			->orderBy('name');
 
-
-		if ($user->role_id === 2) {
-
-			// Admin can only view 'users' and 'companies'
-			$query->whereIn('role_id', [3, 4]);
-		}
 
 		$filters = Request::all('search', 'role', 'trashed');
 
-		$query->when($filters['search'] ?? null, function ($query, $search) {
-			$query->where(function ($query) use ($search) {
-				$query->where('name', 'like', '%'.$search.'%')
-					->orWhere('email', 'like', '%'.$search.'%');
-			});
-		})->when($filters['role'] ?? null, function ($query, $role) {
-			$query->where('role_id', $role);
-		})->when($filters['trashed'] ?? null, function ($query, $trashed) {
-			if ($trashed === 'with') {
-				$query->withTrashed();
-			} elseif ($trashed === 'only') {
-				$query->onlyTrashed();
-			}
-		});
+		$query = $this->commonIndexLogic(User::class, $filters);
+
+
+		if ($user->role_id === 2) {
+			// Admin can only view 'users' and 'companies'
+			$query->whereIn('role_id', [3, 4]);
+		}
 
 		$users = $query->paginate(10)
 			->withQueryString()
@@ -57,6 +44,7 @@ class UserController extends Controller
 					'deleted_at' => $user->deleted_at,
 				];
 			});
+
 		return Inertia::render('Admin/Pages/Users/Index', [
 			'filters' => $filters,
 			'users' => $users,
