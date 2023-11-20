@@ -2,21 +2,39 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Schema;
+
 trait FilterableTrait
 {
 	public function applyFilters($query, $filters) {
 		$query->when($filters['search'] ?? null, function ($query, $search) {
-			// Common search logic
 			$query->where(function ($query) use ($search) {
-				$query->where('name', 'like', '%'.$search.'%')
-					->orWhere('email', 'like', '%'.$search.'%')
-					// Additional search conditions if needed
-					->orWhere('city', 'like', '%'.$search.'%')
-					->orWhereHas('types', function ($query) use ($search) {
-						$query->where('name', 'like', '%'.$search.'%');
-					});
-			});
+				$query->where('name', 'like', '%'.$search.'%');
 
+				// Check if the 'email' column exists in the table
+				if (Schema::hasColumn($query->getModel()->getTable(), 'email')) {
+					$query->orWhere('email', 'like', '%'.$search.'%');
+				}
+
+				// Check if the relation exists
+				if (method_exists($query->getModel(), 'city')) {
+					$query->orWhereHas('city', function ($q) use ($search) {
+						$q->where('name', 'like', '%'.$search.'%');
+					});
+				}
+
+				if (method_exists($query->getModel(), 'types')) {
+					$query->orWhereHas('types', function ($q) use ($search) {
+						$q->where('name', 'like', '%'.$search.'%');
+					});
+				}
+
+				if (method_exists($query->getModel(), 'categories')) {
+					$query->orWhereHas('categories', function ($q) use ($search) {
+						$q->where('name', 'like', '%'.$search.'%');
+					});
+				}
+			});
 		})->when($filters['role'] ?? null, function ($query, $role) {
 			$query->where('role_id', $role);
 
@@ -28,6 +46,7 @@ trait FilterableTrait
 				$query->onlyTrashed();
 			}
 		});
+
 
 		return $query;
 	}
