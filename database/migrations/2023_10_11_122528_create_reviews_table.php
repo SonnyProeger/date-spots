@@ -8,8 +8,7 @@ return new class extends Migration {
 	/**
 	 * Run the migrations.
 	 */
-	public function up(): void
-	{
+	public function up(): void {
 		Schema::create('reviews', function (Blueprint $table) {
 			$table->id();
 			$table->unsignedBigInteger('user_id');
@@ -17,14 +16,15 @@ return new class extends Migration {
 			$table->text('content');
 			$table->integer('rating');
 			$table->timestamps();
+			$table->softDeletes();
+
 		});
 	}
 
 	/**
 	 * Reverse the migrations.
 	 */
-	public function down(): void
-	{
+	public function down(): void {
 		Schema::dropIfExists('reviews');
 	}
 };
