@@ -11,7 +11,7 @@
 					<option value="only">Only Trashed</option>
 				</select>
 			</search-filter>
-			<Link class="btn-indigo" href="/datespots/create">
+			<Link class="btn-roseGold" :href="route('datespots.create')">
 				<span>Create</span>
 				<span class="hidden md:inline">&nbsp;Datespot</span>
 			</Link>
@@ -22,29 +22,30 @@
 				<tr class="text-left font-bold">
 					<th class="pb-4 pt-6 px-6">Name</th>
 					<th class="pb-4 pt-6 px-6">City</th>
-					<th class="pb-4 pt-6 px-6" colspan="2">Phone</th>
+					<th class="pb-4 pt-6 px-6" colspan="2">Type</th>
 				</tr>
 				</thead>
 				<tbody>
 				<tr v-for="datespot in datespots.data" :key="datespot.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
 					<td class="border-t">
-						<Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/datespots/${datespot.id}/edit`">
+						<Link class="flex items-center px-6 py-4 focus:text-indigo-500"
+						      :href="route('datespots.edit', datespot.id)">
 							{{ datespot.name }}
 							<icon v-if="datespot.deleted_at" name="trash" class="flex-shrink-0 ml-2 w-3 h-3 fill-gray-400"/>
 						</Link>
 					</td>
 					<td class="border-t">
-						<Link class="flex items-center px-6 py-4" :href="`/datespots/${datespot.id}/edit`" tabindex="-1">
+						<Link class="flex items-center px-6 py-4" :href="route('datespots.edit', datespot.id)" tabindex="-1">
 							{{ datespot.city }}
 						</Link>
 					</td>
 					<td class="border-t">
-						<Link class="flex items-center px-6 py-4" :href="`/datespots/${datespot.id}/edit`" tabindex="-1">
-							{{ datespot.phone }}
+						<Link class="flex items-center px-6 py-4" :href="route('datespots.edit', datespot.id)" tabindex="-1">
+							{{ datespot.types[0].name }}
 						</Link>
 					</td>
 					<td class="w-px border-t">
-						<Link class="flex items-center px-4" :href="`/datespots/${datespot.id}/edit`" tabindex="-1">
+						<Link class="flex items-center px-4" :href="route('datespots.edit', datespot.id)" tabindex="-1">
 							<icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
 						</Link>
 					</td>
@@ -63,11 +64,11 @@
 import {Head, Link} from '@inertiajs/vue3'
 import Icon from '@/Pages/Admin/Shared/Icon.vue'
 import pickBy from 'lodash/pickBy'
-import Layout from '@/Pages/Admin/Shared/Layout.vue'
 import throttle from 'lodash/throttle'
 import mapValues from 'lodash/mapValues'
 import Pagination from '@/Pages/Admin/Shared/Pagination.vue'
 import SearchFilter from '@/Pages/Admin/Shared/SearchFilter.vue'
+import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
 
 export default {
 	components: {
@@ -77,7 +78,10 @@ export default {
 		Pagination,
 		SearchFilter,
 	},
-	layout: Layout,
+	created() {
+		console.log(this.datespots)
+	},
+	layout: AdminAppLayout,
 	props: {
 		filters: Object,
 		datespots: Object,
@@ -94,7 +98,7 @@ export default {
 		form: {
 			deep: true,
 			handler: throttle(function () {
-				this.$inertia.get('/datespots', pickBy(this.form), {preserveState: true})
+				this.$inertia.get('datespots', pickBy(this.form), {preserveState: true})
 			}, 150),
 		},
 	},

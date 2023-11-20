@@ -32,7 +32,7 @@
 					<button v-if="!datespot.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button"
 					        @click="destroy">Delete Datespot
 					</button>
-					<loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Update Datespot
+					<loading-button :loading="form.processing" class="btn-roseGold ml-auto" type="submit">Update Datespot
 					</loading-button>
 				</div>
 			</form>

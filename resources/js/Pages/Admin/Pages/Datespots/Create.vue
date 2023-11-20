@@ -9,7 +9,11 @@
 			<form @submit.prevent="store">
 				<div class="flex flex-wrap -mb-8 -mr-6 p-8">
 					<text-input v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="Name"/>
-					<text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email"/>
+					<text-input v-model="form.tagLine" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2"
+					            label="Tag Line"/>
+
+					<text-input v-model="form.address" :error="form.errors.address" class="pb-8 pr-6 w-full lg:w-1/2"
+					            label="Email"/>
 					<text-input v-model="form.phone" :error="form.errors.phone" class="pb-8 pr-6 w-full lg:w-1/2" label="Phone"/>
 					<text-input v-model="form.address" :error="form.errors.address" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Address"/>
@@ -18,15 +22,14 @@
 					            label="Province/State"/>
 					<select-input v-model="form.country" :error="form.errors.country" class="pb-8 pr-6 w-full lg:w-1/2"
 					              label="Country">
-						<option :value="null"/>
-						<option value="CA">Canada</option>
-						<option value="US">United States</option>
+						<option selected="selected" value="NL">Netherlands</option>
+
 					</select-input>
 					<text-input v-model="form.postal_code" :error="form.errors.postal_code" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Postal code"/>
 				</div>
 				<div class="flex items-center justify-end px-8 py-4 bg-gray-50 border-t border-gray-100">
-					<loading-button :loading="form.processing" class="btn-indigo" type="submit">Create Datespot</loading-button>
+					<loading-button :loading="form.processing" class="btn-roseGold" type="submit">Create Datespot</loading-button>
 				</div>
 			</form>
 		</div>
@@ -35,10 +38,10 @@
 
 <script>
 import {Head, Link} from '@inertiajs/vue3'
-import Layout from '@/Pages/Admin/Shared/Layout.vue'
 import TextInput from '@/Pages/Admin/Shared/TextInput.vue'
 import SelectInput from '@/Pages/Admin/Shared/SelectInput.vue'
 import LoadingButton from '@/Pages/Admin/Shared/LoadingButton.vue'
+import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
 
 export default {
 	components: {
@@ -48,19 +51,23 @@ export default {
 		SelectInput,
 		TextInput,
 	},
-	layout: Layout,
+	layout: AdminAppLayout,
 	remember: 'form',
 	data() {
 		return {
 			form: this.$inertia.form({
 				name: null,
 				email: null,
-				phone: null,
 				address: null,
+				tagline: null,
+				phone: null,
+				street_name: null,
+				house_number: null,
+				postal_code: null,
 				city: null,
 				region: null,
 				country: null,
-				postal_code: null,
+				website: null,
 			}),
 		}
 	},
