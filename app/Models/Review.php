@@ -17,7 +17,7 @@ class Review extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	public function place(): BelongsTo {
+	public function datespot(): BelongsTo {
 		return $this->belongsTo(Datespot::class);
 	}
 
