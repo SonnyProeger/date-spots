@@ -48,15 +48,40 @@ Route::prefix('admin')->middleware([
 	'verified',
 	'role:SuperAdmin,Admin,Company',
 ])->group(function () {
+	// Admin Dashboard
 	Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+	// Admin Datespots
 	Route::resource('datespots', AdminDatespotController::class);
-	Route::resource('categories', CategoryController::class);
-	Route::resource('reviews', ReviewController::class);
-	Route::resource('subcategories', SubcategoryController::class);
-	Route::resource('types', TypeController::class);
+	Route::put('datespots/{datespot}/restore', [AdminDatespotController::class, 'restore'])
+		->name('datespots.restore')
+		->withTrashed();
 
-//	Admin Users
+	// Admin Categories
+	Route::resource('categories', CategoryController::class);
+	Route::put('categories/{category}/restore', [CategoryController::class, 'restore'])
+		->name('categories.restore')
+		->withTrashed();
+
+	// Admin Reviews
+	Route::resource('reviews', ReviewController::class);
+	Route::put('reviews/{review}/restore', [ReviewController::class, 'restore'])
+		->name('reviews.restore')
+		->withTrashed();
+
+	// Admin Subcategories
+	Route::resource('subcategories', SubcategoryController::class);
+	Route::put('subcategories/{subcategory}/restore', [SubcategoryController::class, 'restore'])
+		->name('subcategories.restore')
+		->withTrashed();
+
+	// Admin Types
+	Route::resource('types', TypeController::class);
+	Route::put('types/{type}/restore', [TypeController::class, 'restore'])
+		->name('types.restore')
+		->withTrashed();
+
+	//	Admin Users
 	Route::resource('users', UserController::class);
 	Route::put('users/{user}/restore', [UserController::class, 'restore'])
 		->name('user.restore')
