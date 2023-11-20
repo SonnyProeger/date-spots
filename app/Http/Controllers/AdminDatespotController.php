@@ -3,20 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Datespot;
-use Illuminate\Http\Request;
+use App\Traits\CrudOperationsTrait;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class AdminDatespotController extends Controller
 {
+	use CrudOperationsTrait;
+
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() {
 		$this->authorize('viewAny', Datespot::class);
 
-		$datespots = Datespot::query()->paginate(10);
+		$user = Auth::user();
 
-		return Inertia::render('Admin/DateSpot/AdminDatespots', [
+		$filters = Request::all('search', 'trashed');
+
+
+		$query = $this->commonIndexLogic(Datespot::class, $filters);
+
+		if ($user->role_id === 3) {
+			// Company can only see their own datespot
+			$query->whereIn('user_id', $user->id);
+		}
+
+		$datespots = $query->paginate(10)
+			->withQueryString()
+			->through(function ($datespot) {
+				return [
+					'id' => $datespot->id,
+					'name' => $datespot->name,
+					'city' => $datespot->city,
+					'types' => $datespot->types,
+					'deleted_at' => $datespot->deleted_at,
+				];
+			});
+		return Inertia::render('Admin/Pages/Datespots/Index', [
+			'filters' => $filters,
 			'datespots' => $datespots,
 		]);
 	}
@@ -28,7 +54,7 @@ class AdminDatespotController extends Controller
 		$this->authorize('create', Datespot::class);
 
 		// Display create form
-		return Inertia::render('CreateDatespot');
+		return Inertia::render('Admin/Pages/Datespots/Create');
 	}
 
 	/**
@@ -65,12 +91,14 @@ class AdminDatespotController extends Controller
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
-		$datespot = Datespot::query()->findOrFail($id);
+		$datespot = Datespot::withTrashed()->find($id);
 
-		$this->authorize('update-datespot', $datespot);
+		$this->authorize('update', $datespot);
 
 
-		return Inertia::render('Editdatespot', ['datespot' => $datespot]);
+		return Inertia::render('Admin/Pages/Datespots/Edit', [
+			'datespot' => $datespot
+		]);
 	}
 
 	/**
