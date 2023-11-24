@@ -10,7 +10,6 @@ class UserPolicy
 	 * Determine whether the user can view any models.
 	 */
 	public function viewAny(User $user): bool {
-		//
 		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
 	}
 
