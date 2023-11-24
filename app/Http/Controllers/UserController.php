@@ -32,7 +32,8 @@ class UserController extends Controller
 			$query->whereIn('role_id', [3, 4]);
 		}
 
-		$users = $query->paginate(10)
+		$users = $query->with(['role:id'])
+			->paginate(10)
 			->withQueryString()
 			->through(function ($user) {
 				return [
