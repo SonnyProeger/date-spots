@@ -32,7 +32,7 @@ Route::get('/datespots', function () {
 	return Inertia::render('Datespots');
 })->name('datespots');
 
-Route::get('/datespot/{id}-{name}', [DatespotController::class, 'show'])
+Route::get('/datespots/{id}-{name}', [DatespotController::class, 'show'])
 	->name('user-datespots.show');
 
 Route::get('/datespots/{city}', [DatespotController::class, 'showByLocation'])
@@ -41,6 +41,8 @@ Route::get('/datespots/{city}', [DatespotController::class, 'showByLocation'])
 Route::post('/datespots/{city}', [DatespotController::class, 'filterByLocation'])
 	->name('user-datespot.filter-by-location');
 
+
+// ADMIN
 Route::prefix('admin')->middleware([
 	SharePermissions::class,
 	'auth:sanctum',
