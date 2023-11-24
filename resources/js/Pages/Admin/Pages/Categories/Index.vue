@@ -88,7 +88,7 @@ export default {
 					</td>
 					<td class="border-t">
 						<Link class="flex items-center px-6 py-4" :href="route('categories.edit', category.id)" tabindex="-1">
-							{{ category.type.name }}
+							{{ category.type }}
 						</Link>
 					</td>
 				</tr>

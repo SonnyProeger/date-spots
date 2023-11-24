@@ -91,12 +91,12 @@ export default {
 					</td>
 					<td class="border-t">
 						<Link class="flex items-center px-6 py-4" :href="route('subcategories.edit', subcategory.id)" tabindex="-1">
-							{{ subcategory.category.name }}
+							{{ subcategory.category }}
 						</Link>
 					</td>
 					<td class="border-t">
 						<Link class="flex items-center px-6 py-4" :href="route('subcategories.edit', subcategory.id)" tabindex="-1">
-							{{ subcategory.type.name }}
+							{{ subcategory.type }}
 						</Link>
 					</td>
 				</tr>

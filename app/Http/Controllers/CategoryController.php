@@ -23,13 +23,16 @@ class CategoryController extends Controller
 		$filters = Request::all('search', 'trashed');
 
 		$query = $this->commonIndexLogic(Category::class, $filters);
-		$categories = $query->paginate(10)
+
+
+		$categories = $query->with(['type:id,name'])
+			->paginate(10)
 			->withQueryString()
 			->through(function ($category) {
 				return [
 					'id' => $category->id,
 					'name' => $category->name,
-					'type' => $category->type,
+					'type' => $category->type->name,
 					'deleted_at' => $category->deleted_at,
 				];
 			});

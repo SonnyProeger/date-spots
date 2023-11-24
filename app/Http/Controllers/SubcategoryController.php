@@ -25,18 +25,19 @@ class SubcategoryController extends Controller
 
 		$query = $this->commonIndexLogic(Subcategory::class, $filters);
 
-		$subcategories = $query->paginate(10)
+		$subcategories = $query->with('category.type:id,name', 'category:id,name,type_id')
+			->paginate(10)
 			->withQueryString()
 			->through(function ($subcategory) {
 				return [
 					'id' => $subcategory->id,
 					'name' => $subcategory->name,
-					'category' => $subcategory->category,
-					'type' => $subcategory->category->type,
+					'category' => $subcategory->category->name,
+					'type' => $subcategory->category->type->name,
 					'deleted_at' => $subcategory->deleted_at,
 				];
 			});
-
+//		dd($subcategories);
 
 		return Inertia::render('Admin/Pages/Subcategories/Index', [
 			'subcategories' => $subcategories,

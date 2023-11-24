@@ -30,6 +30,11 @@ class AdminDatespotController extends Controller
 			$query->whereIn('user_id', $user->id);
 		}
 
+		$query = Datespot::with([
+			'types' => function ($query) {
+				$query->select('types.name')->take(1);
+			}
+		]);
 		$datespots = $query->paginate(10)
 			->withQueryString()
 			->through(function ($datespot) {
@@ -37,7 +42,7 @@ class AdminDatespotController extends Controller
 					'id' => $datespot->id,
 					'name' => $datespot->name,
 					'city' => $datespot->city,
-					'types' => $datespot->types,
+					'type' => $datespot->types->first()->name,
 					'deleted_at' => $datespot->deleted_at,
 				];
 			});

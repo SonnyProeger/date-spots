@@ -24,7 +24,13 @@ class TypeController extends Controller
 		$query = $this->commonIndexLogic(Type::class, $filters);
 
 		$types = $query->paginate(10)
-			->withQueryString();
+			->withQueryString()
+			->through(function ($type) {
+				return [
+					'id' => $type->id,
+					'name' => $type->name,
+				];
+			});
 
 
 		return Inertia::render('Admin/Pages/Types/Index', [
