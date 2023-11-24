@@ -65,7 +65,7 @@ export default {
 					<option v-if="isSuperAdmin"
 					        value="1">SuperAdmin
 					</option>
-					<option v-if="isSuperAdmin" value="2">Admin</option>
+					<option v-if="isAdmin" value="2">Admin</option>
 					<option value="3">Company</option>
 					<option value="4">User</option>
 
