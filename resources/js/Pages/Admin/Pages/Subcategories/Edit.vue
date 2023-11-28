@@ -16,7 +16,7 @@
 					<text-input v-model="form.name" :error="form.errors.name"
 					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Name"/>
-					<select-input v-model="form.category_id" :error="form.errors.category_id" class="pb-8 pr-6 w-full lg:w-1/2"
+					<select-input v-model="form.category" :error="form.errors.category" class="pb-8 pr-6 w-full lg:w-1/2"
 					              label="Category">
 						<option v-for="category in categories" :key="category.id" :value="category.id"
 						        :selected="category.id === subcategory.category_id">
@@ -70,6 +70,7 @@ export default {
 			form: this.$inertia.form({
 				_method: 'put',
 				name: this.subcategory.name,
+				category: this.subcategory.category.id
 			}),
 		}
 	},

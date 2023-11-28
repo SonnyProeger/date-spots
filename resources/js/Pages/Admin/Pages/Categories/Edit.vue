@@ -16,7 +16,7 @@
 					<text-input v-model="form.name" :error="form.errors.name"
 					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Name"/>
-					<select-input v-model="form.type_id" :error="form.errors.type_id" class="pb-8 pr-6 w-full lg:w-1/2"
+					<select-input v-model="form.type" :error="form.errors.type" class="pb-8 pr-6 w-full lg:w-1/2"
 					              label="Type">
 						<option v-for="type in types" :key="type.id" :value="type.id"
 						        :selected="type.id === category.type_id">
@@ -60,12 +60,16 @@ export default {
 		category: Object,
 		types: Object,
 	},
+	created() {
+		console.log(this.category)
+	},
 	remember: 'form',
 	data() {
 		return {
 			form: this.$inertia.form({
 				_method: 'put',
 				name: this.category.name,
+				type: this.category.type.id
 			}),
 		}
 	},
