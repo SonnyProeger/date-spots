@@ -84,7 +84,7 @@ class CategoryController extends Controller
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
-		$category = Category::withTrashed()->find($id);
+		$category = Category::with('type')->withTrashed()->find($id);
 		$this->authorize('update', $category);
 
 		return Inertia::render('Admin/Pages/Categories/Edit', [
@@ -101,9 +101,12 @@ class CategoryController extends Controller
 
 		Request::validate([
 			'name' => ['required', 'max:50', Rule::unique('categories')],
+			'type_id' => ['required']
 		]);
 
 		$category->update(Request::only('name'));
+		$category->update(Request::only('type_id'));
+
 
 		return Redirect::back()->with('success', 'Category updated.');
 	}
