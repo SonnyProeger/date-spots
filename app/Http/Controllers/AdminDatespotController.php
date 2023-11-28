@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Datespot;
 use App\Traits\CrudOperationsTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -30,22 +31,23 @@ class AdminDatespotController extends Controller
 			$query->whereIn('user_id', $user->id);
 		}
 
-		$query = Datespot::with([
-			'types' => function ($query) {
-				$query->select('types.name')->take(1);
-			}
-		]);
-		$datespots = $query->paginate(10)
+		$datespots = Datespot::select('datespots.id', 'datespots.name', 'datespots.city', 'datespots.deleted_at')
+			->with(
+				'types'
+			)
+			->paginate(10)
 			->withQueryString()
 			->through(function ($datespot) {
+				$firstTypeName = optional($datespot->types->first())->name;
 				return [
 					'id' => $datespot->id,
 					'name' => $datespot->name,
 					'city' => $datespot->city,
-					'type' => $datespot->types->first()->name,
+					'type' => $firstTypeName ?? 'No Type', // Set a default value if no type is found
 					'deleted_at' => $datespot->deleted_at,
 				];
 			});
+
 		return Inertia::render('Admin/Pages/Datespots/Index', [
 			'filters' => $filters,
 			'datespots' => $datespots,
@@ -96,8 +98,13 @@ class AdminDatespotController extends Controller
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
-		$datespot = Datespot::withTrashed()->find($id);
-
+		$datespot = Datespot::withTrashed()
+			->with([
+				'user' => function ($query) {
+					$query->withTrashed(); // Load the associated User model with soft delete information if exists
+				}
+			])
+			->find($id);
 		$this->authorize('update', $datespot);
 
 
@@ -114,15 +121,33 @@ class AdminDatespotController extends Controller
 
 		$this->authorize('update', $datespot);
 
-
-		// Validate request and update the specified datespot
-		$data = $request->validate([
-			// Validation rules for updating datespot
+		Request::validate([
+			'name' => 'required|string',
+			'email' => 'required|email',
+			'phone_number' => 'required|string',
+			'street_name' => 'required|string',
+			'house_number' => 'required|string',
+			'city' => 'required|string',
+			'province' => 'required|string',
+			'postal_code' => 'required|string',
+			'website' => 'required|string',
+			'lat' => 'required|numeric',
+			'lng' => 'required|numeric',
 		]);
 
-		$datespot->update($data);
+		$datespot->update(Request::only('name'));
+		$datespot->update(Request::only('email'));
+		$datespot->update(Request::only('phone_number'));
+		$datespot->update(Request::only('street_name'));
+		$datespot->update(Request::only('house_number'));
+		$datespot->update(Request::only('city'));
+		$datespot->update(Request::only('postal_code'));
+		$datespot->update(Request::only('website'));
+		$datespot->update(Request::only('lng'));
+		$datespot->update(Request::only('lat'));
 
-		return redirect()->route('datespots.show', $id);
+
+		return Redirect::back()->with('success', 'Datespot updated.');
 	}
 
 	/**

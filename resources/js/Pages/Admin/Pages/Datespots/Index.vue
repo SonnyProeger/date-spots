@@ -41,7 +41,7 @@
 					</td>
 					<td class="border-t">
 						<Link class="flex items-center px-6 py-4" :href="route('datespots.edit', datespot.id)" tabindex="-1">
-							{{ datespot.types }}
+							{{ datespot.type }}
 						</Link>
 					</td>
 					<td class="w-px border-t">
