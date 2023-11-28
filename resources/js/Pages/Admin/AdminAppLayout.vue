@@ -72,7 +72,7 @@ export default {
 									<DropdownLink as="button" :href="`admin/users/${$page.props.auth.user.id}/edit`">
 										My Profile
 									</DropdownLink>
-									<form method="POST" @submit.prevent="logout()">
+									<form @submit.prevent="logout">
 										<DropdownLink as="button">
 											Log Out
 										</DropdownLink>

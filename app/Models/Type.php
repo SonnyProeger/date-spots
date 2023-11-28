@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,8 +15,6 @@ class Type extends Model
 	use SoftDeletes;
 
 
-	protected $appends = ['categories'];
-
 	protected $fillable = ['name'];
 
 	public function datespots(): BelongsToMany {
@@ -26,18 +23,12 @@ class Type extends Model
 
 
 	public function categories(): HasMany {
-		return $this->hasMany(Category::class)->withTrashed();
-	}
-
-	public function getCategoriesAttribute(): Collection {
-
-		return $this->categories()->get();
+		return $this->hasMany(Category::class);
 	}
 
 	public function subcategories(): HasManyThrough {
-		return $this->hasManyThrough(Subcategory::class, Category::class);
+		return $this->hasManyThrough(Subcategory::class, Category::class, 'type_id', 'category_id');
 	}
-
 
 	protected static function boot() {
 		parent::boot();

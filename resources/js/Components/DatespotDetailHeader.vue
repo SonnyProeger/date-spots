@@ -7,7 +7,6 @@ export default {
 	components: {HeartRatingComponent},
 	props: {
 		datespot: Object,
-		totalDatespots: Number,
 	},
 	mixins: [DatespotDetailMixin],
 }

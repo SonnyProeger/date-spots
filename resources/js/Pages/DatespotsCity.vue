@@ -9,13 +9,12 @@ export default {
 	name: "DatespotsCity",
 	components: {DatespotCityFilter, DatespotCard, NewAppLayout},
 	created() {
+		console.log(this.types)
 	},
 	props: {
 		datespots: Object,
 		city: String,
 		types: Object,
-		categories: Object,
-		subcategories: Object,
 	},
 	methods: {
 		saveAndCloseFilter(types, categories, subcategories) {
@@ -43,10 +42,7 @@ export default {
 			<DatespotCityFilter
 					:city="city"
 					:types="types"
-					:categories="categories"
-					:subcategories="subcategories"
 			/>
-
 
 			<div class="w-full md:w-3/4 p-4 md:pl-0">
 				<div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">

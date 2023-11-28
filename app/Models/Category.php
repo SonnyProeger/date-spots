@@ -2,26 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 class Category extends Model
 {
 	use HasFactory;
 	use SoftDeletes;
+	use BelongsToThrough;
 
 
-	protected $appends = ['subcategories'];
 	protected $fillable = ['name', 'type_id'];
 
-	public function datespots(): BelongsToMany {
-		return $this->belongsToMany(Datespot::class, 'datespot_category')->withTrashed();
-	}
 
 	public function type(): BelongsTo {
 		return $this->belongsTo(Type::class)->withTrashed();
@@ -31,8 +27,8 @@ class Category extends Model
 		return $this->hasMany(Subcategory::class)->withTrashed();
 	}
 
-	public function getSubCategoriesAttribute(): Collection {
-		return $this->subCategories()->get();
+	public function datespot(): \Znck\Eloquent\Relations\BelongsToThrough {
+		return $this->belongsToThrough(Datespot::class, Type::class);
 	}
 
 	protected static function boot() {

@@ -86,7 +86,7 @@ class SubcategoryController extends Controller
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
-		$subcategory = Subcategory::withTrashed()->find($id);
+		$subcategory = Subcategory::with('category')->withTrashed()->find($id);
 		$this->authorize('update', $subcategory);
 
 		return Inertia::render('Admin/Pages/Subcategories/Edit', [
@@ -103,9 +103,12 @@ class SubcategoryController extends Controller
 
 		Request::validate([
 			'name' => ['required', 'max:50', Rule::unique('subcategories')],
+			'category_id' => ['required'],
 		]);
 
 		$subcategory->update(Request::only('name'));
+		$subcategory->update(Request::only('category_id'));
+
 
 		return Redirect::back()->with('success', 'Subcategory updated.');
 	}

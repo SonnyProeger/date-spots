@@ -79,4 +79,9 @@ class User extends Authenticatable
 	public function datespots(): HasMany {
 		return $this->hasMany(Datespot::class);
 	}
+
+	public function reviews(): HasMany {
+		return $this->hasMany(Review::class);
+
+	}
 }

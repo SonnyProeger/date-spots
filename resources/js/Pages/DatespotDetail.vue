@@ -13,11 +13,9 @@ export default {
 	components: {HeartRatingComponent, DatespotCard, Hero, NewAppLayout, DatespotDetailHeader, Link},
 	props: {
 		datespot: Object,
-		totalDatespots: Number,
 	},
 	mixins: [DatespotDetailMixin],
 	created() {
-		console.log(this.datespot)
 	}
 }
 </script>
@@ -27,7 +25,6 @@ export default {
 		<div class="container mx-auto flex flex-col md:w-4/5">
 			<DatespotDetailHeader
 					:datespot="datespot"
-					:total-datespots="totalDatespots"
 			>
 			</DatespotDetailHeader>
 			<div>
