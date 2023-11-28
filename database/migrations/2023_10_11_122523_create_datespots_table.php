@@ -28,8 +28,7 @@ return new class extends Migration {
 			$table->string('email')->unique();
 			$table->boolean('open_now');
 			$table->string('icon_url');
-			$table->unsignedBigInteger('user_id')->nullable();
-			$table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+			$table->foreignId('user_id')->constrained();
 			$table->integer('position')->nullable()->unique();
 			$table->softDeletes();
 			$table->timestamps();
