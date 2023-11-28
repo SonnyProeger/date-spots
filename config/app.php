@@ -124,6 +124,7 @@ return [
 
 	'key' => env('APP_KEY'),
 	'google_api_key' => env('GOOGLE_API_KEY'),
+	'address_api_key' => env('ADDRESS_API_KEY'),
 
 	'cipher' => 'AES-256-CBC',
 
