@@ -28,7 +28,7 @@ return new class extends Migration {
 			$table->string('email')->unique();
 			$table->boolean('open_now');
 			$table->string('icon_url');
-			$table->foreignId('user_id')->constrained();
+			$table->foreignId('user_id')->nullable()->constrained();
 			$table->integer('position')->nullable()->unique();
 			$table->softDeletes();
 			$table->timestamps();
