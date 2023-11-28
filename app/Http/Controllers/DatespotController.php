@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\StringHelper;
-use App\Models\Category;
 use App\Models\Datespot;
-use App\Models\Subcategory;
 use App\Models\Type;
+use App\Services\UserDatespotService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DatespotController extends Controller
 {
+
+	protected $datespotService;
+
+	public function __construct(UserDatespotService $datespotService) {
+		$this->datespotService = $datespotService;
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		$datespots = Datespot::with('types')->get();
+		$datespots = $this->datespotService->getAllDateSpotsWithTypes();
 
 		return Inertia::render('datespots', [
 			'datespots' => $datespots,
@@ -28,19 +33,15 @@ class DatespotController extends Controller
 	 */
 	public
 	function show($id, $name) {
-		$totalDatespots = Datespot::count();
-		$datespot = Datespot::query()->findOrFail($id);
-		$formattedName = StringHelper::replaceHyphensWithSpaces($name);
+		$datespot = $this->datespotService->getDateSpotByIdAndName($id, $name);
 
 		// Check if the name from the url matches the name in the database
-		if ($datespot->name !== $formattedName) {
+		if (!$datespot) {
 			return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
 		}
 
-
 		return Inertia::render('DatespotDetail', [
 			'datespot' => $datespot,
-			'totalDatespots' => $totalDatespots,
 		]);
 	}
 
@@ -50,23 +51,16 @@ class DatespotController extends Controller
 	 */
 
 	public function showByLocation($city) {
-		$query = Datespot::query();
 
-		if ($city) {
-			$query->where('city', $city);
-		}
-		$categories = Category::all();
-		$subcategories = Subcategory::all();
-		$types = Type::all();
+		$datespots = $this->datespotService->getDatespotsByLocation($city);
 
-		$datespots = $query->get();
 
+		// Retrieve Types with associated Categories and Subcategories related to the given Datespots
+		$types = Type::with('categories.subcategories')->get();
 		return Inertia::render('DatespotsCity', [
 			'datespots' => $datespots,
 			'city' => $city,
 			'types' => $types,
-			'categories' => $categories,
-			'subcategories' => $subcategories,
 		]);
 	}
 
@@ -76,9 +70,14 @@ class DatespotController extends Controller
 		if ($city) {
 			$query->where('city', $city);
 		}
-		$categories = Category::all();
-		$subcategories = Subcategory::all();
-		$types = Type::all();
+		$types = Type::with([
+			'categories' => function ($query) {
+				$query->select('id', 'name', 'type_id');
+			},
+			'categories.subcategories' => function ($query) {
+				$query->select('id', 'name', 'category_id');
+			}
+		])->select('id', 'name')->get();
 		$requestData = json_decode($request->getContent(), true);
 
 
@@ -114,7 +113,6 @@ class DatespotController extends Controller
 				}
 			}
 			$filteredDatespots = $query->with('types', 'categories', 'subcategories')->get();
-
 		} else {
 			$filteredDatespots = $query->get();
 		}
@@ -124,8 +122,6 @@ class DatespotController extends Controller
 			'datespots' => $filteredDatespots,
 			'city' => $city,
 			'types' => $types,
-			'categories' => $categories,
-			'subcategories' => $subcategories,
 		]);
 	}
 }
