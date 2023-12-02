@@ -123,7 +123,7 @@ export default {
 				</svg>
 				<a class="hover:underline"
 				   target="_blank"
-				   href="{{datespot.website_url}}"
+				   :href="datespot.website"
 				>
 					Website
 				</a>

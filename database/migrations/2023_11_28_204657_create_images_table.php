@@ -8,11 +8,11 @@ return new class extends Migration {
 	/**
 	 * Run the migrations.
 	 */
-	public function up(): void
-	{
-		Schema::create('datespot_images', function (Blueprint $table) {
+	public function up(): void {
+		Schema::create('images', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('datespot_id')->constrained();
+			$table->foreignId('datespot_id')->constrained()->cascadeOnDelete();
+			$table->string('filename');
 			$table->string('url');
 			$table->timestamps();
 		});
@@ -21,8 +21,7 @@ return new class extends Migration {
 	/**
 	 * Reverse the migrations.
 	 */
-	public function down(): void
-	{
-		Schema::dropIfExists('datespot_images');
+	public function down(): void {
+		Schema::dropIfExists('images');
 	}
 };
