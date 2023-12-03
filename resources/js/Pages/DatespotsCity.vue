@@ -9,7 +9,7 @@ export default {
 	name: "DatespotsCity",
 	components: {DatespotCityFilter, DatespotCard, NewAppLayout},
 	created() {
-		console.log(this.types)
+		console.log(this.datespots)
 	},
 	props: {
 		datespots: Object,

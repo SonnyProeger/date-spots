@@ -21,14 +21,21 @@ class UserDatespotService
 	public function getDateSpotByIdAndName($id, $name): Model|Collection|Builder|array|null {
 		$datespot = Datespot::with('types', 'categories', 'subcategories', 'media')
 			->select('*',
-				DB::raw("(SELECT COUNT(*) FROM datespots WHERE city = (SELECT city FROM datespots WHERE id = $id)) AS all_datespots"))
+				DB::raw("(SELECT COUNT(*) FROM datespots WHERE city = (SELECT city FROM datespots WHERE id = $id)) AS all_datespots")
+			)
+			->withAvg('reviews', 'rating')
 			->where('id', $id)
 			->withCount('reviews')
 			->firstOrFail();
+
 		$formattedName = StringHelper::replaceHyphensWithSpaces($name);
 		if ($datespot->name !== $formattedName) {
 			return null; // Or throw an exception indicating the mismatch
 		}
+
+		$avgRating = round($datespot->reviews_avg_rating, 2);
+		$datespot->rating = $avgRating;
+
 		return $datespot;
 	}
 

@@ -3,7 +3,10 @@ export default {
 	name: "HeartRatingComponent",
 	props: {
 		rating: Number,
-	}
+	},
+	created() {
+		console.log(this.rating)
+	},
 }
 </script>
 
