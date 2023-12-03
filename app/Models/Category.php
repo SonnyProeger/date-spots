@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Database\Factories\CategoryFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +11,33 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Znck\Eloquent\Traits\BelongsToThrough;
 
+/**
+ * App\Models\Category
+ *
+ * @property int $id
+ * @property int $type_id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subcategory> $subCategories
+ * @property-read int|null $sub_categories_count
+ * @property-read \App\Models\Type $type
+ * @method static CategoryFactory factory($count = null, $state = [])
+ * @method static Builder|Category newModelQuery()
+ * @method static Builder|Category newQuery()
+ * @method static Builder|Category onlyTrashed()
+ * @method static Builder|Category query()
+ * @method static Builder|Category whereCreatedAt($value)
+ * @method static Builder|Category whereDeletedAt($value)
+ * @method static Builder|Category whereId($value)
+ * @method static Builder|Category whereName($value)
+ * @method static Builder|Category whereTypeId($value)
+ * @method static Builder|Category whereUpdatedAt($value)
+ * @method static Builder|Category withTrashed()
+ * @method static Builder|Category withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Category extends Model
 {
 	use HasFactory;
