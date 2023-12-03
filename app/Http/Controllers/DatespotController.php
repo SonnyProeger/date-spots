@@ -6,6 +6,7 @@ use App\Models\Datespot;
 use App\Models\Type;
 use App\Services\UserDatespotService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DatespotController extends Controller
@@ -112,9 +113,44 @@ class DatespotController extends Controller
 					});
 				}
 			}
-			$filteredDatespots = $query->with('types', 'categories', 'subcategories')->get();
+			$filteredDatespots = $query->with('types', 'categories', 'subcategories')
+				->withCount('reviews')
+				->addSelect(DB::raw("(SELECT COUNT(*) FROM datespots) AS all_datespots"))
+				->withAvg('reviews', 'rating')
+				->get()
+				->where('city', $city)
+				->map(function ($datespot) {
+					$avgRating = round($datespot->reviews_avg_rating, 2);
+					return [
+						'id' => $datespot->id,
+						'name' => $datespot->name,
+						'city' => $datespot->city,
+						'tagline' => $datespot->tagline,
+						'photo_url' => $datespot->photo_url,
+						'rating' => $avgRating,
+						'reviews_count' => $datespot->reviews_count,
+						'all_datespots' => $datespot->all_datespots,
+					];
+				});
 		} else {
-			$filteredDatespots = $query->get();
+			$filteredDatespots = $query->withCount('reviews')
+				->addSelect(DB::raw("(SELECT COUNT(*) FROM datespots) AS all_datespots"))
+				->withAvg('reviews', 'rating')
+				->get()
+				->where('city', $city)
+				->map(function ($datespot) {
+					$avgRating = round($datespot->reviews_avg_rating, 2);
+					return [
+						'id' => $datespot->id,
+						'name' => $datespot->name,
+						'city' => $datespot->city,
+						'tagline' => $datespot->tagline,
+						'photo_url' => $datespot->photo_url,
+						'rating' => $avgRating,
+						'reviews_count' => $datespot->reviews_count,
+						'all_datespots' => $datespot->all_datespots,
+					];
+				});
 		}
 
 
