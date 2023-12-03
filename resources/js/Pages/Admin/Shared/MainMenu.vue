@@ -44,9 +44,6 @@ export default {
 		Icon,
 		Link,
 	},
-	created() {
-		console.log(this.$page.props.can)
-	},
 	methods: {
 		isSuperAdmin() {
 			return this.$page.props.auth.user.role.name === 'SuperAdmin'

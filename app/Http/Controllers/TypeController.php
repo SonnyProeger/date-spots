@@ -114,6 +114,6 @@ class TypeController extends Controller
 		$this->authorize('restore', $type);
 		$type->restore();
 
-		return Redirect::back()->with('success', 'Type restored.');
+		return Redirect::back()->with('succes', 'Type restored.');
 	}
 }

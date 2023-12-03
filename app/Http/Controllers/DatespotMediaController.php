@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class DatespotMediaController extends Controller
 {
@@ -22,6 +23,7 @@ class DatespotMediaController extends Controller
 				'size' => $item->human_readable_size,
 				'mime' => $item->mime_type,
 				'type' => $item->type,
+				'isHighlighted' => $item->is_highlighted,
 			];
 		});;
 
@@ -83,5 +85,42 @@ class DatespotMediaController extends Controller
 		}
 
 		return redirect()->route('datespots.index');
+	}
+
+	public function updateHighlightStatus(Request $request) {
+		$mediaId = $request->input('mediaId');
+		$isHighlighted = $request->input('isHighlighted');
+
+		$media = Media::findOrFail($mediaId);
+		$datespotId = $media->model_id;
+
+		$datespot = Datespot::findOrFail($datespotId);
+
+		$highlightedMediaCount = $this->getHighlightedMediaCount($datespot);
+
+		if ($highlightedMediaCount >= 3) {
+			return Redirect::back()->with('error',
+				'Maximum limit of 3 highlighted media items reached for this Datespot');
+		}
+
+		if ($isHighlighted) {
+			$this->removeFromHighlights($media);
+			return Redirect::back()->with('success', 'Removed from Highlights.');
+		} else {
+			$this->addToHighlights($media);
+			return Redirect::back()->with('success', 'Added to Highlights.');
+		}
+	}
+
+	private function getHighlightedMediaCount(Datespot $datespot): int {
+		return $datespot->getMedia()->where('is_highlighted', true)->count();
+	}
+
+	private function addToHighlights(Media $media): void {
+		$media->update(['is_highlighted' => true]);
+	}
+
+	private function removeFromHighlights(Media $media): void {
+		$media->update(['is_highlighted' => false]);
 	}
 }

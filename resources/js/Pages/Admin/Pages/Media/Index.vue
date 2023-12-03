@@ -8,10 +8,12 @@ import Pagination from "@/Pages/Admin/Shared/Pagination.vue";
 import Icon from "@/Pages/Admin/Shared/Icon.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import HighlightButton from "@/Pages/Admin/Shared/HighlightButton.vue";
 
 export default {
 	name: "Index",
 	components: {
+		HighlightButton,
 		PrimaryButton,
 		DangerButton, Icon, Link, Pagination, Head, SearchFilter, TextInput, FileInput, AdminAppLayout
 	},
@@ -27,7 +29,7 @@ export default {
 		}
 	},
 	created() {
-		console.log(this.media)
+		console.log(window.location.pathname)
 	},
 	remember: 'form',
 	methods: {
@@ -71,12 +73,15 @@ export default {
 								<span>{{ medium.size }}</span>
 							</div>
 						</td>
-						<td class="w-3/4 text-right pr-4">
+						<td class="w-3/4 text-right pr-4" style="position: relative;">
+							<div style="position: absolute; top: 0; right: 0;" class="pr-4 pt-4">
+								<HighlightButton :media-item="medium"></HighlightButton>
+							</div>
 							<div class="flex items-center justify-end space-x-2">
-								<primary-button class="mr-2">Highlight</primary-button>
 								<danger-button>Delete</danger-button>
 							</div>
 						</td>
+
 					</tr>
 
 
