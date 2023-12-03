@@ -12,6 +12,10 @@
 				<div class="flex-1 pr-1">
 					{{ modelValue.name }} <span class="text-gray-500 text-xs">({{ filesize(modelValue.size) }})</span>
 				</div>
+				<button type="button"
+				        class="px-4 py-1 mr-4 text-white text-xs font-medium bg-green-500 hover:bg-green-700 rounded-sm"
+				        @click="upload">Upload
+				</button>
 				<button type="button" class="px-4 py-1 text-white text-xs font-medium bg-gray-500 hover:bg-gray-700 rounded-sm"
 				        @click="remove">Remove
 				</button>
@@ -32,7 +36,7 @@ export default {
 			default: () => [],
 		},
 	},
-	emits: ['update:modelValue'],
+	emits: ['update:modelValue', 'upload'],
 	watch: {
 		modelValue(value) {
 			if (!value) {
@@ -53,6 +57,9 @@ export default {
 		},
 		remove() {
 			this.$emit('update:modelValue', null)
+		},
+		upload() {
+			this.$emit('upload')
 		},
 	},
 }

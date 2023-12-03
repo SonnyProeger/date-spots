@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDatespotController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DatespotController;
+use App\Http\Controllers\DatespotMediaController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\TypeController;
@@ -88,6 +89,10 @@ Route::prefix('admin')->middleware([
 	Route::put('users/{user}/restore', [UserController::class, 'restore'])
 		->name('user.restore')
 		->withTrashed();
+
+	Route::prefix('datespots/{datespot}')->group(function () {
+		Route::resource('media', DatespotMediaController::class);
+	});
 });
 
 

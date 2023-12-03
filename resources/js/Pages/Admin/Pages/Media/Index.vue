@@ -1,0 +1,95 @@
+<script>
+import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
+import FileInput from "@/Pages/Admin/Shared/FileInput.vue";
+import TextInput from "@/Pages/Admin/Shared/TextInput.vue";
+import SearchFilter from "@/Pages/Admin/Shared/SearchFilter.vue";
+import {Head, Link} from "@inertiajs/vue3";
+import Pagination from "@/Pages/Admin/Shared/Pagination.vue";
+import Icon from "@/Pages/Admin/Shared/Icon.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+
+export default {
+	name: "Index",
+	components: {
+		PrimaryButton,
+		DangerButton, Icon, Link, Pagination, Head, SearchFilter, TextInput, FileInput, AdminAppLayout
+	},
+	props: {
+		datespot: Object,
+		media: Object,
+	},
+	data() {
+		return {
+			form: this.$inertia.form({
+				file: null,
+			}),
+		}
+	},
+	created() {
+		console.log(this.media)
+	},
+	remember: 'form',
+	methods: {
+		store() {
+			this.form.post(`/admin/datespots/${this.datespot.id}/media`)
+		},
+	}
+}
+</script>
+
+<template>
+	<AdminAppLayout>
+		<div>
+			<Head title="Media"/>
+			<h1 class="mb-8 text-3xl font-bold">Media</h1>
+			<div class="mb-6">
+				<form @submit.prevent="store" enctype="multipart/form-data">
+					<FileInput v-model="form.file" :error="form.errors.file" label="Upload Media" @upload="store"></FileInput>
+				</form>
+			</div>
+
+			<div class="bg-white rounded-md shadow overflow-x-auto">
+				<table class="w-full whitespace-nowrap">
+					<thead>
+					<tr class="text-left font-bold">
+						<th class="pb-4 pt-6 px-6">Media</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="medium in media" :key="medium.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+						<td class="border-t p-4">
+							<div class="flex items-center justify-start">
+								<!-- Displaying the image -->
+								<img :src="medium.thumb" :alt="medium.id" style="width: 200px; height: 200px;"/>
+							</div>
+						</td>
+						<td class="border-t">
+							<div class="flex flex-col">
+								<span>{{ medium.mime }}</span>
+
+								<span>{{ medium.size }}</span>
+							</div>
+						</td>
+						<td class="w-3/4 text-right pr-4">
+							<div class="flex items-center justify-end space-x-2">
+								<primary-button class="mr-2">Highlight</primary-button>
+								<danger-button>Delete</danger-button>
+							</div>
+						</td>
+					</tr>
+
+
+					<tr v-if="media === null">
+						<td class="px-6 py-4 border-t" colspan="4">No media found.</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</AdminAppLayout>
+</template>
+
+<style scoped>
+
+</style>
