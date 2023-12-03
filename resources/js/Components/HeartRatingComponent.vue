@@ -4,9 +4,6 @@ export default {
 	props: {
 		rating: Number,
 	},
-	created() {
-		console.log(this.rating)
-	},
 }
 </script>
 

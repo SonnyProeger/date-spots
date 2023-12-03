@@ -8,9 +8,6 @@ import {router} from '@inertiajs/vue3'
 export default {
 	name: "DatespotsCity",
 	components: {DatespotCityFilter, DatespotCard, NewAppLayout},
-	created() {
-		console.log(this.datespots)
-	},
 	props: {
 		datespots: Object,
 		city: String,

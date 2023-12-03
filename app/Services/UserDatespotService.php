@@ -33,7 +33,8 @@ class UserDatespotService
 			return null; // Or throw an exception indicating the mismatch
 		}
 
-		$avgRating = round($datespot->reviews_avg_rating, 2);
+		$avgRating = number_format(round($datespot->reviews_avg_rating, 2),
+			max(1, substr_count(round($datespot->reviews_avg_rating, 2), '.')));
 		$datespot->rating = $avgRating;
 
 		return $datespot;
