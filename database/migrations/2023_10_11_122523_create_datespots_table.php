@@ -29,7 +29,7 @@ return new class extends Migration {
 			$table->boolean('open_now');
 			$table->string('icon_url');
 			$table->foreignId('user_id')->nullable()->constrained();
-			$table->integer('position')->nullable()->unique();
+			$table->integer('position')->nullable();
 			$table->softDeletes();
 			$table->timestamps();
 		});

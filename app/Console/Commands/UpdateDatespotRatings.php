@@ -27,16 +27,22 @@ class UpdateDatespotRatings extends Command
 	public function handle(): void {
 		Datespot::query()->update(['position' => null]); // Clear existing positions
 
-		$datespots = Datespot::query()
-			->withAvg('reviews', 'rating')
-			->orderByDesc('reviews_avg_rating')
-			->get();
+		$cities = Datespot::query()->distinct('city')->pluck('city'); // Get distinct cities
 
+		foreach ($cities as $city) {
+			$datespots = Datespot::query()
+				->withAvg('reviews', 'rating')
+				->where('city', $city)
+				->orderByDesc('reviews_avg_rating')
+				->get();
 
-		$position = 1;
-		foreach ($datespots as $datespot) {
-			$datespot->update(['position' => $position++]);
+			$position = 1;
+			foreach ($datespots as $datespot) {
+				$datespot->update(['position' => $position++]);
+			}
 		}
+
 		$this->info('Positions updated successfully.');
 	}
+
 }
