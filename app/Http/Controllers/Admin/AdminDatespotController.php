@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Datespot;
 use App\Traits\CrudOperationsTrait;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class AdminDatespotController extends Controller
@@ -71,11 +73,25 @@ class AdminDatespotController extends Controller
 		$this->authorize('create', Datespot::class);
 
 		// Validate request and store the new resource
-		$data = $request->validate([
-			// Validation rules for storing datespot
+		$validatedData = $request->validate([
+			'name' => 'required|string',
+			'email' => 'required|email',
+			'phone_number' => 'required|string',
+			'street_name' => 'required|string',
+			'house_number' => 'required|string',
+			'city' => 'required|string',
+			'province' => 'required|string',
+			'postal_code' => 'required|string',
+			'website' => 'required|string',
+			'lat' => 'required|numeric',
+			'lng' => 'required|numeric',
 		]);
 
-		$datespot = Datespot::save($data);
+		// Generate UUID for datespot_id
+		$validatedData['datespot_id'] = Str::uuid();
+
+		$datespot = Datespot::create($validatedData);
+
 
 		return Inertia::render('Admin/AdminDatespotsDetail', [
 			'datespot' => $datespot,
