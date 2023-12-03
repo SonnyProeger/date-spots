@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	{{--	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">--}}
 
 	<title inertia>{{ config('app.name', 'Date Spots') }}</title>
 
@@ -21,7 +21,7 @@
             // It ensures that the Google Maps API is loaded
         }
 	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places&callback=initMap"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key={{config('app.google_api_key')}}&libraries=places&callback=initMap"></script>
 
 </head>
 <body class="font-sans antialiased">

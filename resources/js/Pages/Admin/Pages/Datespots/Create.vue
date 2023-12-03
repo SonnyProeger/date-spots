@@ -8,24 +8,31 @@
 		<div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">
 			<form @submit.prevent="store">
 				<div class="flex flex-wrap -mb-8 -mr-6 p-8">
-					<text-input v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="Name"/>
-					<text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email"/>
-					<text-input v-model="form.phone_number" :error="form.errors.phone_number" class="pb-8 pr-6 w-full lg:w-1/2"
+					<text-input id="name" v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2"
+					            label="Name"/>
+					<text-input id="email" v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2"
+					            label="Email"/>
+					<text-input id="phone_number" v-model="form.phone_number" :error="form.errors.phone_number"
+					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Phone"/>
-					<text-input v-model="form.website" :error="form.errors.website" class="pb-8 pr-6 w-full lg:w-1/2"
+					<text-input id="website" v-model="form.website" :error="form.errors.website" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Website"/>
-					<text-input v-model="form.postal_code" :error="form.errors.postal_code" class="pb-8 pr-6 w-full lg:w-1/2"
+					<text-input id="postal_code" v-model="form.postal_code" :error="form.errors.postal_code"
+					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Postal code"/>
-					<text-input v-model="form.house_number" :error="form.errors.house_number" class="pb-8 pr-6 w-full lg:w-1/2"
+					<text-input id="house_number" v-model="form.house_number" :error="form.errors.house_number"
+					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="House number"/>
 
-					<text-input v-model="form.street_name" :error="form.errors.street_name" class="pb-8 pr-6 w-full lg:w-1/2"
+					<text-input id="street_name" v-model="form.street_name" :error="form.errors.street_name"
+					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Street name" :disabled="true"/>
-					<text-input v-model="form.city" :error="form.errors.city" class="pb-8 pr-6 w-full lg:w-1/2"
+					<text-input id="city" v-model="form.city" :error="form.errors.city" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="City"
 					            :disabled="true"
 					/>
-					<text-input v-model="form.province" :error="form.errors.province" class="pb-8 pr-6 w-full lg:w-1/2"
+					<text-input id="province" v-model="form.province" :error="form.errors.province"
+					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Province" :disabled="true"/>
 				</div>
 				<div class="flex items-center justify-end px-8 py-4 bg-gray-50 border-t border-gray-100">
@@ -93,11 +100,10 @@ export default {
 	},
 	methods: {
 		store() {
-			this.form.post('/admin/users')
+			this.form.post('/admin/datespots')
 		},
-		handleAddressDetails: _.debounce(function () {
-			this.fetchAddressDetails();
-		}, 2000),
+
+
 		fetchAddressDetails() {
 			const url = '/api/getAddressDetails';
 			const postalCode = this.form.postal_code;
@@ -123,7 +129,11 @@ export default {
 					.catch(error => {
 						console.error('Error fetching address details:', error);
 					});
-		}
+		},
+
+		handleAddressDetails: _.debounce(function () {
+			this.fetchAddressDetails();
+		}, 2000),
 	},
 }
 </script>

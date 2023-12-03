@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\AdminDatespotController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminDatespotController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DatespotMediaController;
+use App\Http\Controllers\Admin\SubcategoryController;
+use App\Http\Controllers\Admin\TypeController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DatespotController;
-use App\Http\Controllers\DatespotMediaController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\SubcategoryController;
-use App\Http\Controllers\TypeController;
-use App\Http\Controllers\UserController;
 use App\Http\Middleware\SharePermissions;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;

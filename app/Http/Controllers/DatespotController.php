@@ -117,6 +117,7 @@ class DatespotController extends Controller
 				->withCount('reviews')
 				->addSelect(DB::raw("(SELECT COUNT(*) FROM datespots) AS all_datespots"))
 				->withAvg('reviews', 'rating')
+				->with('media')
 				->get()
 				->where('city', $city)
 				->map(function ($datespot) {
@@ -130,12 +131,14 @@ class DatespotController extends Controller
 						'rating' => $avgRating,
 						'reviews_count' => $datespot->reviews_count,
 						'all_datespots' => $datespot->all_datespots,
+						'cover_image' => $datespot->getFirstMediaUrl('images'),
 					];
 				});
 		} else {
 			$filteredDatespots = $query->withCount('reviews')
 				->addSelect(DB::raw("(SELECT COUNT(*) FROM datespots) AS all_datespots"))
 				->withAvg('reviews', 'rating')
+				->with('media')
 				->get()
 				->where('city', $city)
 				->map(function ($datespot) {
@@ -149,6 +152,7 @@ class DatespotController extends Controller
 						'rating' => $avgRating,
 						'reviews_count' => $datespot->reviews_count,
 						'all_datespots' => $datespot->all_datespots,
+						'cover_image' => $datespot->getFirstMediaUrl('images'),
 					];
 				});
 		}

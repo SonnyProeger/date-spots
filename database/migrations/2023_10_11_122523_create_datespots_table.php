@@ -23,11 +23,11 @@ return new class extends Migration {
 			$table->string('province');
 			$table->string('country');
 			$table->string('phone_number');
-			$table->string('business_status');
+			$table->string('business_status')->nullable();
 			$table->string('website');
 			$table->string('email')->unique();
-			$table->boolean('open_now');
-			$table->string('icon_url');
+			$table->boolean('open_now')->nullable();
+			$table->string('icon_url')->nullable();
 			$table->foreignId('user_id')->nullable()->constrained();
 			$table->integer('position')->nullable();
 			$table->softDeletes();
