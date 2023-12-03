@@ -19,7 +19,7 @@ class UserDatespotService
 	}
 
 	public function getDateSpotByIdAndName($id, $name): Model|Collection|Builder|array|null {
-		$datespot = Datespot::with('types', 'categories', 'subcategories')
+		$datespot = Datespot::with('types', 'categories', 'subcategories', 'media')
 			->select('*',
 				DB::raw("(SELECT COUNT(*) FROM datespots WHERE city = (SELECT city FROM datespots WHERE id = $id)) AS all_datespots"))
 			->where('id', $id)

@@ -16,6 +16,7 @@ export default {
 	},
 	mixins: [DatespotDetailMixin],
 	created() {
+		console.log(this.datespot.media)
 	}
 }
 </script>
@@ -29,13 +30,28 @@ export default {
 			</DatespotDetailHeader>
 			<div>
 				<div class="h-1/4 md:pb-2 md:pt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-0.5">
-					<!--images-->
-					<img v-for="(image, index) in datespot.images"
-					     :key="index"
-					     :src="image.url"
-					     :alt="'Image ' + (index + 1)"
-					     :class="{'hidden md:block': index !== 0, 'w-full': true,  'h-64': true, 'object-cover': true}"
-					>
+					<template v-for="(item, index) in filteredItems" :key="index">
+						<img v-if="item.collection_name === 'images'"
+						     :src="item.original_url"
+						     :alt="'Image ' + (index + 1)"
+						     :class="{
+             'hidden md:block': index !== 0,
+             'w-full': true,
+             'h-64': true,
+             'object-cover': true
+           }"
+						>
+						<video v-else-if="item.collection_name === 'videos'"
+						       :src="item.original_url"
+						       controls
+						       :class="{
+               'hidden md:block': index !== 0,
+               'w-full': true,
+               'h-64': true,
+               'object-cover': true
+             }"
+						></video>
+					</template>
 				</div>
 
 				<!--				mobile only!-->
