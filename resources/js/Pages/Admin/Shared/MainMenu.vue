@@ -8,7 +8,7 @@
 			</Link>
 		</div>
 		<div v-for="(value, key) in $page.props.can" :key="key">
-			<div v-if="value && key.startsWith('view-any-')" class="mb-4">
+			<div v-if="value && key.startsWith('view-any-') || value && key.startsWith('before')" class="mb-4">
 				<Link
 						:href="generateRoute(key)"
 						class="group flex items-center py-3"
@@ -44,7 +44,13 @@ export default {
 		Icon,
 		Link,
 	},
+	created() {
+		console.log(this.$page.props.can)
+	},
 	methods: {
+		isSuperAdmin() {
+			return this.$page.props.auth.user.role.name === 'SuperAdmin'
+		},
 		isCompany() {
 			return this.$page.props.auth.user.role.name === 'company'
 		},

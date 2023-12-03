@@ -45,13 +45,9 @@ export default {
 	},
 	props: {
 		categories: Object,
-
 	},
 	layout: AdminAppLayout,
 	remember: 'form',
-	created() {
-		console.log(this.categories)
-	},
 	data() {
 		return {
 			form: this.$inertia.form({
