@@ -7,10 +7,21 @@ use App\Models\User;
 class UserPolicy
 {
 	/**
+	 * Perform pre-authorization checks.
+	 */
+	public function before(User $user, string $ability): bool|null {
+		if ($user->isSuperAdmin()) {
+			return true;
+		}
+
+		return null;
+	}
+
+	/**
 	 * Determine whether the user can view any models.
 	 */
 	public function viewAny(User $user): bool {
-		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
+		return $user->role->name === 'Admin';
 	}
 
 	/**
@@ -27,7 +38,7 @@ class UserPolicy
 			}
 		}
 
-		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
+		return $user->role->name === 'Admin';
 	}
 
 	/**
@@ -35,7 +46,7 @@ class UserPolicy
 	 */
 	public function create(User $user): bool {
 		//
-		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
+		return $user->role->name === 'Admin';
 	}
 
 	/**
@@ -46,11 +57,6 @@ class UserPolicy
 		if ($model->role !== null && $model->role->name !== null) {
 			$targetUserRole = $model->role->name;
 			$authenticatedUserRole = $user->role->name;
-
-			// SuperAdmin can update any user
-			if ($authenticatedUserRole === 'SuperAdmin') {
-				return true;
-			}
 
 			// Admin can manage users with the 'Company' or 'User' role
 			if ($authenticatedUserRole === 'Admin' && in_array($targetUserRole, ['Company', 'User'])) {
@@ -76,7 +82,7 @@ class UserPolicy
 	 */
 	public function delete(User $user, User $model): bool {
 		//
-		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
+		return $user->role->name === 'Admin';
 
 	}
 
@@ -85,7 +91,7 @@ class UserPolicy
 	 */
 	public function restore(User $user, User $model): bool {
 
-		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
+		return $user->role->name === 'Admin';
 
 	}
 
@@ -94,7 +100,7 @@ class UserPolicy
 	 */
 	public function forceDelete(User $user, User $model): bool {
 
-		return in_array($user->role->name, ['SuperAdmin', 'Admin']);
+		return $user->role->name === 'Admin';
 
 	}
 }
