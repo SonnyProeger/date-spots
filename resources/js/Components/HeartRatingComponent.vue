@@ -2,7 +2,7 @@
 export default {
 	name: "HeartRatingComponent",
 	props: {
-		rating: Number,
+		rating: [Number, String],
 	},
 }
 </script>

@@ -1,7 +1,6 @@
 // DatespotMixin.js
 
 export const DatespotDetailMixin = {
-
     data() {
         return {
             enlargedImageUrl: ''

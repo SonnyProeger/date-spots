@@ -16,7 +16,7 @@ export default {
 	},
 	mixins: [DatespotDetailMixin],
 	created() {
-		console.log(this.datespot.media)
+		console.log(this.datespot)
 	}
 }
 </script>
