@@ -21,7 +21,7 @@ return new class extends Migration {
 			$table->string('postal_code');
 			$table->string('city');
 			$table->string('province');
-			$table->string('country');
+			$table->string('country')->default('Netherlands');
 			$table->string('phone_number');
 			$table->string('business_status')->nullable();
 			$table->string('website');

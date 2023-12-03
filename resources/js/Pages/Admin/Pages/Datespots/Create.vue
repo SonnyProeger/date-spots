@@ -10,6 +10,9 @@
 				<div class="flex flex-wrap -mb-8 -mr-6 p-8">
 					<text-input id="name" v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Name"/>
+					<textarea-input id="tagline" v-model="form.tagline" :error="form.errors.tagline"
+					                class="pb-8 pr-6 w-full lg:w-1/2"
+					                label="Tag Line"/>
 					<text-input id="email" v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Email"/>
 					<text-input id="phone_number" v-model="form.phone_number" :error="form.errors.phone_number"
@@ -53,9 +56,11 @@ import LoadingButton from '@/Pages/Admin/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Pages/Admin/Shared/TrashedMessage.vue'
 import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
 import _ from 'lodash';
+import TextareaInput from "@/Pages/Admin/Shared/TextareaInput.vue";
 
 export default {
 	components: {
+		TextareaInput,
 		Head,
 		Icon,
 		Link,
@@ -85,6 +90,7 @@ export default {
 		return {
 			form: this.$inertia.form({
 				name: '',
+				tagline: '',
 				email: '',
 				phone_number: '',
 				street_name: '',

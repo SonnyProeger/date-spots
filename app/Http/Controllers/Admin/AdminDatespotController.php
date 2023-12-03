@@ -18,12 +18,12 @@ class AdminDatespotController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize('viewAny', Datespot::class);
 
 		$user = Auth::user();
 
-		$filters = Request::all('search', 'trashed');
+		$filters = $request->all('search', 'trashed');
 
 
 		$query = $this->commonIndexLogic(Datespot::class, $filters);
@@ -45,7 +45,7 @@ class AdminDatespotController extends Controller
 					'id' => $datespot->id,
 					'name' => $datespot->name,
 					'city' => $datespot->city,
-					'type' => $firstTypeName ?? 'No Type', // Set a default value if no type is found
+					'type' => $firstTypeName ?? 'No Type',
 					'deleted_at' => $datespot->deleted_at,
 				];
 			});
@@ -62,7 +62,6 @@ class AdminDatespotController extends Controller
 	public function create() {
 		$this->authorize('create', Datespot::class);
 
-		// Display create form
 		return Inertia::render('Admin/Pages/Datespots/Create');
 	}
 
@@ -72,9 +71,9 @@ class AdminDatespotController extends Controller
 	public function store(Request $request) {
 		$this->authorize('create', Datespot::class);
 
-		// Validate request and store the new resource
 		$validatedData = $request->validate([
 			'name' => 'required|string',
+			'tagline' => 'required|string',
 			'email' => 'required|email',
 			'phone_number' => 'required|string',
 			'street_name' => 'required|string',
@@ -87,15 +86,13 @@ class AdminDatespotController extends Controller
 			'lng' => 'required|numeric',
 		]);
 
-		// Generate UUID for datespot_id
 		$validatedData['datespot_id'] = Str::uuid();
 
 		$datespot = Datespot::create($validatedData);
 
 
-		return Inertia::render('Admin/AdminDatespotsDetail', [
-			'datespot' => $datespot,
-		]);
+		return Inertia::render('DatespotDetails', ['datespot' => $datespot]);
+
 	}
 
 	/**
@@ -117,7 +114,7 @@ class AdminDatespotController extends Controller
 		$datespot = Datespot::withTrashed()
 			->with([
 				'user' => function ($query) {
-					$query->withTrashed(); // Load the associated User model with soft delete information if exists
+					$query->withTrashed();
 				}
 			])
 			->find($id);
@@ -137,7 +134,7 @@ class AdminDatespotController extends Controller
 
 		$this->authorize('update', $datespot);
 
-		Request::validate([
+		$validatedData = $request->validate([
 			'name' => 'required|string',
 			'email' => 'required|email',
 			'phone_number' => 'required|string',
@@ -151,16 +148,7 @@ class AdminDatespotController extends Controller
 			'lng' => 'required|numeric',
 		]);
 
-		$datespot->update(Request::only('name'));
-		$datespot->update(Request::only('email'));
-		$datespot->update(Request::only('phone_number'));
-		$datespot->update(Request::only('street_name'));
-		$datespot->update(Request::only('house_number'));
-		$datespot->update(Request::only('city'));
-		$datespot->update(Request::only('postal_code'));
-		$datespot->update(Request::only('website'));
-		$datespot->update(Request::only('lng'));
-		$datespot->update(Request::only('lat'));
+		$datespot->update($validatedData);
 
 
 		return Redirect::back()->with('success', 'Datespot updated.');
