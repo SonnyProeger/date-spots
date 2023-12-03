@@ -1,6 +1,12 @@
 // DatespotMixin.js
 
 export const DatespotDetailMixin = {
+
+    data() {
+        return {
+            enlargedImageUrl: ''
+        };
+    },
     methods: {
         getStaticMapUrl() {
             const baseUrl = 'https://maps.googleapis.com/maps/api/staticmap';
@@ -18,7 +24,13 @@ export const DatespotDetailMixin = {
             }
 
             return formattedItems.join(", ");
-        }
+        },
+        enlargeImage(url) {
+            this.enlargedImageUrl = url;
+        },
+        closeEnlargeImage() {
+            this.enlargedImageUrl = '';
+        },
     },
     computed: {
         formattedPosition() {

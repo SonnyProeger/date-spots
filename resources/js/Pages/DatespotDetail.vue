@@ -38,9 +38,12 @@ export default {
              'hidden md:block': index !== 0,
              'w-full': true,
              'h-64': true,
-             'object-cover': true
+             'object-cover': true,
+             'hover:cursor-pointer': true,
            }"
+						     @click="enlargeImage(item.original_url)"
 						>
+
 						<video v-else-if="item.collection_name === 'videos'"
 						       :src="item.original_url"
 						       controls
@@ -53,7 +56,11 @@ export default {
 						></video>
 					</template>
 				</div>
-
+				<div v-if="enlargedImageUrl !== ''"
+				     class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
+					<img :src="enlargedImageUrl" alt="Enlarged Image" @click="closeEnlargeImage"
+					     class="max-w-full max-h-full cursor-pointer">
+				</div>
 				<!--				mobile only!-->
 				<div class="md:hidden grid grid-cols-4 gap-4 bg-white p-4">
 					<!-- Phone -->
