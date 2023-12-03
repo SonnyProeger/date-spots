@@ -44,6 +44,7 @@ class UserDatespotService
 		$datespots = Datespot::withCount('reviews')
 			->addSelect(DB::raw("(SELECT COUNT(*) FROM datespots) AS all_datespots"))
 			->withAvg('reviews', 'rating')
+			->with('media')
 			->get()
 			->where('city', $city)
 			->map(function ($datespot) {
@@ -57,6 +58,7 @@ class UserDatespotService
 					'rating' => $avgRating,
 					'reviews_count' => $datespot->reviews_count,
 					'all_datespots' => $datespot->all_datespots,
+					'cover_image' => $datespot->getFirstMediaUrl('images'),
 				];
 			});
 		return $datespots;

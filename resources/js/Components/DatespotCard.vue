@@ -15,6 +15,9 @@ export default {
 		reviewsCount: Number,
 		rating: Number,
 	},
+	created() {
+		console.log(this.imageSrc)
+	},
 	data() {
 		return {
 			imageURL: 'https://lh3.googleusercontent.com/places/ANXAkqHMtdv-0Lgtb08rKatMMCJ97kCQnm0QlQAiOWNy90yhK7BWs7E3ATHnTs65S0Lt38ZV4hIEY0bIAW_eV9NgkDjnVWf80qvSCtc=s1600-w4032',
@@ -37,7 +40,7 @@ export default {
 			<div>
 				<!-- Spot Image-->
 				<img
-						:src="imageURL"
+						:src="imageSrc ? imageSrc : imageURL"
 						alt="Spot Image"
 						class="w-full h-32 object-cover rounded-t-lg"
 				/>

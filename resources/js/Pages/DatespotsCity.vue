@@ -13,6 +13,9 @@ export default {
 		city: String,
 		types: Object,
 	},
+	created() {
+		console.log(this.datespots[0])
+	},
 	methods: {
 		saveAndCloseFilter(types, categories, subcategories) {
 			const filterData = {
@@ -53,7 +56,7 @@ export default {
 							:datespot-id="datespot.id"
 							:datespot-name="datespot.name"
 							:datespot-tagline="datespot.tagline"
-							:image-src="datespot.photo_url"
+							:image-src="datespot.cover_image"
 							:city="datespot.city"
 							:rating="datespot.rating"
 							:reviews-count="datespot.reviews_count"
