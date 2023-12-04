@@ -1,11 +1,20 @@
 <template>
 	<div>
 		<Head :title="form.name"/>
-		<h1 class="mb-8 text-3xl font-bold">
-			<Link class="text-indigo-400 hover:text-indigo-600" :href="route('datespots.index')">Datespots</Link>
-			<span class="text-indigo-400 font-medium">/</span>
-			{{ form.name }}
-		</h1>
+		<div class="flex justify-between max-w-3xl">
+
+			<div>
+				<h1 class="mb-8 text-3xl font-bold">
+					<Link class="text-indigo-400 hover:text-indigo-600" :href="route('datespots.index')">Datespots</Link>
+					<span class="text-indigo-400 font-medium">/</span>
+					{{ form.name }}
+				</h1>
+			</div>
+			<div>
+				<Link class="btn-roseGold" :href="route('media.index', { datespot: datespot })">Media</Link>
+			</div>
+		</div>
+
 		<trashed-message v-if="datespot.deleted_at" class="mb-6" @restore="restore"> This datespot has been deleted.
 		</trashed-message>
 		<div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">

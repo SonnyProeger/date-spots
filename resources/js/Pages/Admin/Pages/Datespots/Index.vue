@@ -69,9 +69,13 @@ import mapValues from 'lodash/mapValues'
 import Pagination from '@/Pages/Admin/Shared/Pagination.vue'
 import SearchFilter from '@/Pages/Admin/Shared/SearchFilter.vue'
 import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
+import HighlightButton from "@/Pages/Admin/Shared/HighlightButton.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 export default {
 	components: {
+		PrimaryButton,
+		HighlightButton,
 		Head,
 		Icon,
 		Link,
