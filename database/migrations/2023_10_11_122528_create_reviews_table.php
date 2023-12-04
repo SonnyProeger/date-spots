@@ -11,13 +11,15 @@ return new class extends Migration {
 	public function up(): void {
 		Schema::create('reviews', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedBigInteger('user_id');
-			$table->unsignedBigInteger('datespot_id');
-			$table->text('content');
+			$table->foreignId('user_id')->constrained()->onDelete('cascade');
+			$table->foreignId('datespot_id')->constrained()->onDelete('cascade');
+			$table->text('comment');
 			$table->integer('rating');
 			$table->timestamps();
 			$table->softDeletes();
 
+			// Unique constraint to ensure a user can review a datespot only once
+			$table->unique(['user_id', 'datespot_id']);
 		});
 	}
 

@@ -24,7 +24,7 @@ class ReviewFactory extends Factory
 		return [
 			'user_id' => User::all()->random(),
 			'datespot_id' => Datespot::all()->random(),
-			'content' => $this->faker->paragraph,
+			'comment' => $this->faker->paragraph,
 			'rating' => $this->faker->numberBetween(1, 5),
 		];
 	}
