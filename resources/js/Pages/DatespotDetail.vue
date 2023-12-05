@@ -15,9 +15,6 @@ export default {
 		datespot: Object,
 	},
 	mixins: [DatespotDetailMixin],
-	created() {
-		console.log(this.datespot)
-	}
 }
 </script>
 

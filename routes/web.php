@@ -42,6 +42,11 @@ Route::get('/datespots/{city}', [DatespotController::class, 'showByLocation'])
 Route::post('/datespots/{city}', [DatespotController::class, 'filterByLocation'])
 	->name('user-datespot.filter-by-location');
 
+// User routes for reviews
+Route::get('/datespots/{datespotId}/reviews', 'ReviewController@index');
+Route::post('/datespots/{datespotId}/reviews', 'ReviewController@store');
+Route::delete('/datespots/{datespotId}/reviews/{reviewId}', 'ReviewController@destroy');
+
 
 // ADMIN
 Route::prefix('admin')->middleware([
@@ -93,8 +98,11 @@ Route::prefix('admin')->middleware([
 	Route::prefix('datespots/{datespot}')->group(function () {
 		Route::resource('media', DatespotMediaController::class);
 		Route::post('/media/highlight-media', [DatespotMediaController::class, 'updateHighlightStatus']);
-
 	});
+
+	// Admin Reviews
+	Route::resource('reviews', ReviewController::class);
+
 });
 
 

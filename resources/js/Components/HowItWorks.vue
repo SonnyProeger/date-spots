@@ -46,7 +46,7 @@ export default {
 
 				<StepCard
 						stepTitle="4. Leave a Review"
-						stepDescription="Share your experience and help others discover date spots."
+						stepDescription="Share your experience and help others discover Datespots."
 						iconSrc="/images/review.png"
 						altText="Review Icon"
 				></StepCard>

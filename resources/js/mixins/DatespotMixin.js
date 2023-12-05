@@ -33,7 +33,7 @@ export const DatespotDetailMixin = {
     },
     computed: {
         formattedPosition() {
-            return `<span class="font-bold">#${this.datespot.position}</span> of ${this.datespot.all_datespots} Date Spots in ${this.datespot.city}`;
+            return `<span class="font-bold">#${this.datespot.position}</span> of ${this.datespot.all_datespots} Datespots in ${this.datespot.city}`;
         },
         getDirectionsLink() {
             return `https://www.google.com/maps/dir/?api=1&destination=${this.datespot.lat},${this.datespot.lng}`;
@@ -51,7 +51,7 @@ export const DatespotDetailMixin = {
             return this.formatProperty(this.datespot.subcategories, 'Subcategory');
         },
         filteredItems() {
-            const highlightedItems = this.datespot.media.filter(item => item.is_highlighted === true);
+            const highlightedItems = this.datespot.media.filter(item => item.is_highlighted === 1);
             const highlightedUuids = highlightedItems.map(item => item.uuid);
 
             const firstThreeHighlightedItems = highlightedItems.slice(0, 3);

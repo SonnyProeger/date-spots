@@ -19,7 +19,7 @@ class UpdateDatespotRatings extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Recalculate and update average ratings for Date Spots';
+	protected $description = 'Recalculate and update average ratings for Datespots';
 
 	/**
 	 * Execute the console command.

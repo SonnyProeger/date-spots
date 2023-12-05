@@ -11,7 +11,7 @@ export default {
 <template>
 	<AdminAppLayout title="Dashboard">
 		<h1 class="mb-8 text-3xl font-bold">Dashboard</h1>
-		<p class="mb-8 leading-normal">Hey there! Welcome to Date Spots Admin Dashboard </p>
+		<p class="mb-8 leading-normal">Hey there! Welcome to Datespots Admin Dashboard </p>
 	</AdminAppLayout>
 </template>
 

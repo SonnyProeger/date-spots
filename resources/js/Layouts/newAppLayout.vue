@@ -60,7 +60,7 @@ export default {
 				<!-- Desktop Links -->
 				<div class="hidden md:block text-sm md:flex md:flex-row">
 					<Link :href="route('datespots')" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
-						Date Spots
+						Datespots
 					</Link>
 
 					<Link href="#" class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded">
@@ -142,7 +142,7 @@ export default {
 						:href="route('datespots')"
 						class="block mb-2 font-semibold text-white py-2 px-3 hover:bg-rose-700 bg-roseGold rounded cursor-pointer"
 				>
-					Date Spots
+					Datespots
 				</Link>
 
 				<Link
@@ -174,7 +174,7 @@ export default {
 	</div>
 	<!-- Footer Section -->
 	<footer class="py-4 text-center text-gray-500 text-sm bg-cream">
-		&copy; 2023 Date Spots. All rights reserved.
+		&copy; 2023 Datespots. All rights reserved.
 	</footer>
 </template>
 

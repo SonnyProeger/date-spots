@@ -147,7 +147,7 @@ export default {
 				<div class="p-4 md:pb-4 md:pt-2 flex justify-center">
 					<button @click="saveAndCloseFilter"
 					        class="w-full bg-roseGold text-white px-3 py-1 rounded hover:bg-rose-700">
-						Filter Date Spots
+						Filter Datespots
 					</button>
 				</div>
 			</div>
