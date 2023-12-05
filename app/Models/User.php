@@ -137,4 +137,18 @@ class User extends Authenticatable
 	public function isSuperAdmin() {
 		return $this->role->name === 'SuperAdmin';
 	}
+
+	protected static function booted() {
+		static::creating(function ($user) {
+			if (!$user->profile_photo_path) {
+				$nameInitials = collect(explode(' ', $user->name))
+					->map(fn($segment) => mb_substr($segment, 0, 1))
+					->join('');
+
+				$user->profile_photo_path = 'https://ui-avatars.com/api/?name='.
+					urlencode($nameInitials).'&color=7F9CF5&background=EBF4FF';
+			}
+		});
+	}
+
 }

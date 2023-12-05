@@ -31,13 +31,14 @@ export default {
 			<div v-for="(review, index) in reviews.data" :key="index" class="mb-6">
 				<div class="border border-gray-300 rounded-lg p-6">
 					<div class="border-b pb-3 mb-3">
+
 						<!-- user info-->
 						<div class="flex items-center gap-x-2">
 							<div class="rounded-full w-10 h-10 bg-cover bg-center overflow-hidden">
-								<img src="https://placehold.co/10" alt="Placeholder Image" class="w-full h-full object-cover"/>
+								<img :src="review.user.profile_photo_url" alt="Profile Image" class="w-full h-full object-cover"/>
 							</div>
 							<p class="font-sans">
-								<span class="font-extrabold">{{ review.user }}</span> wrote a review {{ review.created_on }}
+								<span class="font-extrabold">{{ review.user.name }}</span> wrote a review {{ review.created_on }}
 							</p>
 						</div>
 

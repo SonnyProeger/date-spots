@@ -22,8 +22,10 @@ class UserReviewService
 					'id' => $review->id,
 					'title' => $review->title,
 					'content' => $review->comment,
-					'user' => $review->user->name,
-					'rating' => $review->rating,
+					'user' => [
+						'name' => $review->user->name,
+						'profile_photo_url' => $review->user->profile_photo_path,
+					], 'rating' => $review->rating,
 					'date_visited' => $formattedDate,
 					'created_on' => $formattedCreatedOn,
 				];

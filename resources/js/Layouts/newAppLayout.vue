@@ -85,7 +85,7 @@ export default {
 						<template #trigger>
 							<button v-if="$page.props.jetstream.managesProfilePhotos"
 							        class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-rose-700 transition duration-300 ease-in-out transform hover:border-rose-700 hover:scale-105">
-								<img class="h-8 w-8 rounded-full object-cover" :src="$page.props.auth.user.profile_photo_url"
+								<img class="h-8 w-8 rounded-full object-cover" :src="$page.props.auth.user.profile_photo_path"
 								     :alt="$page.props.auth.user.name">
 							</button>
 
