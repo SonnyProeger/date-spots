@@ -6,13 +6,15 @@ import DatespotCard from "@/Components/DatespotCard.vue";
 import HeartRatingComponent from "@/Components/HeartRatingComponent.vue";
 import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
 import {Link} from "@inertiajs/vue3";
+import DatespotReview from "@/Components/DatespotReview.vue";
 
 
 export default {
 	name: "DatespotDetail",
-	components: {HeartRatingComponent, DatespotCard, Hero, NewAppLayout, DatespotDetailHeader, Link},
+	components: {DatespotReview, HeartRatingComponent, DatespotCard, Hero, NewAppLayout, DatespotDetailHeader, Link},
 	props: {
 		datespot: Object,
+		reviews: Object,
 	},
 	mixins: [DatespotDetailMixin],
 }
@@ -189,6 +191,11 @@ export default {
 							<div class="pl-2">Phone Number</div>
 						</a>
 					</div>
+				</div>
+
+				<!--reviews-->
+				<div class="bg-white">
+					<DatespotReview :reviews="reviews"></DatespotReview>
 				</div>
 			</div>
 		</div>

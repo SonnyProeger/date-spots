@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Review
@@ -53,4 +54,17 @@ class Review extends Model
 		return $this->belongsTo(Datespot::class);
 	}
 
+	public function getFormattedDate(): string {
+		$createdOn = Carbon::parse($this->created_at);
+
+		if ($createdOn->isToday()) {
+			return 'Today';
+		} elseif ($createdOn->isYesterday()) {
+			return 'Yesterday';
+		} elseif ($createdOn->isCurrentYear()) {
+			return $createdOn->format('j F');
+		} else {
+			return $createdOn->format('j F Y');
+		}
+	}
 }

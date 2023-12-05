@@ -16,6 +16,7 @@ class UserReviewService
 			->through(function ($review) {
 				$formattedDate = DateTime::createFromFormat('Y-m-d', $review->date_visited)
 					->format('F Y');
+				$formattedCreatedOn = $review->getFormattedDate();
 
 				return [
 					'id' => $review->id,
@@ -24,6 +25,7 @@ class UserReviewService
 					'user' => $review->user->name,
 					'rating' => $review->rating,
 					'date_visited' => $formattedDate,
+					'created_on' => $formattedCreatedOn,
 				];
 			});
 		return $reviews;
