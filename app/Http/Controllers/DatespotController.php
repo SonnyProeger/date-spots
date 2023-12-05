@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Datespot;
 use App\Models\Type;
 use App\Services\UserDatespotService;
+use App\Services\UserReviewService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -12,10 +13,12 @@ use Inertia\Inertia;
 class DatespotController extends Controller
 {
 
-	protected $datespotService;
+	private UserDatespotService $datespotService;
+	private UserReviewService $reviewService;
 
-	public function __construct(UserDatespotService $datespotService) {
+	public function __construct(UserDatespotService $datespotService, UserReviewService $userReviewService) {
 		$this->datespotService = $datespotService;
+		$this->reviewService = $userReviewService;
 	}
 
 	/**
@@ -36,6 +39,8 @@ class DatespotController extends Controller
 	function show($id, $name) {
 		$datespot = $this->datespotService->getDateSpotByIdAndName($id, $name);
 
+		$reviews = $this->reviewService->getAllReviewsForDatespot($id);
+
 		// Check if the name from the url matches the name in the database
 		if (!$datespot) {
 			return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
@@ -43,6 +48,7 @@ class DatespotController extends Controller
 
 		return Inertia::render('DatespotDetail', [
 			'datespot' => $datespot,
+			'reviews' => $reviews,
 		]);
 	}
 
@@ -54,8 +60,6 @@ class DatespotController extends Controller
 	public function showByLocation($city) {
 
 		$datespots = $this->datespotService->getDatespotsByLocation($city);
-
-
 		// Retrieve Types with associated Categories and Subcategories related to the given Datespots
 		$types = Type::with('categories.subcategories')->get();
 		return Inertia::render('DatespotsCity', [
