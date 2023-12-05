@@ -146,7 +146,7 @@ class User extends Authenticatable
 					->join('');
 
 				$user->profile_photo_path = 'https://ui-avatars.com/api/?name='.
-					urlencode($nameInitials).'&color=7F9CF5&background=EBF4FF';
+					urlencode($nameInitials).'&color=BE123B&background=DDBBC0';
 			}
 		});
 	}
