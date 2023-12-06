@@ -8,8 +8,7 @@ use Spatie\ResponseCache\CacheProfiles\CacheAllSuccessfulGetRequests;
 
 class InertiaResponseCacheProfile extends CacheAllSuccessfulGetRequests
 {
-	public function shouldCacheRequest(Request $request): bool
-	{
+	public function shouldCacheRequest(Request $request): bool {
 		if ($request->ajax() && $request->isMethod('get')) {
 			// Cache Inertia (= AJAX) GET requests!
 			return true;

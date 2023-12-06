@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Datespot;
+use App\Services\MediaLibrary\CustomPathGenerator;
+
 return [
 
 	/*
@@ -86,7 +89,7 @@ return [
 		// or
 		// 'model_morph_alias' => PathGenerator::class
 
-		\App\Models\Datespot::class => \App\Services\MediaLibrary\CustomPathGenerator::class,
+		Datespot::class => CustomPathGenerator::class,
 	],
 
 	/*

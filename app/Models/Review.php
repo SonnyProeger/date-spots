@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\ReviewFactory;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,11 +19,11 @@ use Illuminate\Support\Carbon;
  * @property int $datespot_id
  * @property string $content
  * @property int $rating
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Datespot|null $datespot
- * @property-read \App\Models\User $user
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Datespot|null $datespot
+ * @property-read User $user
  * @method static ReviewFactory factory($count = null, $state = [])
  * @method static Builder|Review newModelQuery()
  * @method static Builder|Review newQuery()
@@ -38,7 +39,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Review whereUserId($value)
  * @method static Builder|Review withTrashed()
  * @method static Builder|Review withoutTrashed()
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Review extends Model
 {

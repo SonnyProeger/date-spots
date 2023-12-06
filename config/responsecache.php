@@ -1,5 +1,10 @@
 <?php
 
+use App\Support\ResponseCache\InertiaResponseCacheHasher;
+use App\Support\ResponseCache\InertiaResponseCacheProfile;
+use Spatie\ResponseCache\Replacers\CsrfTokenReplacer;
+use Spatie\ResponseCache\Serializers\DefaultSerializer;
+
 return [
 	/*
 	 * Determine if the response cache middleware should be enabled.
@@ -13,7 +18,7 @@ return [
 	 *  You can provide your own class given that it implements the
 	 *  CacheProfile interface.
 	 */
-	'cache_profile' => \App\Support\ResponseCache\InertiaResponseCacheProfile::class,
+	'cache_profile' => InertiaResponseCacheProfile::class,
 
 	/*
 	 *  Optionally, you can specify a header that will force a cache bypass.
@@ -69,7 +74,7 @@ return [
 	 * Each replacer must implement the Replacer interface.
 	 */
 	'replacers' => [
-		\Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
+		CsrfTokenReplacer::class,
 	],
 
 	/*
@@ -85,10 +90,10 @@ return [
 	 * This class is responsible for generating a hash for a request. This hash
 	 * is used to look up a cached response.
 	 */
-	'hasher' => \App\Support\ResponseCache\InertiaResponseCacheHasher::class,
+	'hasher' => InertiaResponseCacheHasher::class,
 
 	/*
 	 * This class is responsible for serializing responses.
 	 */
-	'serializer' => \Spatie\ResponseCache\Serializers\DefaultSerializer::class,
+	'serializer' => DefaultSerializer::class,
 ];

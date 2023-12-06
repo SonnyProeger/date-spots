@@ -18,8 +18,7 @@ class CategoryFactory extends Factory
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function definition(): array
-	{
+	public function definition(): array {
 		$categoriesByType = [
 			'Food' => ['restaurant', 'cafe', 'coffee shops'],
 			'Outdoor' => [

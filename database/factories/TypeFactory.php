@@ -17,8 +17,7 @@ class TypeFactory extends Factory
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function definition(): array
-	{
+	public function definition(): array {
 
 		$types = [
 			'Food', 'Activities', 'Entertainment', 'Outdoor', 'Special Occasions',

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Response;
 
 class SharePermissions
@@ -16,7 +17,7 @@ class SharePermissions
 	/**
 	 * Handle an incoming request.
 	 *
-	 * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+	 * @param  Closure(Request): (Response)  $next
 	 */
 	public function handle(Request $request, Closure $next): Response {
 		$user = Auth::User();
@@ -45,7 +46,7 @@ class SharePermissions
 					return in_array($method, ['__construct', 'handleAuthorizationException']);
 				})
 				->mapWithKeys(function ($method) use ($policy, $user, $policyName) {
-					$methodParams = collect((new \ReflectionMethod($policy, $method))->getParameters())->count();
+					$methodParams = collect((new ReflectionMethod($policy, $method))->getParameters())->count();
 					if ($methodParams === 2) {
 						$model = $this->getPolicyModel($policy);
 						return [
