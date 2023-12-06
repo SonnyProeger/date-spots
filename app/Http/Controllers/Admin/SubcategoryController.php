@@ -38,7 +38,6 @@ class SubcategoryController extends Controller
 					'deleted_at' => $subcategory->deleted_at,
 				];
 			});
-//		dd($subcategories);
 
 		return Inertia::render('Admin/Pages/Subcategories/Index', [
 			'subcategories' => $subcategories,

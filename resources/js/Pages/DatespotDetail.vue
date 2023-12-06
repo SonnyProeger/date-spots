@@ -31,7 +31,7 @@ export default {
 				<div class="h-1/4 md:pb-2 md:pt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-0.5">
 					<template v-for="(item, index) in filteredItems" :key="index">
 						<img v-if="item.collection_name === 'images'"
-						     :src="item.original_url"
+						     :src="item.temporary_url"
 						     :alt="'Image ' + (index + 1)"
 						     :class="{
              'hidden md:block': index !== 0,
@@ -40,11 +40,11 @@ export default {
              'object-cover': true,
              'hover:cursor-pointer': true,
            }"
-						     @click="enlargeImage(item.original_url)"
+						     @click="enlargeImage(item.temporary_url)"
 						>
 
 						<video v-else-if="item.collection_name === 'videos'"
-						       :src="item.original_url"
+						       :src="item.temporary_url"
 						       controls
 						       :class="{
                'hidden md:block': index !== 0,

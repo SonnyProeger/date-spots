@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Datespot;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class DatespotMediaController extends Controller
@@ -18,15 +19,15 @@ class DatespotMediaController extends Controller
 		$media = $datespot->getMedia('*')->map(function ($item) {
 			return [
 				'id' => $item->id,
-				'url' => $item->original_url,
-				'thumb' => $item->getUrl('thumb'),
-				'tiny' => $item->getUrl('tiny'),
+				'url' => $item->getTemporaryUrl(Carbon::now()->addMinutes(5)),
+				'thumb' => $item->getTemporaryUrl(Carbon::now()->addMinutes(5), 'thumb'),
+				'tiny' => $item->getTemporaryUrl(Carbon::now()->addMinutes(5), 'tiny'),
 				'size' => $item->human_readable_size,
 				'mime' => $item->mime_type,
 				'type' => $item->type,
 				'isHighlighted' => $item->is_highlighted,
 			];
-		});;
+		});
 
 		return Inertia::render('Admin/Pages/Media/Index', [
 			'datespot' => $datespot,
@@ -43,22 +44,22 @@ class DatespotMediaController extends Controller
 		]);
 	}
 
+	/**
+	 * @throws FileDoesNotExist
+	 * @throws FileIsTooBig
+	 */
 	public function store(Request $request, $id) {
 		$datespot = Datespot::findOrFail($id);
 
 		$request->validate([
-			'file' => 'required|file|max:2048',
+			'file' => 'required|file|max:4096',
 		]);
 
 		$file = $request->file('file');
 
-		Storage::put('file.jpg', $file);
-
 
 		$extension = $file->getClientOriginalExtension();
 
-		// Generate a unique filename using UUID
-		$uniqueFileName = Str::uuid()->toString().'.'.$extension;
 
 		// Determine whether the file is an image or video based on the extension
 		if (in_array($extension, ['jpeg', 'png'])) {
@@ -69,9 +70,8 @@ class DatespotMediaController extends Controller
 			return Redirect::back()->with('error', 'Unsupported file type.');
 		}
 
-
-		$path = $file->storeAs("media/{$datespot->datespot_id}/$directory", $uniqueFileName);
-		$datespot->addMediaFromRequest('file')->toMediaCollection($directory);
+		$datespot->addMediaFromRequest('file')
+			->toMediaCollection($directory, 's3');
 
 		return Redirect::back()->with('success', 'Media successfully uploaded.');
 

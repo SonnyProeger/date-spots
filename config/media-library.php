@@ -85,6 +85,8 @@ return [
 		// Model::class => PathGenerator::class
 		// or
 		// 'model_morph_alias' => PathGenerator::class
+
+		\App\Models\Datespot::class => \App\Services\MediaLibrary\CustomPathGenerator::class,
 	],
 
 	/*

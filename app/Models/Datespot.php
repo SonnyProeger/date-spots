@@ -146,4 +146,13 @@ class Datespot extends Model implements hasMedia
 			->height(64)
 			->sharpen(10);
 	}
+
+	public function registerMediaCollections(): void {
+		$this->addMediaCollection('images')
+			->useDisk('s3');
+
+		// Define a collection for videos
+		$this->addMediaCollection('videos')
+			->useDisk('s3');
+	}
 }

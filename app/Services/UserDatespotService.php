@@ -10,6 +10,7 @@ use App\Models\Type;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class UserDatespotService
@@ -37,6 +38,11 @@ class UserDatespotService
 
 		$datespot->rating = $avgRating;
 
+		foreach ($datespot->media as $mediaItem) {
+			$temporaryUrl = $mediaItem->getTemporaryUrl(Carbon::now()->addMinutes(5));
+			$mediaItem->temporary_url = $temporaryUrl;
+		}
+
 		return $datespot;
 	}
 
@@ -58,7 +64,7 @@ class UserDatespotService
 					'rating' => $avgRating,
 					'reviews_count' => $datespot->reviews_count,
 					'all_datespots' => $datespot->all_datespots,
-					'cover_image' => $datespot->getFirstMediaUrl('images'),
+					'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
 				];
 			});
 		return $datespots;
