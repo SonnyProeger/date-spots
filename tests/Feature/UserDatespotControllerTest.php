@@ -24,10 +24,8 @@ class UserDatespotControllerTest extends TestCase
 
 	/** @test */
 	public function testDatespotIndex() {
-		// Creating mock data using factories (adjust this based on your Datespot model structure)
 		Datespot::factory()->count(5)->create();
 
-		// Hit the route associated with the index() method
 		$response = $this->get('/datespots');
 
 		$response->assertOk();
