@@ -23,14 +23,12 @@ class AddressControllerTest extends TestCase
 		$postalCode = '1234pe';
 		$houseNumber = '301';
 
-		// Hit the getAddressDetails endpoint with mocked data
 		$response = $this->get('/api/getAddressDetails', [
 			'postal_code' => $postalCode,
 			'house_number' => $houseNumber,
 		]);
 
 
-		// Assert the response status and content
 		$response->assertStatus(200)
 			->assertJson([
 				'street' => 'Sample Street',
@@ -39,7 +37,6 @@ class AddressControllerTest extends TestCase
 	}
 
 	public function testGetAddressDetailsFailed() {
-		// Mocking the API response for a failed request
 		Http::fake([
 			'*' => Http::response(['error' => 'Failed to fetch address details'], 404),
 		]);
@@ -47,13 +44,11 @@ class AddressControllerTest extends TestCase
 		$postalCode = '1102pe';
 		$houseNumber = 301;
 
-		// Hit the getAddressDetails endpoint with mocked data
 		$response = $this->get('/api/getAddressDetails', [
 			'postal_code' => $postalCode,
 			'house_number' => $houseNumber,
 		]);
 
-		// Assert the response status and error message
 		$response->assertStatus(404)
 			->assertJson(['error' => 'Failed to fetch address details']);
 	}
