@@ -7,8 +7,8 @@ use App\Http\Controllers\Admin\DatespotMediaController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\DatespotController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserDatespotController;
 use App\Http\Middleware\SharePermissions;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,13 +33,13 @@ Route::get('/datespots', function () {
 	return Inertia::render('Datespots');
 })->name('datespots');
 
-Route::get('/datespots/{id}-{name}', [DatespotController::class, 'show'])
+Route::get('/datespots/{id}-{name}', [UserDatespotController::class, 'show'])
 	->name('user-datespots.show');
 
-Route::get('/datespots/{city}', [DatespotController::class, 'showByLocation'])
+Route::get('/datespots/{city}', [UserDatespotController::class, 'showByLocation'])
 	->name('user-datespot.show-by-location');
 
-Route::post('/datespots/{city}', [DatespotController::class, 'filterByLocation'])
+Route::post('/datespots/{city}', [UserDatespotController::class, 'filterByLocation'])
 	->name('user-datespot.filter-by-location');
 
 // User routes for reviews
