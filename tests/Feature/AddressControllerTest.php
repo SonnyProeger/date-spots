@@ -11,7 +11,7 @@ class AddressControllerTest extends TestCase
 
 	use RefreshDatabase;
 
-	public function testGetAddressDetailsSuccess() {
+	public function test_get_address_details_success_test() {
 		Http::fake([
 			'*' => Http::response([
 				'street' => 'Sample Street',
@@ -36,7 +36,7 @@ class AddressControllerTest extends TestCase
 			]);
 	}
 
-	public function testGetAddressDetailsFailed() {
+	public function test_get_address_details_failed_test() {
 		Http::fake([
 			'*' => Http::response(['error' => 'Failed to fetch address details'], 404),
 		]);
