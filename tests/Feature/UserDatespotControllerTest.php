@@ -22,11 +22,10 @@ class UserDatespotControllerTest extends TestCase
 		$this->types = Type::with('categories.subcategories')->get();
 	}
 
-	/** @test */
-	public function testDatespotIndex() {
+	public function test_it_displays_datespot_index_page() {
 		Datespot::factory()->count(5)->create();
 
-		$response = $this->get('/datespots');
+		$response = $this->get(route('datespots'));
 
 		$response->assertOk();
 		$response->assertInertia(fn($assert) => $assert
@@ -34,7 +33,7 @@ class UserDatespotControllerTest extends TestCase
 		);
 	}
 
-	public function testDatespotShow() {
+	public function test_it_displays_datespot_details_page() {
 
 		$response = $this->get("/datespots/{$this->datespot->id}-{$this->datespot->name}");
 
@@ -46,7 +45,7 @@ class UserDatespotControllerTest extends TestCase
 		);
 	}
 
-	public function testDatespotShowByLocation() {
+	public function test_it_displays_datespots_for_specific_location() {
 		$city = $this->datespot->city;
 
 		$response = $this->get("/datespots/{$city}");
@@ -60,7 +59,7 @@ class UserDatespotControllerTest extends TestCase
 		);
 	}
 
-	public function testDatespotFilterByLocation() {
+	public function test_it_filters_datespots_by_location_and_types() {
 		$city = $this->datespot->city;
 
 
