@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -26,7 +27,7 @@ class UserFactory extends Factory
 			'two_factor_recovery_codes' => null,
 			'remember_token' => Str::random(10),
 			'profile_photo_path' => null,
-			'role_id' => rand(1, 4),
+			'role_id' => Role::inRandomOrder()->first()->id, // Fetch an existing role_id
 		];
 	}
 

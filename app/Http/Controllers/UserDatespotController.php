@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class DatespotController extends Controller
+class UserDatespotController extends Controller
 {
 
 	private UserDatespotService $datespotService;
@@ -41,7 +41,6 @@ class DatespotController extends Controller
 
 		$reviews = $this->reviewService->getAllReviewsForDatespot($id);
 
-		// Check if the name from the url matches the name in the database
 		if (!$datespot) {
 			return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
 		}
@@ -60,6 +59,7 @@ class DatespotController extends Controller
 	public function showByLocation($city) {
 
 		$datespots = $this->datespotService->getDatespotsByLocation($city);
+
 		// Retrieve Types with associated Categories and Subcategories related to the given Datespots
 		$types = Type::with('categories.subcategories')->get();
 		return Inertia::render('DatespotsCity', [
