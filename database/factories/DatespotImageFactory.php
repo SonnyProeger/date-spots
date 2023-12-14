@@ -21,7 +21,6 @@ class DatespotImageFactory extends Factory
 	public function definition(): array {
 		return [
 			'url' => "https://placehold.co/600x400",
-
 		];
 	}
 }

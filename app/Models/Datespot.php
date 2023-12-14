@@ -107,11 +107,8 @@ class Datespot extends Model implements hasMedia
 		'province',
 		'country',
 		'phone_number',
-		'business_status',
 		'website',
 		'email',
-		'open_now',
-		'icon_url',
 		'position',
 	];
 

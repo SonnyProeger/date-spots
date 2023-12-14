@@ -27,7 +27,7 @@ class UserFactory extends Factory
 			'two_factor_recovery_codes' => null,
 			'remember_token' => Str::random(10),
 			'profile_photo_path' => null,
-			'role_id' => Role::inRandomOrder()->first()->id, // Fetch an existing role_id
+			'role_id' => Role::inRandomOrder()->first()->id,
 		];
 	}
 
@@ -38,6 +38,50 @@ class UserFactory extends Factory
 		return $this->state(function (array $attributes) {
 			return [
 				'email_verified_at' => null,
+			];
+		});
+	}
+
+	public function superAdmin(): static {
+		return $this->state(function (array $attributes) {
+			return [
+				'role_id' => Role::where('id', '1')->firstOrCreate([
+					'id' => 1,
+					'name' => 'SuperAdmin'
+				]),
+			];
+		});
+	}
+
+	public function admin(): static {
+		return $this->state(function (array $attributes) {
+			return [
+				'role_id' => Role::where('id', '2')->firstOrCreate([
+					'id' => 2,
+					'name' => 'Admin'
+				]),
+			];
+		});
+	}
+
+	public function company(): static {
+		return $this->state(function (array $attributes) {
+			return [
+				'role_id' => Role::where('id', '3')->firstOrCreate([
+					'id' => 3,
+					'name' => 'Company'
+				]),
+			];
+		});
+	}
+
+	public function user(): static {
+		return $this->state(function (array $attributes) {
+			return [
+				'role_id' => Role::where('id', '4')->firstOrCreate([
+					'id' => 4,
+					'name' => 'User'
+				]),
 			];
 		});
 	}

@@ -28,8 +28,8 @@
 					            label="Website"/>
 					<text-input v-model="form.postal_code" :error="form.errors.postal_code" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Postal code"/>
-					<text-input v-model="form.house_number" :error="form.errors.house_number" class="pb-8 pr-6 w-full lg:w-1/2"
-					            label="House number"/>
+					<number-input v-model="form.house_number" :error="form.errors.house_number" class="pb-8 pr-6 w-full lg:w-1/2"
+					              label="House number"/>
 
 					<text-input v-model="form.street_name" :error="form.errors.street_name" class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Street name" :disabled="true"/>
@@ -93,9 +93,11 @@ import LoadingButton from '@/Pages/Admin/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Pages/Admin/Shared/TrashedMessage.vue'
 import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
 import _ from 'lodash';
+import NumberInput from "@/Pages/Admin/Shared/NumberInput.vue";
 
 export default {
 	components: {
+		NumberInput,
 		Head,
 		Icon,
 		Link,

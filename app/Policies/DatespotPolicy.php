@@ -23,7 +23,7 @@ class DatespotPolicy
 	 * Determine whether the user can view any models.
 	 */
 	public function viewAny(User $user): bool {
-		return $user->role->name === 'Admin';
+		return $user->role->name === 'Admin' || $user->role->name === 'Company';
 	}
 
 	/**
@@ -58,7 +58,7 @@ class DatespotPolicy
 			return true;
 		}
 
-		if ($user->role->name === 'Company' && $user->id === $datespot->company_id) {
+		if ($user->role->name === 'Company' && $user->id === $datespot->user_id) {
 			return true;
 		}
 

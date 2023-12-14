@@ -26,17 +26,14 @@ class AdminDatespotController extends Controller
 		$filters = $request->all('search', 'trashed');
 
 
-		$query = $this->commonIndexLogic(Datespot::class, $filters);
-
-		if ($user->role_id === 3) {
-			// Company can only see their own datespot
-			$query->whereIn('user_id', $user->id);
-		}
+		$userRoleID = $user->role_id;
 
 		$datespots = Datespot::select('datespots.id', 'datespots.name', 'datespots.city', 'datespots.deleted_at')
-			->with(
-				'types'
-			)
+			->with('types')
+			->when($userRoleID === 3, function ($query) use ($user) {
+				// For Company users, limit to their own datespots
+				return $query->where('user_id', $user->id);
+			})
 			->paginate(10)
 			->withQueryString()
 			->through(function ($datespot) {
@@ -49,6 +46,7 @@ class AdminDatespotController extends Controller
 					'deleted_at' => $datespot->deleted_at,
 				];
 			});
+
 
 		return Inertia::render('Admin/Pages/Datespots/Index', [
 			'filters' => $filters,
@@ -72,12 +70,13 @@ class AdminDatespotController extends Controller
 		$this->authorize('create', Datespot::class);
 
 		$validatedData = $request->validate([
+			'datespot_id' => 'string',
 			'name' => 'required|string',
 			'tagline' => 'required|string',
 			'email' => 'required|email',
 			'phone_number' => 'required|string',
 			'street_name' => 'required|string',
-			'house_number' => 'required|string',
+			'house_number' => 'required|numeric',
 			'city' => 'required|string',
 			'province' => 'required|string',
 			'postal_code' => 'required|string',
@@ -86,25 +85,14 @@ class AdminDatespotController extends Controller
 			'lng' => 'required|numeric',
 		]);
 
-		$validatedData['datespot_id'] = Str::uuid();
+		if ($validatedData['datespot_id'] === null) {
+			$validatedData['datespot_id'] = Str::uuid();
+		}
 
-		$datespot = Datespot::create($validatedData);
+		Datespot::create($validatedData);
 
+		return Redirect::route('datespots.index')->with('success', 'Datespot created.');
 
-		return Inertia::render('DatespotDetails', ['datespot' => $datespot]);
-
-	}
-
-	/**
-	 * Display the specified resource.
-	 */
-	public function show(string $id) {
-		$datespot = Datespot::query()->findOrFail($id);
-
-		$this->authorize('view', $datespot);
-
-
-		return Inertia::render('DatespotDetails', ['datespot' => $datespot]);
 	}
 
 	/**
@@ -139,7 +127,7 @@ class AdminDatespotController extends Controller
 			'email' => 'required|email',
 			'phone_number' => 'required|string',
 			'street_name' => 'required|string',
-			'house_number' => 'required|string',
+			'house_number' => 'required|numeric',
 			'city' => 'required|string',
 			'province' => 'required|string',
 			'postal_code' => 'required|string',
@@ -149,7 +137,6 @@ class AdminDatespotController extends Controller
 		]);
 
 		$datespot->update($validatedData);
-
 
 		return Redirect::back()->with('success', 'Datespot updated.');
 	}
@@ -165,6 +152,12 @@ class AdminDatespotController extends Controller
 
 		$datespot->delete();
 
-		return redirect()->route('datespots.index');
+		return Redirect::route('datespots.index')->with('success', "$datespot->name deleted.");
+	}
+
+	public function restore(Datespot $datespot) {
+		$this->authorize('restore', $datespot);
+		$datespot->restore();
+		return Redirect::back()->with('success', 'Datespot restored.');
 	}
 }
