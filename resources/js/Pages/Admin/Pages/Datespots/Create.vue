@@ -23,9 +23,9 @@
 					<text-input id="postal_code" v-model="form.postal_code" :error="form.errors.postal_code"
 					            class="pb-8 pr-6 w-full lg:w-1/2"
 					            label="Postal code"/>
-					<text-input id="house_number" v-model="form.house_number" :error="form.errors.house_number"
-					            class="pb-8 pr-6 w-full lg:w-1/2"
-					            label="House number"/>
+					<number-input id="house_number" v-model="form.house_number" :error="form.errors.house_number"
+					              class="pb-8 pr-6 w-full lg:w-1/2"
+					              label="House number"/>
 
 					<text-input id="street_name" v-model="form.street_name" :error="form.errors.street_name"
 					            class="pb-8 pr-6 w-full lg:w-1/2"
@@ -57,9 +57,11 @@ import TrashedMessage from '@/Pages/Admin/Shared/TrashedMessage.vue'
 import AdminAppLayout from "@/Pages/Admin/AdminAppLayout.vue";
 import _ from 'lodash';
 import TextareaInput from "@/Pages/Admin/Shared/TextareaInput.vue";
+import NumberInput from "@/Pages/Admin/Shared/NumberInput.vue";
 
 export default {
 	components: {
+		NumberInput,
 		TextareaInput,
 		Head,
 		Icon,
@@ -94,7 +96,7 @@ export default {
 				email: '',
 				phone_number: '',
 				street_name: '',
-				house_number: '',
+				house_number: null,
 				city: '',
 				province: '',
 				postal_code: '',

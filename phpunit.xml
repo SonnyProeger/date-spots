@@ -12,9 +12,15 @@
             <directory>tests/Feature</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <report>
+            <html outputDirectory="./public/coverage"/>
+            <clover outputFile="./clover.xml"/>
+        </report>
+    </coverage>
     <source>
         <include>
-            <directory>app</directory>
+            <directory suffix=".php">./app</directory>
         </include>
     </source>
     <php>

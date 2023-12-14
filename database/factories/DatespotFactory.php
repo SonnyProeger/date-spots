@@ -41,9 +41,6 @@ class DatespotFactory extends Factory
 			'phone_number' => $faker->phoneNumber,
 			'website' => $faker->url,
 			'email' => $faker->email,
-			'business_status' => $faker->randomElement(['OPERATIONAL', 'CLOSED']),
-			'open_now' => $faker->boolean,
-			'icon_url' => $faker->imageUrl(),
 		];
 	}
 }
