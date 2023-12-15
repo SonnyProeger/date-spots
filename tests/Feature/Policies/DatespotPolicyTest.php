@@ -4,18 +4,20 @@ namespace Feature\Policies;
 
 use App\Models\Datespot;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class DatespotPolicyTest extends TestCase
 {
+	use RefreshDatabase;
+
 	public function test_super_admin_can_access_all_datespot_policies() {
 		$superAdmin = User::factory()->superAdmin()->make();
-		$datespot = Datespot::factory()->make();
 
 		$this->assertTrue($superAdmin->can('viewAny', Datespot::class));
-		$this->assertTrue($superAdmin->can('view', $datespot));
+		$this->assertTrue($superAdmin->can('view', Datespot::class));
 		$this->assertTrue($superAdmin->can('create', Datespot::class));
-		$this->assertTrue($superAdmin->can('update', $datespot));
+		$this->assertTrue($superAdmin->can('update', Datespot::class));
 		$this->assertTrue($superAdmin->can('delete', Datespot::class));
 		$this->assertTrue($superAdmin->can('restore', Datespot::class));
 		$this->assertTrue($superAdmin->can('forceDelete', Datespot::class));
