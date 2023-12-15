@@ -28,12 +28,11 @@ class UserPolicy
 	 * Determine whether the user can view the model.
 	 */
 	public function view(User $user, User $model): bool {
-		//
 		if ($model->role) {
-			if ($user->role->name !== 'Superadmin' && $model->role->name === 'Superadmin') {
+			if ($user->role->name !== 'SuperAdmin' && $model->role->name === 'SuperAdmin') {
 				return false;
 			}
-			if ($user->role->name !== 'Superadmin' && $model->role->name === 'Admin') {
+			if ($user->role->name !== 'SuperAdmin' && $model->role->name === 'Admin') {
 				return false;
 			}
 		}
@@ -45,7 +44,6 @@ class UserPolicy
 	 * Determine whether the user can create models.
 	 */
 	public function create(User $user): bool {
-		//
 		return $user->role->name === 'Admin';
 	}
 
@@ -53,7 +51,6 @@ class UserPolicy
 	 * Determine whether the user can update the model.
 	 */
 	public function update(User $user, User $model): bool {
-
 		if ($model->role !== null && $model->role->name !== null) {
 			$targetUserRole = $model->role->name;
 			$authenticatedUserRole = $user->role->name;
@@ -73,34 +70,27 @@ class UserPolicy
 				return true;
 			}
 		}
-
 		return false;
 	}
 
 	/**
 	 * Determine whether the user can delete the model.
 	 */
-	public function delete(User $user, User $model): bool {
-		//
+	public function delete(User $user): bool {
 		return $user->role->name === 'Admin';
-
 	}
 
 	/**
 	 * Determine whether the user can restore the model.
 	 */
-	public function restore(User $user, User $model): bool {
-
+	public function restore(User $user): bool {
 		return $user->role->name === 'Admin';
-
 	}
 
 	/**
 	 * Determine whether the user can permanently delete the model.
 	 */
-	public function forceDelete(User $user, User $model): bool {
-
+	public function forceDelete(User $user): bool {
 		return $user->role->name === 'Admin';
-
 	}
 }

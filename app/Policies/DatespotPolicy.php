@@ -35,7 +35,7 @@ class DatespotPolicy
 			return true;
 		}
 
-		if ($user->role->name === 'Company' && $user->id === $datespot->company_id) {
+		if ($user->role->name === 'Company' && $user->id === $datespot->user_id) {
 			return true;
 		}
 
@@ -68,12 +68,8 @@ class DatespotPolicy
 	/**
 	 * Determine whether the user can delete the model.
 	 */
-	public function delete(User $user, Datespot $datespot): bool {
+	public function delete(User $user): bool {
 		if ($user->role->name === 'Admin') {
-			return true;
-		}
-
-		if ($user->role->name === 'Company' && $user->id === $datespot->company_id) {
 			return true;
 		}
 
@@ -83,7 +79,7 @@ class DatespotPolicy
 	/**
 	 * Determine whether the user can restore the model.
 	 */
-	public function restore(User $user, Datespot $datespot): bool {
+	public function restore(User $user): bool {
 		return $user->role->name === 'Admin';
 
 	}
@@ -91,7 +87,7 @@ class DatespotPolicy
 	/**
 	 * Determine whether the user can permanently delete the model.
 	 */
-	public function forceDelete(User $user, Datespot $datespot): bool {
+	public function forceDelete(User $user): bool {
 		return $user->role->name === 'Admin';
 
 	}
