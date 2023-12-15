@@ -26,11 +26,11 @@ class AdminDatespotController extends Controller
 		$filters = $request->all('search', 'trashed');
 
 
-		$userRoleID = $user->role_id;
+		$userRole = $user->role->name;
 
 		$datespots = Datespot::select('datespots.id', 'datespots.name', 'datespots.city', 'datespots.deleted_at')
 			->with('types')
-			->when($userRoleID === 3, function ($query) use ($user) {
+			->when($userRole === 'Company', function ($query) use ($user) {
 				// For Company users, limit to their own datespots
 				return $query->where('user_id', $user->id);
 			})
