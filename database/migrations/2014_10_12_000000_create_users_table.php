@@ -17,7 +17,7 @@ return new class extends Migration {
 			$table->string('password');
 			$table->rememberToken();
 			$table->string('profile_photo_path', 2048)->nullable();
-			$table->foreignId('role_id')->nullable()->default(4)->constrained();
+			$table->foreignId('role_id')->nullable()->constrained();
 			$table->timestamps();
 			$table->softDeletes();
 		});

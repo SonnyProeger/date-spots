@@ -14,12 +14,7 @@ class CheckRole
 	 * @param  Closure(Request): (Response)  $next
 	 */
 	public function handle(Request $request, Closure $next, ...$roles): Response {
-		$rolesMapping = [
-			'SuperAdmin' => 1,
-			'Admin' => 2,
-			'Company' => 3,
-			'User' => 4,
-		];
+		$allowedRoles = ['SuperAdmin', 'Admin', 'Company', 'User'];
 
 		$user = auth()->user();
 
@@ -27,14 +22,13 @@ class CheckRole
 			abort(403);
 		}
 
-		$allowedRoleIds = collect($roles)
-			->filter(function ($role) use ($rolesMapping) {
-				return isset($rolesMapping[$role]);
+		$rolesToCheck = collect($roles)
+			->filter(function ($role) use ($allowedRoles) {
+				return in_array($role, $allowedRoles);
 			})
-			->map(fn($role) => $rolesMapping[$role])
 			->toArray();
 
-		if (empty($allowedRoleIds) || !in_array($user->role_id, $allowedRoleIds)) {
+		if (empty($rolesToCheck) || !in_array($user->role->name, $rolesToCheck)) {
 			abort(403);
 		}
 

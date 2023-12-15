@@ -27,13 +27,12 @@ class UserFactory extends Factory
 			'two_factor_recovery_codes' => null,
 			'remember_token' => Str::random(10),
 			'profile_photo_path' => null,
-			'role_id' => Role::inRandomOrder()->first()->id,
+			'role_id' => function () {
+				return Role::inRandomOrder()->firstOrCreate(['name' => 'User'])->id;
+			},
 		];
 	}
 
-	/**
-	 * Indicate that the model's email address should be unverified.
-	 */
 	public function unverified(): static {
 		return $this->state(function (array $attributes) {
 			return [
@@ -45,10 +44,7 @@ class UserFactory extends Factory
 	public function superAdmin(): static {
 		return $this->state(function (array $attributes) {
 			return [
-				'role_id' => Role::where('id', '1')->firstOrCreate([
-					'id' => 1,
-					'name' => 'SuperAdmin'
-				]),
+				'role_id' => Role::firstOrCreate(['name' => 'SuperAdmin'])->id,
 			];
 		});
 	}
@@ -56,10 +52,7 @@ class UserFactory extends Factory
 	public function admin(): static {
 		return $this->state(function (array $attributes) {
 			return [
-				'role_id' => Role::where('id', '2')->firstOrCreate([
-					'id' => 2,
-					'name' => 'Admin'
-				]),
+				'role_id' => Role::firstOrCreate(['name' => 'Admin'])->id,
 			];
 		});
 	}
@@ -67,10 +60,7 @@ class UserFactory extends Factory
 	public function company(): static {
 		return $this->state(function (array $attributes) {
 			return [
-				'role_id' => Role::where('id', '3')->firstOrCreate([
-					'id' => 3,
-					'name' => 'Company'
-				]),
+				'role_id' => Role::firstOrCreate(['name' => 'Company'])->id,
 			];
 		});
 	}
@@ -78,10 +68,7 @@ class UserFactory extends Factory
 	public function user(): static {
 		return $this->state(function (array $attributes) {
 			return [
-				'role_id' => Role::where('id', '4')->firstOrCreate([
-					'id' => 4,
-					'name' => 'User'
-				]),
+				'role_id' => Role::firstOrCreate(['name' => 'User'])->id,
 			];
 		});
 	}

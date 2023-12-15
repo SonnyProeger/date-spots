@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use App\Traits\CrudOperationsTrait;
 use Illuminate\Support\Facades\Auth;
@@ -27,10 +28,12 @@ class UserController extends Controller
 
 		$query = $this->commonIndexLogic(User::class, $filters);
 
-
-		if ($user->role_id === 2) {
+		if ($user->role->name === 'Admin') {
 			// Admin can only view 'users' and 'companies'
-			$query->whereIn('role_id', [3, 4]);
+			$companyRoleId = Role::where('name', 'Company')->id;
+			$userRoleId = Role::where('name', 'User')->id;
+
+			$query->whereIn('role_id', [$companyRoleId, $userRoleId]);
 		}
 
 		$users = $query->with(['role:id'])

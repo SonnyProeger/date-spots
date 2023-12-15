@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -19,8 +20,17 @@ class UsersTableSeeder extends Seeder
 			User::factory()->create(['role_id' => $role->id]);
 		}
 
-		// Create additional random users (if needed)
-		$randomUsersCount = 15; // Adjust this count based on the total desired users
+		User::factory()->create([
+			'name' => 'admin',
+			'email' => 'admin@example.com',
+			'password' => Hash::make('password'),
+			'role_id' => Role::firstOrCreate(['name' => 'SuperAdmin'])->id,
+		]);
+
+		// Create additional random users
+		$randomUsersCount = 15;
 		User::factory($randomUsersCount)->create();
+
+
 	}
 }
