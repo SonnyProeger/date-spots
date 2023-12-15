@@ -36,5 +36,9 @@ class Role extends Model
 	use SoftDeletes;
 
 
-	protected $fillable = ['name'];
+	protected $fillable = ['id', 'name'];
+
+	public function getId(): int {
+		return $this->id;
+	}
 }
