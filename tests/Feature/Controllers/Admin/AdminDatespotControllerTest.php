@@ -3,28 +3,18 @@
 namespace Feature\Controllers\Admin;
 
 use App\Models\Datespot;
-use App\Models\Role;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AdminDatespotControllerTest extends TestCase
 {
 
-	use DatabaseMigrations;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		Role::create(['name' => 'SuperAdmin']);
-		Role::create(['name' => 'Admin']);
-		Role::create(['name' => 'Company']);
-		Role::create(['name' => 'User']);
-	}
+	use RefreshDatabase;
 
 	// SuperAdmin
 	public function test_super_admin_can_view_datespots_index() {
-		$superAdmin = User::factory()->superAdmin()->create();
+		$superAdmin = User::factory()->superAdmin()->make();
 		$this->actingAs($superAdmin);
 
 		$response = $this->get(route('datespots.index'));
@@ -35,8 +25,8 @@ class AdminDatespotControllerTest extends TestCase
 		);
 	}
 
-	public function test_super_admin_can_view_create() {
-		$superAdmin = User::factory()->superAdmin()->create();
+	public function test_super_admin_can_view_make() {
+		$superAdmin = User::factory()->superAdmin()->make();
 		$this->actingAs($superAdmin);
 
 		$response = $this->get(route('datespots.create'));
@@ -47,7 +37,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_super_admin_can_store_datespot() {
-		$superAdmin = User::factory()->superAdmin()->create();
+		$superAdmin = User::factory()->superAdmin()->make();
 		$this->actingAs($superAdmin);
 
 		$datespotData = Datespot::factory()->make()->toArray();
@@ -65,7 +55,7 @@ class AdminDatespotControllerTest extends TestCase
 	public function test_super_admin_can_view_datespot_detail() {
 		$datespot = Datespot::factory()->create();
 
-		$superAdmin = User::factory()->superAdmin()->create();
+		$superAdmin = User::factory()->superAdmin()->make();
 		$this->actingAs($superAdmin);
 
 		$response = $this->get(route('datespots.edit', $datespot));
@@ -78,7 +68,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_super_admin_can_update_datespot() {
-		$superAdmin = User::factory()->superAdmin()->create();
+		$superAdmin = User::factory()->superAdmin()->make();
 		$this->actingAs($superAdmin);
 
 		$datespot = Datespot::factory()->create();
@@ -110,7 +100,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_super_admin_can_destroy_datespot() {
-		$superAdmin = User::factory()->superAdmin()->create();
+		$superAdmin = User::factory()->superAdmin()->make();
 		$this->actingAs($superAdmin);
 
 		$datespot = Datespot::factory()->create();
@@ -124,7 +114,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_super_admin_can_restore_datespot() {
-		$superAdmin = User::factory()->superAdmin()->create();
+		$superAdmin = User::factory()->superAdmin()->make();
 		$this->actingAs($superAdmin);
 
 		$datespot = Datespot::factory()->create();
@@ -141,7 +131,7 @@ class AdminDatespotControllerTest extends TestCase
 
 	// Admin
 	public function test_admin_can_view_index() {
-		$admin = User::factory()->admin()->create();
+		$admin = User::factory()->admin()->make();
 		$this->actingAs($admin);
 
 		$response = $this->get('/admin/datespots');
@@ -152,8 +142,8 @@ class AdminDatespotControllerTest extends TestCase
 		);
 	}
 
-	public function test_admin_can_view_create() {
-		$admin = User::factory()->admin()->create();
+	public function test_admin_can_view_make() {
+		$admin = User::factory()->admin()->make();
 		$this->actingAs($admin);
 
 		$response = $this->get(route('datespots.create'));
@@ -164,7 +154,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_admin_can_store_datespot() {
-		$admin = User::factory()->superAdmin()->create();
+		$admin = User::factory()->superAdmin()->make();
 		$this->actingAs($admin);
 
 		$datespotData = Datespot::factory()->make()->toArray();
@@ -184,7 +174,7 @@ class AdminDatespotControllerTest extends TestCase
 	public function test_admin_can_view_datespot_detail() {
 		$datespot = Datespot::factory()->create();
 
-		$admin = User::factory()->superAdmin()->create();
+		$admin = User::factory()->superAdmin()->make();
 		$this->actingAs($admin);
 
 		$response = $this->get(route('datespots.edit', $datespot));
@@ -197,7 +187,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_admin_can_update_datespot() {
-		$admin = User::factory()->superAdmin()->create();
+		$admin = User::factory()->superAdmin()->make();
 		$this->actingAs($admin);
 
 		$datespot = Datespot::factory()->create();
@@ -229,7 +219,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_admin_can_destroy_datespot() {
-		$admin = User::factory()->superAdmin()->create();
+		$admin = User::factory()->superAdmin()->make();
 		$this->actingAs($admin);
 
 		$datespot = Datespot::factory()->create();
@@ -243,7 +233,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_admin_can_restore_datespot() {
-		$admin = User::factory()->superAdmin()->create();
+		$admin = User::factory()->superAdmin()->make();
 		$this->actingAs($admin);
 
 		$datespot = Datespot::factory()->create();
@@ -260,7 +250,7 @@ class AdminDatespotControllerTest extends TestCase
 
 	//Company
 	public function test_company_can_view_their_own_datespot() {
-		$company = User::factory()->company()->create();
+		$company = User::factory()->company()->make();
 		$this->actingAs($company);
 
 		$companyDatespot = Datespot::factory()->create(['user_id' => $company->id]);
@@ -283,8 +273,8 @@ class AdminDatespotControllerTest extends TestCase
 		});
 	}
 
-	public function test_company_cannot_view_datespot_create() {
-		$company = User::factory()->company()->create();
+	public function test_company_cannot_view_datespot_make() {
+		$company = User::factory()->company()->make();
 		$this->actingAs($company);
 
 		$response = $this->get(route('datespots.create'));
@@ -292,7 +282,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_company_cannot_store_datespot() {
-		$company = User::factory()->company()->create();
+		$company = User::factory()->company()->make();
 		$this->actingAs($company);
 
 		$datespotData = Datespot::factory()->make()->toArray();
@@ -315,7 +305,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_company_can_update_their_own_datespot() {
-		$company = User::factory()->company()->create();
+		$company = User::factory()->company()->make();
 		$this->actingAs($company);
 
 		$datespot = Datespot::factory()->create(['user_id' => $company->id]);
@@ -390,7 +380,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_company_cannot_restore_datespot() {
-		$company = User::factory()->company()->create();
+		$company = User::factory()->company()->make();
 		$this->actingAs($company);
 
 		$datespot = Datespot::factory()->create();
@@ -405,15 +395,15 @@ class AdminDatespotControllerTest extends TestCase
 
 	//User
 	public function test_regular_user_cannot_view_datespot_index() {
-		$regularUser = User::factory()->user()->create();
+		$regularUser = User::factory()->user()->make();
 		$this->actingAs($regularUser);
 
 		$response = $this->get(route('datespots.index'));
 		$response->assertStatus(403);
 	}
 
-	public function test_regular_user_cannot_view_datespot_create() {
-		$regularUser = User::factory()->user()->create();
+	public function test_regular_user_cannot_view_datespot_make() {
+		$regularUser = User::factory()->user()->make();
 		$this->actingAs($regularUser);
 
 		$response = $this->get(route('datespots.create'));
@@ -421,7 +411,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_regular_user_cannot_store_datespot() {
-		$regularUser = User::factory()->user()->create();
+		$regularUser = User::factory()->user()->make();
 		$this->actingAs($regularUser);
 
 		$datespotData = Datespot::factory()->make()->toArray();
@@ -435,7 +425,7 @@ class AdminDatespotControllerTest extends TestCase
 	public function test_regular_user_cannot_view_datespot_detail() {
 		$datespot = Datespot::factory()->create();
 
-		$regularUser = User::factory()->user()->create();
+		$regularUser = User::factory()->user()->make();
 		$this->actingAs($regularUser);
 
 		$response = $this->get(route('datespots.edit', $datespot));
@@ -444,7 +434,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_regular_user_cannot_update_datespot() {
-		$regularUser = User::factory()->user()->create();
+		$regularUser = User::factory()->user()->make();
 		$this->actingAs($regularUser);
 
 		$datespot = Datespot::factory()->create();
@@ -472,7 +462,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_regular_user_cannot_destroy_datespot() {
-		$regularUser = User::factory()->user()->create();
+		$regularUser = User::factory()->user()->make();
 		$this->actingAs($regularUser);
 
 		$datespot = Datespot::factory()->create();
@@ -486,7 +476,7 @@ class AdminDatespotControllerTest extends TestCase
 	}
 
 	public function test_regular_user_cannot_restore_datespot() {
-		$regularUser = User::factory()->user()->create();
+		$regularUser = User::factory()->user()->make();
 		$this->actingAs($regularUser);
 
 		$datespot = Datespot::factory()->create();

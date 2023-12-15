@@ -3,7 +3,6 @@
 namespace Feature\Controllers\Admin;
 
 use App\Models\User;
-use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,12 +12,11 @@ class AdminDashboardControllerTest extends TestCase
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->seed(RolesTableSeeder::class);
 
-		$this->superAdmin = User::factory()->superAdmin()->create();
-		$this->admin = User::factory()->admin()->create();
-		$this->company = User::factory()->company()->create();
-		$this->regularUser = User::factory()->create();
+		$this->superAdmin = User::factory()->superAdmin()->make();
+		$this->admin = User::factory()->admin()->make();
+		$this->company = User::factory()->company()->make();
+		$this->regularUser = User::factory()->make();
 	}
 
 	/** @test */
