@@ -54,7 +54,6 @@ class UserDatespotController extends Controller
 	 */
 
 	public function showByLocation($city) {
-
 		$datespots = $this->datespotService->getDatespotsByLocation($city);
 
 		$types = $this->datespotService->getAllTypesWithCategoriesAndSubcategories();
@@ -66,11 +65,9 @@ class UserDatespotController extends Controller
 	}
 
 	public function filterByLocation(Request $request, $city) {
-
 		$types = $this->datespotService->getAllTypesWithCategoriesAndSubcategories();
 
 		$filteredDatespots = $this->datespotService->filterDateSpotsByLocation($city, $request);
-
 
 		return Inertia::render('DatespotsCity', [
 			'datespots' => $filteredDatespots,
