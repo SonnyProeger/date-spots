@@ -21,7 +21,8 @@ class UserPolicy
 	 * Determine whether the user can view any models.
 	 */
 	public function viewAny(User $user): bool {
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 	}
 
 	/**
@@ -37,14 +38,16 @@ class UserPolicy
 			}
 		}
 
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 	}
 
 	/**
 	 * Determine whether the user can create models.
 	 */
 	public function create(User $user): bool {
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 	}
 
 	/**
@@ -77,20 +80,23 @@ class UserPolicy
 	 * Determine whether the user can delete the model.
 	 */
 	public function delete(User $user): bool {
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 	}
 
 	/**
 	 * Determine whether the user can restore the model.
 	 */
 	public function restore(User $user): bool {
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 	}
 
 	/**
 	 * Determine whether the user can permanently delete the model.
 	 */
 	public function forceDelete(User $user): bool {
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 	}
 }

@@ -20,22 +20,22 @@ class UserDatespotService
 	}
 
 	public function getDateSpotByIdAndName($id, $name): Model|Collection|Builder|array|null {
-		$datespot = Datespot::with('types', 'categories', 'subcategories', 'media')
-			->select('*',
-				DB::raw("(SELECT COUNT(*) FROM datespots WHERE city = (SELECT city FROM datespots WHERE id = $id)) AS all_datespots")
-			)
-			->withAvg('reviews', 'rating')
-			->where('id', $id)
-			->withCount('reviews')
-			->firstOrFail();
+		$datespot = Datespot::where('id', $id)->firstOrFail();
+
+		if (!$datespot) {
+			return null;
+		}
 
 		$formattedName = StringHelper::replaceHyphensWithSpaces($name);
 		if ($datespot->name !== $formattedName) {
-			return null; // Or throw an exception indicating the mismatch
+			return null;
 		}
 
-		$avgRating = $this->formatAvgRating($datespot);
+		$datespot = $datespot->load(['types', 'categories', 'subcategories', 'media'])
+			->loadCount('reviews')
+			->loadAvg('reviews', 'rating');
 
+		$avgRating = $this->formatAvgRating($datespot);
 		$datespot->rating = $avgRating;
 
 		foreach ($datespot->media as $mediaItem) {
@@ -203,6 +203,18 @@ class UserDatespotService
 		$avgRating = number_format(round($datespot->reviews_avg_rating, 2),
 			max(1, substr_count(round($datespot->reviews_avg_rating, 2), '.')));
 		return $avgRating;
+	}
+
+	public function datespotExistsByIdAndName($id, $name): bool {
+		$datespot = Datespot::where('id', $id)
+			->where('name', StringHelper::replaceHyphensWithSpaces($name))
+			->first();
+
+		if ($datespot) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

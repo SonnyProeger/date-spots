@@ -32,15 +32,16 @@ class UserDatespotController extends Controller
 	/**
 	 * Display the specified resource.
 	 */
-	public
-	function show($id, $name) {
-		$datespot = $this->datespotService->getDateSpotByIdAndName($id, $name);
+	public function show($id, $name) {
+		$datespotExists = $this->datespotService->datespotExistsByIdAndName($id, $name);
 
-		$reviews = $this->reviewService->getAllReviewsForDatespot($id);
-
-		if (!$datespot) {
-			return response()->json(['error' => 'DateSpot Name does not match the ID.'], 404);
+		if ($datespotExists) {
+			$datespot = $this->datespotService->getDateSpotByIdAndName($id, $name);
+			$reviews = $this->reviewService->getAllReviewsForDatespot($id);
+		} else {
+			return response()->json(['error' => 'DateSpot does not exist or Name does not match the ID.'], 404);
 		}
+
 
 		return Inertia::render('DatespotDetail', [
 			'datespot' => $datespot,
