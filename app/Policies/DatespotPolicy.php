@@ -23,7 +23,8 @@ class DatespotPolicy
 	 * Determine whether the user can view any models.
 	 */
 	public function viewAny(User $user): bool {
-		return $user->role->name === 'Admin' || $user->role->name === 'Company';
+		return
+			$user->isAdmin() || $user->isCompany();
 	}
 
 	/**
@@ -31,11 +32,11 @@ class DatespotPolicy
 	 */
 	public function view(User $user, Datespot $datespot): bool {
 
-		if ($user->role->name === 'Admin') {
+		if ($user->isAdmin()) {
 			return true;
 		}
 
-		if ($user->role->name === 'Company' && $user->id === $datespot->user_id) {
+		if ($user->isCompany() && $user->ownsDatespot($datespot)) {
 			return true;
 		}
 
@@ -47,18 +48,21 @@ class DatespotPolicy
 	 */
 	public function create(User $user): bool {
 		//
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 	}
 
 	/**
 	 * Determine whether the user can update the model.
 	 */
 	public function update(User $user, Datespot $datespot): bool {
-		if ($user->role->name === 'Admin') {
+		if (
+			$user->isAdmin()) {
 			return true;
 		}
 
-		if ($user->role->name === 'Company' && $user->id === $datespot->user_id) {
+		if (
+			$user->isCompany() && $user->ownsDatespot($datespot)) {
 			return true;
 		}
 
@@ -69,7 +73,8 @@ class DatespotPolicy
 	 * Determine whether the user can delete the model.
 	 */
 	public function delete(User $user): bool {
-		if ($user->role->name === 'Admin') {
+		if (
+			$user->isAdmin()) {
 			return true;
 		}
 
@@ -80,7 +85,8 @@ class DatespotPolicy
 	 * Determine whether the user can restore the model.
 	 */
 	public function restore(User $user): bool {
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 
 	}
 
@@ -88,7 +94,8 @@ class DatespotPolicy
 	 * Determine whether the user can permanently delete the model.
 	 */
 	public function forceDelete(User $user): bool {
-		return $user->role->name === 'Admin';
+		return
+			$user->isAdmin();
 
 	}
 }

@@ -142,11 +142,27 @@ class User extends Authenticatable
 		return $this->hasMany(Review::class);
 	}
 
-	public function isSuperAdmin() {
+	public function isSuperAdmin(): bool {
 		return $this->role->name === 'SuperAdmin';
 	}
 
-	protected static function booted() {
+	public function isAdmin(): bool {
+		return $this->role->name === 'Admin';
+	}
+
+	public function isCompany(): bool {
+		return $this->role->name === 'Company';
+	}
+
+	public function isRegularUser(): bool {
+		return $this->role->name === 'User';
+	}
+
+	public function ownsDatespot(Datespot $datespot): bool {
+		return $this->id === $datespot->user_id;
+	}
+
+	protected static function booted(): void {
 		static::creating(function ($user) {
 			if (!$user->profile_photo_path) {
 				$nameInitials = collect(explode(' ', $user->name))

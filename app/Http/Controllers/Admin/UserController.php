@@ -28,7 +28,7 @@ class UserController extends Controller
 
 		$query = $this->commonIndexLogic(User::class, $filters);
 
-		if ($user->role->name === 'Admin') {
+		if ($user->isAdmin()) {
 			// Admin can only view 'users' and 'companies'
 			$companyRoleId = Role::where('name', 'Company')->id;
 			$userRoleId = Role::where('name', 'User')->id;
