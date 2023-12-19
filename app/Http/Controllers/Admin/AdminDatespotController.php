@@ -149,7 +149,6 @@ class AdminDatespotController extends Controller
 
 		$this->authorize('delete', $datespot);
 
-
 		$datespot->delete();
 
 		return Redirect::route('datespots.index')->with('success', "$datespot->name deleted.");

@@ -29,9 +29,8 @@ Route::get('/', function () {
 	return Inertia::render('Home');
 })->name('home');
 
-Route::get('/datespots', function () {
-	return Inertia::render('Datespots');
-})->name('datespots');
+Route::get('/datespots', [UserDatespotController::class, 'index'])
+	->name('datespots');
 
 Route::get('/datespots/{id}-{name}', [UserDatespotController::class, 'show'])
 	->name('user-datespots.show');
