@@ -8,6 +8,7 @@ use DateTime;
 class UserReviewService
 {
 	public function getAllReviewsForDatespot($datespot_id) {
+
 		$reviews = Review::query()
 			->where('datespot_id', $datespot_id)
 			->with('user')

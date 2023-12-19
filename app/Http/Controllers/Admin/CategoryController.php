@@ -75,13 +75,6 @@ class CategoryController extends Controller
 	}
 
 	/**
-	 * Display the specified resource.
-	 */
-	public function show(Category $category) {
-		//
-	}
-
-	/**
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
@@ -102,7 +95,7 @@ class CategoryController extends Controller
 
 		Request::validate([
 			'name' => ['required', 'max:50', Rule::unique('categories')],
-			'type_id' => ['required']
+			'type_id' => ['numeric']
 		]);
 
 		$category->update(Request::only('name'));
