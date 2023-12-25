@@ -12,7 +12,6 @@ class AddressController extends Controller
 		$postalCode = $request->input('postal_code');
 		$houseNumber = $request->input('house_number');
 
-		// Make HTTP request to the Postcode.tech API using Laravel HTTP client
 		$response = Http::withHeaders([
 			'Authorization' => 'Bearer '.$apiKey,
 		])->get('https://postcode.tech/api/v1/postcode/full', [
@@ -20,15 +19,12 @@ class AddressController extends Controller
 			'number' => $houseNumber,
 		]);
 
-		// Check if the request was successful
 		if ($response->successful()) {
-			$addressDetails = $response->json(); // Get the response as JSON
+			$addressDetails = $response->json();
 
-			// Process the addressDetails as needed and return the data
 			return response()->json($addressDetails);
 		}
 
-		// Handle unsuccessful response or errors
 		return response()->json(['error' => 'Failed to fetch address details'], $response->status());
 	}
 }

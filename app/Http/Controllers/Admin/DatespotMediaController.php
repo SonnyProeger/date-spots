@@ -16,6 +16,8 @@ class DatespotMediaController extends Controller
 {
 	public function index($id) {
 		$datespot = Datespot::findOrFail($id);
+		$this->authorize('view', $datespot);
+
 		$media = $datespot->getMedia('*')->map(function ($item) {
 			return [
 				'id' => $item->id,
@@ -37,6 +39,8 @@ class DatespotMediaController extends Controller
 
 	public function show($id, $mediaId) {
 		$datespot = Datespot::findOrFail($id);
+		$this->authorize('view', $datespot);
+		
 		$media = $datespot->getMedia($mediaId);
 
 		return Inertia::render('Admin/Pages/Media/Index', [
@@ -50,6 +54,7 @@ class DatespotMediaController extends Controller
 	 */
 	public function store(Request $request, $id) {
 		$datespot = Datespot::findOrFail($id);
+		$this->authorize('view', $datespot);
 
 		$request->validate([
 			'file' => 'required|file|max:4096',
@@ -57,11 +62,9 @@ class DatespotMediaController extends Controller
 
 		$file = $request->file('file');
 
-
 		$extension = $file->getClientOriginalExtension();
 
 
-		// Determine whether the file is an image or video based on the extension
 		if (in_array($extension, ['jpeg', 'png'])) {
 			$directory = 'images';
 		} elseif ($extension === 'mp4') {
@@ -78,8 +81,10 @@ class DatespotMediaController extends Controller
 	}
 
 	public function destroy($id, $mediaId) {
-		$Datespot = Datespot::findOrFail($id);
-		$media = $Datespot->getMedia($mediaId);
+		$datespot = Datespot::findOrFail($id);
+		$this->authorize('view', $datespot);
+
+		$media = $datespot->getMedia($mediaId);
 
 		foreach ($media as $item) {
 			$item->delete();
@@ -90,12 +95,14 @@ class DatespotMediaController extends Controller
 
 	public function updateHighlightStatus(Request $request) {
 		$mediaId = $request->input('mediaId');
+
 		$isHighlighted = $request->input('isHighlighted');
 
 		$media = Media::findOrFail($mediaId);
 		$datespotId = $media->model_id;
 
 		$datespot = Datespot::findOrFail($datespotId);
+		$this->authorize('view', $datespot);
 
 		$highlightedMediaCount = $this->getHighlightedMediaCount($datespot);
 
