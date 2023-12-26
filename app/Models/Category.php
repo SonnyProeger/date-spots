@@ -69,6 +69,10 @@ class Category extends Model
 		static::deleting(function ($category) {
 			$category->subcategories()->delete();
 		});
+
+		static::restoring(function ($category) {
+			$category->subcategories()->restore();
+		});
 	}
 
 }

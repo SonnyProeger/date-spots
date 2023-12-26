@@ -76,13 +76,6 @@ class SubcategoryController extends Controller
 	}
 
 	/**
-	 * Display the specified resource.
-	 */
-	public function show(Subcategory $subcategory) {
-		//
-	}
-
-	/**
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
@@ -121,7 +114,6 @@ class SubcategoryController extends Controller
 
 		$subcategory->delete();
 		return Redirect::route('subcategories.index')->with('success', "$subcategory->name deleted.");
-
 	}
 
 	public function restore(Subcategory $subcategory) {
