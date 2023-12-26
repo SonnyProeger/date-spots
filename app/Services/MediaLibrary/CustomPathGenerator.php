@@ -40,6 +40,6 @@ class CustomPathGenerator implements PathGenerator
 
 		$mediaTypeDirectory = $media->collection_name;
 
-		return "media/{$directory}/{$mediaTypeDirectory}";
+		return "media/{$directory}/{$mediaTypeDirectory}/$media->uuid";
 	}
 }
