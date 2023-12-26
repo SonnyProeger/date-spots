@@ -28,13 +28,15 @@ export default {
 			}),
 		}
 	},
-	created() {
-		console.log(window.location.pathname)
-	},
 	remember: 'form',
 	methods: {
 		store() {
 			this.form.post(`/admin/datespots/${this.datespot.id}/media`)
+		},
+		destroy(mediaId) {
+			if (confirm('Are you sure you want to delete this Media?')) {
+				this.$inertia.delete(`/admin/datespots/${this.datespot.id}/media/${mediaId}`)
+			}
 		},
 	}
 }
@@ -78,12 +80,10 @@ export default {
 								<HighlightButton :media-item="medium"></HighlightButton>
 							</div>
 							<div class="flex items-center justify-end space-x-2">
-								<danger-button>Delete</danger-button>
+								<danger-button @click="destroy(medium.id)">Delete</danger-button>
 							</div>
 						</td>
-
 					</tr>
-
 
 					<tr v-if="media === null">
 						<td class="px-6 py-4 border-t" colspan="4">No media found.</td>

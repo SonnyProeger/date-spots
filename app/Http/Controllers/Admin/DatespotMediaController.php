@@ -40,7 +40,7 @@ class DatespotMediaController extends Controller
 	public function show($id, $mediaId) {
 		$datespot = Datespot::findOrFail($id);
 		$this->authorize('view', $datespot);
-		
+
 		$media = $datespot->getMedia($mediaId);
 
 		return Inertia::render('Admin/Pages/Media/Index', [
@@ -54,6 +54,7 @@ class DatespotMediaController extends Controller
 	 */
 	public function store(Request $request, $id) {
 		$datespot = Datespot::findOrFail($id);
+
 		$this->authorize('view', $datespot);
 
 		$request->validate([
@@ -65,7 +66,7 @@ class DatespotMediaController extends Controller
 		$extension = $file->getClientOriginalExtension();
 
 
-		if (in_array($extension, ['jpeg', 'png'])) {
+		if (in_array($extension, ['jpeg', 'png', 'jpg'])) {
 			$directory = 'images';
 		} elseif ($extension === 'mp4') {
 			$directory = 'videos';
@@ -77,20 +78,22 @@ class DatespotMediaController extends Controller
 			->toMediaCollection($directory, 's3');
 
 		return Redirect::back()->with('success', 'Media successfully uploaded.');
-
 	}
 
 	public function destroy($id, $mediaId) {
 		$datespot = Datespot::findOrFail($id);
 		$this->authorize('view', $datespot);
 
-		$media = $datespot->getMedia($mediaId);
+		$media = $datespot->getMedia('*')->where('id', $mediaId)->first();
 
-		foreach ($media as $item) {
-			$item->delete();
+		if ($media) {
+			$datespot->deleteMedia($media->id);
+
+			return Redirect::back()->with('success', 'Removed Media.');
+		} else {
+
+			return Redirect::back()->with('error', 'Media not found.');
 		}
-
-		return redirect()->route('datespots.index');
 	}
 
 	public function updateHighlightStatus(Request $request) {
