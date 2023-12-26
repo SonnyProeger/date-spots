@@ -99,7 +99,8 @@ Route::prefix('admin')->middleware([
 
 	Route::prefix('datespots/{datespot}')->group(function () {
 		Route::resource('media', DatespotMediaController::class);
-		Route::post('/media/highlight-media', [DatespotMediaController::class, 'updateHighlightStatus']);
+		Route::post('/media/highlight-media', [DatespotMediaController::class, 'updateHighlightStatus'])
+			->name('highlight-media');
 	});
 
 	// Admin Reviews
