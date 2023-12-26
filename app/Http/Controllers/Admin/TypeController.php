@@ -30,6 +30,7 @@ class TypeController extends Controller
 				return [
 					'id' => $type->id,
 					'name' => $type->name,
+					'deleted_at' => $type->deleted_at,
 				];
 			});
 
@@ -67,13 +68,6 @@ class TypeController extends Controller
 	}
 
 	/**
-	 * Display the specified resource.
-	 */
-	public function show(Type $type) {
-		//
-	}
-
-	/**
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(string $id) {
@@ -108,7 +102,6 @@ class TypeController extends Controller
 
 		$type->delete();
 		return Redirect::route('types.index')->with('success', "$type->name deleted.");
-
 	}
 
 	public function restore(Type $type) {
