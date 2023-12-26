@@ -46,6 +46,14 @@ class Review extends Model
 	use HasFactory;
 	use SoftDeletes;
 
+	protected $fillable = [
+		'datespot_id',
+		'user_id',
+		'title',
+		'content',
+		'rating',
+		'date_visited',
+	];
 
 	public function user(): BelongsTo {
 		return $this->belongsTo(User::class);
