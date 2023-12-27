@@ -82,6 +82,7 @@ class DatespotMediaController extends Controller
 
 	public function destroy($id, $mediaId) {
 		$datespot = Datespot::findOrFail($id);
+
 		$this->authorize('view', $datespot);
 
 		$media = $datespot->getMedia('*')->where('id', $mediaId)->first();
@@ -89,7 +90,7 @@ class DatespotMediaController extends Controller
 		if ($media) {
 			$datespot->deleteMedia($media->id);
 
-			return Redirect::back()->with('success', 'Removed Media.');
+			return Redirect::back()->with('success', 'Media successfully deleted.');
 		} else {
 
 			return Redirect::back()->with('error', 'Media not found.');
@@ -109,7 +110,7 @@ class DatespotMediaController extends Controller
 
 		$highlightedMediaCount = $this->getHighlightedMediaCount($datespot);
 
-		if ($highlightedMediaCount >= 3) {
+		if ($highlightedMediaCount >= 3 && !$isHighlighted) {
 			return Redirect::back()->with('error',
 				'Maximum limit of 3 highlighted media items reached for this Datespot');
 		}
@@ -124,7 +125,7 @@ class DatespotMediaController extends Controller
 	}
 
 	private function getHighlightedMediaCount(Datespot $datespot): int {
-		return $datespot->getMedia()->where('is_highlighted', true)->count();
+		return $datespot->getMedia('images')->where('is_highlighted', 1)->count();
 	}
 
 	private function addToHighlights(Media $media): void {
