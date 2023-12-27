@@ -37,17 +37,6 @@ class DatespotMediaController extends Controller
 		]);
 	}
 
-	public function show($id, $mediaId) {
-		$datespot = Datespot::findOrFail($id);
-		$this->authorize('view', $datespot);
-
-		$media = $datespot->getMedia($mediaId);
-
-		return Inertia::render('Admin/Pages/Media/Index', [
-			'media' => $media,
-		]);
-	}
-
 	/**
 	 * @throws FileDoesNotExist
 	 * @throws FileIsTooBig
