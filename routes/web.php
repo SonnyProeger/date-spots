@@ -46,10 +46,6 @@ Route::get('/datespots/{datespotId}/reviews', 'ReviewController@index');
 Route::post('/datespots/{datespotId}/reviews', 'ReviewController@store');
 Route::delete('/datespots/{datespotId}/reviews/{reviewId}', 'ReviewController@destroy');
 
-Route::get('/phpinfo', function () {
-	return phpinfo();
-});
-
 // ADMIN
 Route::prefix('admin')->middleware([
 	SharePermissions::class,
