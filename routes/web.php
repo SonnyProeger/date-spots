@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserDatespotController;
 use App\Http\Middleware\SharePermissions;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,6 +25,17 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/email/verify', function () {
+	return Inertia::render('Auth/VerifyEmail');
+})->middleware(['auth'])->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+	$request->fulfill();
+
+	return redirect('/');
+})->middleware(['auth', 'signed', 'throttle:6,1'])->name('verification.verify');
+
 
 Route::get('/', function () {
 	return Inertia::render('Home');
@@ -41,13 +53,28 @@ Route::get('/datespots/{city}', [UserDatespotController::class, 'showByLocation'
 Route::post('/datespots/{city}', [UserDatespotController::class, 'filterByLocation'])
 	->name('user-datespot.filter-by-location');
 
+
 // User routes for reviews
+Route::middleware([
+	'auth',
+	'signed',
+	'throttle:6,1'
+])->group(function () {
+	Route::post('/datespots/{datespotId}/reviews', 'ReviewController@store');
+	Route::delete('/datespots/{datespotId}/reviews/{reviewId}', 'ReviewController@destroy');
+
+	Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+		$request->fulfill();
+
+		return redirect('/');
+	});
+});
 Route::get('/datespots/{datespotId}/reviews', 'ReviewController@index');
-Route::post('/datespots/{datespotId}/reviews', 'ReviewController@store');
-Route::delete('/datespots/{datespotId}/reviews/{reviewId}', 'ReviewController@destroy');
+
 
 // ADMIN
 Route::prefix('admin')->middleware([
+	'throttle',
 	SharePermissions::class,
 	'auth:sanctum',
 	config('jetstream.auth_session'),
