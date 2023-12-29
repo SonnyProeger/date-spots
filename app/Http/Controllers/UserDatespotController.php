@@ -22,7 +22,7 @@ class UserDatespotController extends Controller
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		$datespots = $this->datespotService->getAllDateSpotsWithTypes();
+		$datespots = $this->datespotService->getAllDatespotsWithTypes();
 
 		return Inertia::render('datespots', [
 			'datespots' => $datespots,
@@ -36,10 +36,10 @@ class UserDatespotController extends Controller
 		$datespotExists = $this->datespotService->datespotExistsByIdAndName($id, $name);
 
 		if ($datespotExists) {
-			$datespot = $this->datespotService->getDateSpotByIdAndName($id, $name);
+			$datespot = $this->datespotService->getDatespotByIdAndName($id, $name);
 			$reviews = $this->reviewService->getAllReviewsForDatespot($id);
 		} else {
-			return response()->json(['error' => 'DateSpot does not exist or Name does not match the ID.'], 404);
+			return response()->json(['error' => 'Datespot does not exist or Name does not match the ID.'], 404);
 		}
 
 
@@ -68,7 +68,7 @@ class UserDatespotController extends Controller
 	public function filterByLocation(Request $request, $city) {
 		$types = $this->datespotService->getAllTypesWithCategoriesAndSubcategories();
 
-		$filteredDatespots = $this->datespotService->filterDateSpotsByLocation($city, $request);
+		$filteredDatespots = $this->datespotService->filterDatespotsByLocation($city, $request);
 
 		return Inertia::render('DatespotsCity', [
 			'datespots' => $filteredDatespots,
