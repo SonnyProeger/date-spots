@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\DB;
 
 class UserDatespotService
 {
-	public function getAllDateSpotsWithTypes(): Collection|array {
+	public function getAllDatespotsWithTypes(): Collection|array {
 		return Datespot::with('types')->get();
 	}
 
-	public function getDateSpotByIdAndName($id, $name): Model|Collection|Builder|array|null {
+	public function getDatespotByIdAndName($id, $name): Model|Collection|Builder|array|null {
 		$datespot = Datespot::where('id', $id)->firstOrFail();
 
 		if (!$datespot) {
@@ -107,7 +107,7 @@ class UserDatespotService
 		return $types;
 	}
 
-	public function filterDateSpotsByLocation($city, $request) {
+	public function filterDatespotsByLocation($city, $request) {
 		$query = Datespot::query();
 
 		if ($city) {
