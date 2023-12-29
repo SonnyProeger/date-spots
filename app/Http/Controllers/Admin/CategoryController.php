@@ -25,7 +25,6 @@ class CategoryController extends Controller
 
 		$query = $this->commonIndexLogic(Category::class, $filters);
 
-
 		$categories = $query->with(['type:id,name'])
 			->paginate(10)
 			->withQueryString()
