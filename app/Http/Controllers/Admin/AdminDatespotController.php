@@ -25,10 +25,11 @@ class AdminDatespotController extends Controller
 
 		$filters = $request->all('search', 'trashed');
 
+		$query = $this->commonIndexLogic(Datespot::class, $filters);
 
 		$userRole = $user->role->name;
 
-		$datespots = Datespot::select('datespots.id', 'datespots.name', 'datespots.city', 'datespots.deleted_at')
+		$datespots = $query->select('datespots.id', 'datespots.name', 'datespots.city', 'datespots.deleted_at')
 			->with('types')
 			->when($userRole === 'Company', function ($query) use ($user) {
 				// For Company users, limit to their own datespots
