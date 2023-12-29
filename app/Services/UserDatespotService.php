@@ -37,6 +37,7 @@ class UserDatespotService
 
 		$avgRating = $this->formatAvgRating($datespot);
 		$datespot->rating = $avgRating;
+		$datespot->all_datespots = Datespot::where('city', $datespot->city)->count();
 
 		foreach ($datespot->media as $mediaItem) {
 			$temporaryUrl = $mediaItem->getTemporaryUrl(Carbon::now()->addMinutes(5));
@@ -54,7 +55,7 @@ class UserDatespotService
 			->where('city', $city)
 			->map(function ($datespot) {
 				$avgRating = round($datespot->reviews_avg_rating, 2);
-				$allDatespotsCount = Datespot::count(); // Count all records in YourModel (Datespot)
+				$allDatespotsCount = Datespot::count();
 				return [
 					'id' => $datespot->id,
 					'name' => $datespot->name,
