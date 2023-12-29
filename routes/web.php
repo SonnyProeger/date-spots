@@ -60,16 +60,11 @@ Route::middleware([
 	'signed',
 	'throttle:6,1'
 ])->group(function () {
-	Route::post('/datespots/{datespotId}/reviews', 'ReviewController@store');
-	Route::delete('/datespots/{datespotId}/reviews/{reviewId}', 'ReviewController@destroy');
-
-	Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-		$request->fulfill();
-
-		return redirect('/');
-	});
+	Route::post('/datespots/{datespotId}/reviews', [ReviewController::class, 'store'])->name('review.store');
+	Route::delete('/datespots/{datespotId}/reviews/{reviewId}',
+		[ReviewController::class, 'destroy'])->name('review.destroy');
 });
-Route::get('/datespots/{datespotId}/reviews', 'ReviewController@index');
+Route::get('/datespots/{datespotId}/reviews', [ReviewController::class, 'index'])->name('review.index');
 
 
 // ADMIN
@@ -125,10 +120,6 @@ Route::prefix('admin')->middleware([
 		Route::post('/media/highlight-media', [DatespotMediaController::class, 'updateHighlightStatus'])
 			->name('highlight-media');
 	});
-
-	// Admin Reviews
-	Route::resource('reviews', ReviewController::class);
-
 });
 
 
