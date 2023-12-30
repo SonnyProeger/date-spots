@@ -39,6 +39,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Review whereUserId($value)
  * @method static Builder|Review withTrashed()
  * @method static Builder|Review withoutTrashed()
+ * @property string $title
+ * @property string $comment
+ * @property string $date_visited
+ * @method static Builder|Review whereComment($value)
+ * @method static Builder|Review whereDateVisited($value)
+ * @method static Builder|Review whereTitle($value)
  * @mixin Eloquent
  */
 class Review extends Model

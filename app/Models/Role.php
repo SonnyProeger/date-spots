@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Role whereUpdatedAt($value)
  * @method static Builder|Role withTrashed()
  * @method static Builder|Role withoutTrashed()
+ * @method static \Database\Factories\RoleFactory factory($count = null, $state = [])
  * @mixin Eloquent
  */
 class Role extends Model
