@@ -26,21 +26,12 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/email/verify', function () {
-	return Inertia::render('Auth/VerifyEmail');
-})->middleware(['auth'])->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-	$request->fulfill();
-
-	return redirect('/');
-})->middleware(['auth', 'signed', 'throttle:6,1'])->name('verification.verify');
-
-
+// Home route
 Route::get('/', function () {
 	return Inertia::render('Home');
 })->name('home');
 
+// Datespot routes
 Route::get('/datespots', [UserDatespotController::class, 'index'])
 	->name('datespots');
 
@@ -53,8 +44,19 @@ Route::get('/datespots/{city}', [UserDatespotController::class, 'showByLocation'
 Route::post('/datespots/{city}', [UserDatespotController::class, 'filterByLocation'])
 	->name('user-datespot.filter-by-location');
 
+// Email verification
+Route::get('/email/verify', function () {
+	return Inertia::render('Auth/VerifyEmail');
+})->middleware(['auth'])->name('verification.notice');
 
-// User routes for reviews
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+	$request->fulfill();
+
+	return redirect('/');
+})->middleware(['auth', 'signed', 'throttle:6,1'])->name('verification.verify');
+
+
+// Review routes
 Route::middleware([
 	'auth',
 	'signed',
@@ -115,6 +117,7 @@ Route::prefix('admin')->middleware([
 		->name('user.restore')
 		->withTrashed();
 
+	// Admin Datespot Media
 	Route::prefix('datespots/{datespot}')->group(function () {
 		Route::resource('media', DatespotMediaController::class);
 		Route::post('/media/highlight-media', [DatespotMediaController::class, 'updateHighlightStatus'])
