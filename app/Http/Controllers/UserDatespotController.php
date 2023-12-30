@@ -45,7 +45,7 @@ class UserDatespotController extends Controller
 		}
 
 
-		return Inertia::render('DatespotDetail', [
+		return Inertia::render('Datespot/DatespotDetail', [
 			'datespot' => $datespot,
 			'reviews' => $reviews,
 		]);
@@ -60,7 +60,7 @@ class UserDatespotController extends Controller
 		$datespots = $this->datespotService->getDatespotsByLocation($city);
 
 		$types = $this->datespotService->getAllTypesWithCategoriesAndSubcategories();
-		return Inertia::render('DatespotsCity', [
+		return Inertia::render('Datespot/DatespotsCity', [
 			'datespots' => $datespots,
 			'city' => $city,
 			'types' => $types,
@@ -72,7 +72,7 @@ class UserDatespotController extends Controller
 
 		$filteredDatespots = $this->datespotService->filterDatespotsByLocation($city, $request);
 
-		return Inertia::render('DatespotsCity', [
+		return Inertia::render('Datespot/DatespotsCity', [
 			'datespots' => $filteredDatespots,
 			'city' => $city,
 			'types' => $types,
