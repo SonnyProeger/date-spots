@@ -39,7 +39,9 @@ class UserDatespotController extends Controller
 			$datespot = $this->datespotService->getDatespotByIdAndName($id, $name);
 			$reviews = $this->reviewService->getAllReviewsForDatespot($id);
 		} else {
-			return response()->json(['error' => 'Datespot does not exist or Name does not match the ID.'], 404);
+			return Inertia::render('Error', [
+				'status' => 404
+			]);
 		}
 
 

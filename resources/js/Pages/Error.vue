@@ -1,5 +1,6 @@
 <script setup>
 import {computed} from 'vue'
+import NewAppLayout from "@/Layouts/newAppLayout.vue";
 
 const props = defineProps({status: Number})
 
@@ -23,8 +24,11 @@ const description = computed(() => {
 </script>
 
 <template>
-	<div>
-		<H1>{{ title }}</H1>
-		<div>{{ description }}</div>
-	</div>
+	<NewAppLayout>
+		<div class="container mx-auto">
+			<H1>{{ title }}</H1>
+			<div>{{ description }}</div>
+		</div>
+	</NewAppLayout>
+
 </template>
