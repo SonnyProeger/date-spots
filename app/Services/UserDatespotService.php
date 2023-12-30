@@ -196,10 +196,7 @@ class UserDatespotService
 		return $filteredDatespots;
 	}
 
-	/**
-	 * @param  Model|Builder  $datespot
-	 * @return string
-	 */
+
 	public function formatAvgRating(Model|Builder $datespot): string {
 		$avgRating = number_format(round($datespot->reviews_avg_rating, 2),
 			max(1, substr_count(round($datespot->reviews_avg_rating, 2), '.')));
