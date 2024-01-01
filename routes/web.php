@@ -59,6 +59,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 // Review routes
 Route::middleware([
 	'auth',
+	'verified',
 	'throttle:6,1'
 ])->group(function () {
 	Route::get('/datespots/{id}-{name}/reviews/create',
