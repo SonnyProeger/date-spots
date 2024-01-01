@@ -82,9 +82,6 @@ export default {
 		Pagination,
 		SearchFilter,
 	},
-	created() {
-		console.log(this.datespots)
-	},
 	layout: AdminAppLayout,
 	props: {
 		filters: Object,
