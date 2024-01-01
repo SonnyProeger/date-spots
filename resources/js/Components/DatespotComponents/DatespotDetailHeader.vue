@@ -2,6 +2,7 @@
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
 import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
 
+
 export default {
 	name: "Header",
 	components: {HeartRatingComponent},
@@ -21,7 +22,8 @@ export default {
 		</div>
 		<!--		review save and share-->
 		<div class="hidden md:flex items-center space-x-2">
-			<a class="text-roseGold hover:underline flex items-center space-x-1" href="#" target="_blank">
+			<a class="text-roseGold hover:underline flex items-center space-x-1"
+			   :href="route('user-review.create', {id: this.datespot.id, name: this.formattedDatespotName(this.datespot.name)})">
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
 				     stroke-width="2" viewBox="0 0 24 24">
 					<path

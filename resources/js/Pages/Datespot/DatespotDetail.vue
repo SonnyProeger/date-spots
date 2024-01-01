@@ -195,7 +195,7 @@ export default {
 
 				<!--reviews-->
 				<div class="bg-white">
-					<DatespotReview :reviews="reviews"></DatespotReview>
+					<DatespotReview :reviews="reviews" :datespot="this.datespot"></DatespotReview>
 				</div>
 			</div>
 		</div>

@@ -30,6 +30,9 @@ export const DatespotDetailMixin = {
         closeEnlargeImage() {
             this.enlargedImageUrl = '';
         },
+        formattedDatespotName(datespotName) {
+            return datespotName.replace(/\s+/g, '-');
+        },
     },
     computed: {
         formattedPosition() {
@@ -69,7 +72,6 @@ export const DatespotDetailMixin = {
             }
 
             return firstThreeHighlightedItems;
-        }
-
+        },
     },
 };
