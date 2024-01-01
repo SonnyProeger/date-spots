@@ -2,7 +2,10 @@
 import {computed} from 'vue'
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
 
-const props = defineProps({status: Number})
+const props = defineProps({
+	status: Number,
+	description: String
+})
 
 const title = computed(() => {
 	return {
@@ -13,13 +16,17 @@ const title = computed(() => {
 	}[props.status]
 })
 
-const description = computed(() => {
+const computedDescription = computed(() => {
 	return {
 		503: 'Sorry, we are doing some maintenance. Please check back soon.',
 		500: 'Whoops, something went wrong on our servers.',
 		404: 'Sorry, the page you are looking for could not be found.',
 		403: 'Sorry, you are forbidden from accessing this page.',
 	}[props.status]
+})
+
+const description = computed(() => {
+	return props.description || computedDescription.value
 })
 </script>
 

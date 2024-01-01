@@ -215,4 +215,14 @@ class UserDatespotService
 		}
 	}
 
+	public function datespotAlreadyReviewed($id): bool {
+		$datespot = Datespot::where('id', $id)->first();
+
+		if ($datespot->reviews->where('user_id', auth()->user()->id)->count() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
