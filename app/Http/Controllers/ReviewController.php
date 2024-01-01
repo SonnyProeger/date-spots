@@ -47,7 +47,7 @@ class ReviewController extends Controller
 
 		$datespot = $this->datespotService->getDatespotByIdAndName($id, $name);
 
-		return Inertia::render('Reviews/Create', [
+		return Inertia::render('Reviews/Create/Create', [
 			'datespot' => $datespot,
 		]);
 
