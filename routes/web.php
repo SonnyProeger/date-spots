@@ -59,14 +59,14 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 // Review routes
 Route::middleware([
 	'auth',
-	'signed',
 	'throttle:6,1'
 ])->group(function () {
-	Route::post('/datespots/{datespotId}/reviews', [ReviewController::class, 'store'])->name('review.store');
-	Route::delete('/datespots/{datespotId}/reviews/{reviewId}',
-		[ReviewController::class, 'destroy'])->name('review.destroy');
+	Route::get('/datespots/{id}-{name}/reviews/create',
+		[ReviewController::class, 'create'])->name('user-review.create');
+	Route::post('/datespots/{id}-{name}/reviews', [ReviewController::class, 'store'])->name('user-review.store');
+	Route::delete('/datespots/{id}-{name}/reviews/{reviewId}',
+		[ReviewController::class, 'destroy'])->name('user-review.destroy');
 });
-Route::get('/datespots/{datespotId}/reviews', [ReviewController::class, 'index'])->name('review.index');
 
 
 // ADMIN
