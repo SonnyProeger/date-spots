@@ -2,16 +2,16 @@
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {Link} from "@inertiajs/vue3";
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
+import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "DatespotReview",
 	components: {HeartRatingComponent, PrimaryButton, Link},
 	props: {
 		reviews: Object,
+		datespot: Object,
 	},
-	created() {
-		console.log(this.reviews)
-	}
+	mixins: [DatespotDetailMixin],
 }
 
 </script>
@@ -20,7 +20,13 @@ export default {
 	<div class="p-4">
 		<div class="flex justify-between">
 			<h2 class="text-2xl font-bold mb-4">Reviews ({{ reviews.total }})</h2>
-			<Link class="btn-roseGold h-8 w-32 flex items-center justify-center" :href="route('reviews.create')">Write a
+			<Link class="btn-roseGold h-8 w-32 flex items-center justify-center"
+			      :href="route('user-review.create', {
+							id: this.datespot.id,
+						  name: this.formattedDatespotName(this.datespot.name)
+						}
+					)">
+				Write a
 				review
 			</Link>
 		</div>

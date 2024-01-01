@@ -1,10 +1,12 @@
 <script>
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
 import {Link} from "@inertiajs/vue3";
+import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "DatespotCard",
 	components: {HeartRatingComponent, Link},
+	mixins: [DatespotDetailMixin],
 	props: {
 		datespotId: Number,
 		datespotName: String,
@@ -15,23 +17,11 @@ export default {
 		reviewsCount: Number,
 		rating: Number,
 	},
-	created() {
-		console.log(this.imageSrc)
-	},
 	data() {
 		return {
 			imageURL: 'https://lh3.googleusercontent.com/places/ANXAkqHMtdv-0Lgtb08rKatMMCJ97kCQnm0QlQAiOWNy90yhK7BWs7E3ATHnTs65S0Lt38ZV4hIEY0bIAW_eV9NgkDjnVWf80qvSCtc=s1600-w4032',
 		};
 	},
-	computed: {
-		datespotLink() {
-			const formattedName = this.datespotName.replace(/\s+/g, '-'); // Replace spaces with dashes
-
-			return formattedName;
-		},
-
-	},
-
 }
 </script>
 <template>
@@ -74,8 +64,8 @@ export default {
 				<div class="flex justify-center">
 					<!-- Additional Spot Details Here -->
 					<Link :href="route('user-datespots.show',{
-						id:this.datespotId,
-						name:datespotLink,
+						id: this.datespotId,
+						name: this.formattedDatespotName(this.datespotName),
 					})"
 					      class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700"
 					>
