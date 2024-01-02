@@ -11,8 +11,8 @@ export default {
 
 <template>
 	<NewAppLayout title="Datespots">
-		<div class="flex flex-col">
-			<Hero :homescreen="true">
+		<div class="flex flex-col w-full">
+			<Hero :homeScreen="true">
 
 			</Hero>
 			<HowItWorks>

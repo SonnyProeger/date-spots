@@ -24,10 +24,10 @@ export default {
 </script>
 
 <template>
-	<div id="app" class="flex flex-col h-screen bg-cream text-gray-800">
+	<div id="app" class="flex flex-col min-h-screen bg-cream text-gray-800">
 		<div class="container md:w-4/5 mx-auto">
-			<header class="md:mb-8 md:pt-4 md:py-0 py-4 px-2 flex justify-between items-center select-none">
-				<div class="text-2xl font-semibold flex justify-between items-center">
+			<header class="flex justify-between items-center select-none md:mb-8 md:pt-4 md:py-0 py-4 px-2">
+				<div class="flex justify-between items-center text-2xl font-semibold">
 					<Link :href="route('home')">
 						<Logo logo-color="black"/>
 					</Link>

@@ -16,7 +16,7 @@ export default {
 </script>
 
 <template>
-	<div class="py-12 bg-white">
+	<div class="pt-12 pb-2 bg-white">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:container md:w-5/6">
 			<h2 class="text-3xl font-extrabold text-gray-900 text-center">How It Works</h2>
 			<div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-4">
