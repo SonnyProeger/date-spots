@@ -29,7 +29,7 @@ export default {
 				</StepCard>
 
 				<StepCard
-						step-title="2. Find Date Spot"
+						step-title="2. Find Datespot"
 						step-description="Browse our amazing date spot recommendations!"
 						icon-src="/images/answer.png"
 						alt-text="Search Icon"
