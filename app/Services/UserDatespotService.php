@@ -168,7 +168,7 @@ class UserDatespotService
 						'rating' => $avgRating,
 						'reviews_count' => $datespot->reviews_count,
 						'all_datespots' => $allDatespotsCount,
-						'cover_image' => $datespot->getFirstMediaUrl('images'),
+						'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
 					];
 				});
 		} else {
@@ -189,7 +189,7 @@ class UserDatespotService
 						'rating' => $avgRating,
 						'reviews_count' => $datespot->reviews_count,
 						'all_datespots' => $datespot->all_datespots,
-						'cover_image' => $datespot->getFirstMediaUrl('images'),
+						'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
 					];
 				});
 		}
