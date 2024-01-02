@@ -32,16 +32,17 @@ export default {
 
 <template>
 	<NewAppLayout>
-		<Hero>
+		<div class="flex flex-col w-full">
+			<Hero>
 
-		</Hero>
-		<HowItWorks class="hidden md:block">
+			</Hero>
+			<HowItWorks class="hidden md:block">
 
-		</HowItWorks>
-		<DatespotsInCities>
+			</HowItWorks>
+			<DatespotsInCities>
 
-		</DatespotsInCities>
-
+			</DatespotsInCities>
+		</div>
 	</NewAppLayout>
 </template>
 

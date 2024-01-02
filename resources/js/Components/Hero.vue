@@ -6,7 +6,7 @@ export default {
 	name: "Hero",
 	components: {SearchButton, AddressForm},
 	props: {
-		homescreen: {
+		homeScreen: {
 			type: Boolean,
 			default: false,
 		},
@@ -27,9 +27,9 @@ export default {
 
 <template>
 	<div
-			:class="{ 'flex grow items-center justify-center bg-cream': !homescreen, 'min-h-screen flex grow items-center justify-center bg-cream': homescreen }">
+			:class="{ 'flex grow items-center justify-center bg-cream': !homeScreen, 'min-h-screen flex grow items-center justify-center bg-cream': homeScreen }">
 		<div
-				:class="{ 'my-20 inset-0 flex items-center justify-center': !homescreen, 'mb-40 inset-0 flex items-center justify-center': homescreen }">
+				:class="{ 'my-20 inset-0 flex items-center justify-center': !homeScreen, 'mb-40 inset-0 flex items-center justify-center': homeScreen }">
 			<div class="text-center">
 				<h1 class="text-2xl md:text-3xl mb-8 font-serif max-w-3xl mx-auto">
 					Discover Memorable Datespots Near You
