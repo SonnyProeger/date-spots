@@ -50,7 +50,7 @@ class UserController extends Controller
 				];
 			});
 
-		return Inertia::render('Admin/Pages/Users/Index', [
+		return Inertia::render('Admin/Users/Index', [
 			'filters' => $filters,
 			'users' => $users,
 		]);
@@ -62,7 +62,7 @@ class UserController extends Controller
 	public function create() {
 		$this->authorize('create', User::class);
 
-		return Inertia::render('Admin/Pages/Users/Create');
+		return Inertia::render('Admin/Users/Create');
 	}
 
 	/**
@@ -104,7 +104,7 @@ class UserController extends Controller
 		$user = User::withTrashed()->find($id);
 		$this->authorize('update', $user);
 
-		return Inertia::render('Admin/Pages/Users/Edit', [
+		return Inertia::render('Admin/Users/Edit', [
 			'user' => $user,
 		]);
 	}

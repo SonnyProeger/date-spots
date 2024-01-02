@@ -31,7 +31,7 @@ class DatespotMediaController extends Controller
 			];
 		});
 
-		return Inertia::render('Admin/Pages/Media/Index', [
+		return Inertia::render('Admin/Media/Index', [
 			'datespot' => $datespot,
 			'media' => $media,
 		]);

@@ -39,7 +39,7 @@ class SubcategoryController extends Controller
 				];
 			});
 
-		return Inertia::render('Admin/Pages/Subcategories/Index', [
+		return Inertia::render('Admin/Subcategories/Index', [
 			'subcategories' => $subcategories,
 			'filters' => $filters,
 		]);
@@ -51,7 +51,7 @@ class SubcategoryController extends Controller
 	public function create() {
 		$this->authorize('create', Subcategory::class);
 
-		return Inertia::render('Admin/Pages/Subcategories/Create', [
+		return Inertia::render('Admin/Subcategories/Create', [
 			'categories' => Category::all(),
 		]);
 	}
@@ -82,7 +82,7 @@ class SubcategoryController extends Controller
 		$subcategory = Subcategory::with('category')->withTrashed()->find($id);
 		$this->authorize('update', $subcategory);
 
-		return Inertia::render('Admin/Pages/Subcategories/Edit', [
+		return Inertia::render('Admin/Subcategories/Edit', [
 			'subcategory' => $subcategory,
 			'categories' => Category::all(),
 		]);
