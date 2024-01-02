@@ -22,14 +22,14 @@ class CategoryFactory extends Factory
 		$categoriesByType = [
 			'Food' => ['restaurant', 'cafe', 'coffee shops'],
 			'Outdoor' => [
-				'nature', 'beaches', 'waterfront', 'hiking', 'adventure', 'botanical gardens', 'picnic spots'
+				'nature', 'beach', 'waterfront', 'hiking', 'adventure', 'botanical garden', 'picnic'
 			],
 			'Entertainment' => [
-				'movie theaters', 'live music', 'concerts', 'art galleries', 'museums', 'comedy clubs', 'arcades'
+				'movie theater', 'live music', 'concerts', 'art galleries', 'museums', 'comedy clubs', 'arcades'
 			],
 			'Activities' => ['spa', 'wellness', 'cooking classes', 'dance classes', 'escape rooms'],
 			'Special Occasions' => [
-				'anniversary', 'birthday celebrations', 'engagement locations', 'wedding venues', 'family gatherings'
+				'anniversary', 'birthday celebrations', 'engagement locations', 'hotel'
 			],
 		];
 
