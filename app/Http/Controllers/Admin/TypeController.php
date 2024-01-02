@@ -35,7 +35,7 @@ class TypeController extends Controller
 			});
 
 
-		return Inertia::render('Admin/Pages/Types/Index', [
+		return Inertia::render('Admin/Types/Index', [
 			'types' => $types,
 			'filters' => $filters,
 		]);
@@ -47,7 +47,7 @@ class TypeController extends Controller
 	public function create() {
 		$this->authorize('create', Type::class);
 
-		return Inertia::render('Admin/Pages/Types/Create');
+		return Inertia::render('Admin/Types/Create');
 	}
 
 	/**
@@ -74,7 +74,7 @@ class TypeController extends Controller
 		$type = Type::withTrashed()->find($id);
 		$this->authorize('update', $type);
 
-		return Inertia::render('Admin/Pages/Types/Edit', [
+		return Inertia::render('Admin/Types/Edit', [
 			'type' => $type
 		]);
 	}

@@ -37,7 +37,7 @@ class CategoryController extends Controller
 				];
 			});
 
-		return Inertia::render('Admin/Pages/Categories/Index', [
+		return Inertia::render('Admin/Categories/Index', [
 			'categories' => $categories,
 			'filters' => $filters,
 		]);
@@ -49,7 +49,7 @@ class CategoryController extends Controller
 	public function create() {
 		$this->authorize('create', Category::class);
 
-		return Inertia::render('Admin/Pages/Categories/Create', [
+		return Inertia::render('Admin/Categories/Create', [
 			'types' => Type::all(),
 		]);
 	}
@@ -80,7 +80,7 @@ class CategoryController extends Controller
 		$category = Category::with('type')->withTrashed()->find($id);
 		$this->authorize('update', $category);
 
-		return Inertia::render('Admin/Pages/Categories/Edit', [
+		return Inertia::render('Admin/Categories/Edit', [
 			'category' => $category,
 			'types' => Type::all(),
 		]);

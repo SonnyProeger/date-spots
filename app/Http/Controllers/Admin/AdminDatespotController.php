@@ -50,7 +50,7 @@ class AdminDatespotController extends Controller
 			});
 
 
-		return Inertia::render('Admin/Pages/Datespots/Index', [
+		return Inertia::render('Admin/Datespots/Index', [
 			'filters' => $filters,
 			'datespots' => $datespots,
 		]);
@@ -62,7 +62,7 @@ class AdminDatespotController extends Controller
 	public function create() {
 		$this->authorize('create', Datespot::class);
 
-		return Inertia::render('Admin/Pages/Datespots/Create');
+		return Inertia::render('Admin/Datespots/Create');
 	}
 
 	/**
@@ -111,7 +111,7 @@ class AdminDatespotController extends Controller
 		$this->authorize('update', $datespot);
 
 
-		return Inertia::render('Admin/Pages/Datespots/Edit', [
+		return Inertia::render('Admin/Datespots/Edit', [
 			'datespot' => $datespot
 		]);
 	}
