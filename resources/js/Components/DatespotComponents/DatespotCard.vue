@@ -69,7 +69,7 @@ export default {
 					})"
 					      class="mt-4 bg-roseGold text-white py-2 px-4 rounded-md hover:bg-rose-700"
 					>
-						Explore Date Spot
+						Explore Datespot
 					</Link>
 				</div>
 

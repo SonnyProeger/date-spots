@@ -38,7 +38,7 @@ class UserDatespotControllerTest extends TestCase
 		$response
 			->assertStatus(404)
 			->assertJson([
-				'error' => 'DateSpot does not exist or Name does not match the ID.'
+				'error' => 'Datespot does not exist or Name does not match the ID.'
 			]);;
 
 	}
