@@ -44,6 +44,8 @@ class UserDatespotService
 			$mediaItem->temporary_url = $temporaryUrl;
 		}
 
+		$datespot->first_media_item = $datespot->media->first()->getTemporaryUrl(Carbon::now()->addMinutes(5));;
+
 		return $datespot;
 	}
 
