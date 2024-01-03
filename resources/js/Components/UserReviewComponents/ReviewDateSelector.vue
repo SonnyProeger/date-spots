@@ -1,21 +1,21 @@
 <script>
 export default {
 	name: "ReviewDateSelector",
+	emits: ['selected-month'],
 	data() {
 		return {
-			selectedMonth: '', // To store the selected month
+			selectedMonth: '',
 		};
 	},
 	computed: {
 		pastMonths() {
-			const today = new Date(); // Get today's date
-			const months = []; // Array to store past 11 months
+			const today = new Date();
+			const months = [];
 			const monthNames = [
 				'January', 'February', 'March', 'April', 'May', 'June',
 				'July', 'August', 'September', 'October', 'November', 'December'
 			];
 
-			// Loop through past 11 months from current date
 			for (let i = 0; i < 11; i++) {
 				const newDate = new Date(today.getFullYear(), today.getMonth() - i, 1);
 				const label = `${monthNames[newDate.getMonth()]} ${newDate.getFullYear()}`;
@@ -29,8 +29,11 @@ export default {
 	},
 	methods: {
 		emitSelectedMonth() {
-			// Emit the selected month value to the parent component
-			this.$emit('selected-month', this.selectedMonth);
+			const [year, month] = this.selectedMonth.split('-');
+			const formattedMonth = `${year}-${String(month).padStart(2, '0')}`;
+			console.log(formattedMonth);
+
+			this.$emit('selected-month', formattedMonth);
 		},
 	},
 }
@@ -39,7 +42,6 @@ export default {
 <template>
 	<div>
 		<h1 class="text-2xl font-semibold mb-4">When did you go?</h1>
-		<!-- Dropdown select -->
 		<select v-model="selectedMonth" @change="emitSelectedMonth" class="p-2 border border-gray-300 rounded-md">
 			<option value="" disabled selected>Select date</option>
 			<option v-for="month in pastMonths" :key="month.value" :value="month.value">

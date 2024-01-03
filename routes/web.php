@@ -7,8 +7,8 @@ use App\Http\Controllers\Admin\DatespotMediaController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserDatespotController;
+use App\Http\Controllers\UserReviewController;
 use App\Http\Middleware\SharePermissions;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
@@ -63,10 +63,10 @@ Route::middleware([
 	'throttle:6,1'
 ])->group(function () {
 	Route::get('/datespots/{id}-{name}/reviews/create',
-		[ReviewController::class, 'create'])->name('user-review.create');
-	Route::post('/datespots/{id}-{name}/reviews', [ReviewController::class, 'store'])->name('user-review.store');
+		[UserReviewController::class, 'create'])->name('user-review.create');
+	Route::post('/datespots/{id}-{name}/reviews', [UserReviewController::class, 'store'])->name('user-review.store');
 	Route::delete('/datespots/{id}-{name}/reviews/{reviewId}',
-		[ReviewController::class, 'destroy'])->name('user-review.destroy');
+		[UserReviewController::class, 'destroy'])->name('user-review.destroy');
 });
 
 
@@ -95,8 +95,8 @@ Route::prefix('admin')->middleware([
 		->withTrashed();
 
 	// Admin Reviews
-	Route::resource('reviews', ReviewController::class);
-	Route::put('reviews/{review}/restore', [ReviewController::class, 'restore'])
+	Route::resource('reviews', UserReviewController::class);
+	Route::put('reviews/{review}/restore', [UserReviewController::class, 'restore'])
 		->name('reviews.restore')
 		->withTrashed();
 

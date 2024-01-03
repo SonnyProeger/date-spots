@@ -227,4 +227,9 @@ class UserDatespotService
 		}
 	}
 
+	public function getDatespotNameById($id): string {
+		$datespot = Datespot::where('id', $id)->first();
+		return $datespot->name;
+	}
+
 }

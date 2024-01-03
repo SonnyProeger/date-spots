@@ -1,6 +1,7 @@
 <script>
 export default {
 	name: "ReviewTextAreaInput",
+	emits: ['selected-review-text'],
 	data() {
 		return {
 			reviewText: '',
@@ -10,6 +11,11 @@ export default {
 	computed: {
 		enteredCharacters() {
 			return this.reviewText.length;
+		}
+	},
+	watch: {
+		reviewText(newValue) {
+			this.$emit('selected-review-text', newValue);
 		}
 	}
 }
