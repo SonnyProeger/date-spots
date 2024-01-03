@@ -99,7 +99,7 @@ export default {
 		form: {
 			deep: true,
 			handler: throttle(function () {
-				this.$inertia.get('datespots', pickBy(this.form), {preserveState: true})
+				this.$inertia.get(route('datespots.index'), pickBy(this.form), {preserveState: true})
 			}, 150),
 		},
 	},

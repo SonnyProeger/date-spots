@@ -36,7 +36,7 @@ export default {
 		form: {
 			deep: true,
 			handler: throttle(function () {
-				this.$inertia.get('/admin/users', pickBy(this.form),
+				this.$inertia.get(route('users.index'), pickBy(this.form),
 						{
 							preserveState: true,
 							replace: true,

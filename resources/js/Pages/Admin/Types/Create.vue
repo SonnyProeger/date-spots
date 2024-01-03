@@ -48,7 +48,7 @@ export default {
 	},
 	methods: {
 		store() {
-			this.form.post('/admin/types')
+			this.form.post(route('types.store'))
 		},
 	},
 }

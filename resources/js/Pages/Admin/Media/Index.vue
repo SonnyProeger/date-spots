@@ -31,11 +31,15 @@ export default {
 	remember: 'form',
 	methods: {
 		store() {
-			this.form.post(`/admin/datespots/${this.datespot.id}/media`)
+			this.form.post(route('media.store', this.datespot.id), {
+				onSuccess: () => {
+					this.form.reset('file')
+				}
+			})
 		},
 		destroy(mediaId) {
 			if (confirm('Are you sure you want to delete this Media?')) {
-				this.$inertia.delete(`/admin/datespots/${this.datespot.id}/media/${mediaId}`)
+				this.$inertia.delete(route('media.destroy', {datespot: this.datespot.id, medium: mediaId}))
 			}
 		},
 	}

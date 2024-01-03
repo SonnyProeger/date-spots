@@ -21,9 +21,6 @@ export default {
 		filters: Object,
 		categories: Object,
 	},
-	created() {
-		console.log(this.categories);
-	},
 	data() {
 		return {
 			form: {
@@ -37,7 +34,7 @@ export default {
 		form: {
 			deep: true,
 			handler: throttle(function () {
-				this.$inertia.get('/admin/categories', pickBy(this.form),
+				this.$inertia.get(route('categories.index'), pickBy(this.form),
 						{
 							preserveState: true,
 							replace: true,

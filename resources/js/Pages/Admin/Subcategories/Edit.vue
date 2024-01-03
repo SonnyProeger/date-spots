@@ -76,16 +76,16 @@ export default {
 	},
 	methods: {
 		update() {
-			this.form.post(`/admin/subcategories/${this.subcategory.id}`)
+			this.form.post(route('subcategories.update', this.subcategory.id))
 		},
 		destroy() {
 			if (confirm('Are you sure you want to delete this subcategories?')) {
-				this.$inertia.delete(`/admin/subcategories/${this.subcategory.id}`)
+				this.$inertia.delete(route('subcategories.destroy', this.subcategory.id))
 			}
 		},
 		restore() {
 			if (confirm('Are you sure you want to restore this subcategories?')) {
-				this.$inertia.put(`/admin/subcategories/${this.subcategory.id}/restore`)
+				this.$inertia.put(route('subcategories.restore', this.subcategory.id))
 			}
 		},
 	},

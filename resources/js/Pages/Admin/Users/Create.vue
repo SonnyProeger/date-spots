@@ -63,7 +63,7 @@ export default {
 	},
 	methods: {
 		store() {
-			this.form.post('/admin/users')
+			this.form.post(route('users.store'))
 		},
 	},
 }

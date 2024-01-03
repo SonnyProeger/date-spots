@@ -69,7 +69,7 @@ export default {
 							</template>
 							<template #dropdown>
 								<div class="mt-2 py-2 text-sm bg-white rounded shadow-xl">
-									<DropdownLink as="button" :href="`admin/users/${$page.props.auth.user.id}/edit`">
+									<DropdownLink as="button" :href="route('users.edit', $page.props.auth.user.id)">
 										My Profile
 									</DropdownLink>
 									<form @submit.prevent="logout">
