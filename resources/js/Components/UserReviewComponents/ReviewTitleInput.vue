@@ -1,15 +1,21 @@
 <script>
 export default {
 	name: "ReviewTitleInput",
+	emits: ['selected-review-title'],
 	data() {
 		return {
-			reviewText: '',
+			reviewTitle: '',
 			maxCharacters: 50
 		};
 	},
 	computed: {
 		enteredCharacters() {
-			return this.reviewText.length;
+			return this.reviewTitle.length;
+		}
+	},
+	watch: {
+		reviewTitle(newValue) {
+			this.$emit('selected-review-title', newValue);
 		}
 	}
 }
@@ -22,7 +28,7 @@ export default {
 				type="text"
 				placeholder="Please summarize your experience for us."
 				class="border border-gray-300 p-2 w-full rounded-lg"
-				v-model="reviewText"
+				v-model="reviewTitle"
 				:maxlength="maxCharacters"
 		>
 		<p class="text-gray-500 text-right mt-1">

@@ -44,7 +44,6 @@ class UserDatespotController extends Controller
 			]);
 		}
 
-
 		return Inertia::render('Datespot/DatespotDetail', [
 			'datespot' => $datespot,
 			'reviews' => $reviews,

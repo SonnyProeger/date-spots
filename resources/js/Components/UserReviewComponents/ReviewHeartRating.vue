@@ -1,6 +1,7 @@
 <script>
 export default {
 	name: "ReviewHeartRating",
+	emits: ['selected-rating'],
 	data() {
 		return {
 			value: 0,

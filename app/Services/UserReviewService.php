@@ -8,10 +8,10 @@ use DateTime;
 class UserReviewService
 {
 	public function getAllReviewsForDatespot($datespot_id) {
-
 		$reviews = Review::query()
 			->where('datespot_id', $datespot_id)
 			->with('user')
+			->orderByDesc('created_at')
 			->paginate(10)
 			->withQueryString()
 			->through(function ($review) {
@@ -25,8 +25,9 @@ class UserReviewService
 					'content' => $review->comment,
 					'user' => [
 						'name' => $review->user->name,
-						'profile_photo_url' => $review->user->profile_photo_path,
-					], 'rating' => $review->rating,
+						'profile_photo_url' => $review->user->profile_photo_path
+					],
+					'rating' => $review->rating,
 					'date_visited' => $formattedDate,
 					'created_on' => $formattedCreatedOn,
 				];

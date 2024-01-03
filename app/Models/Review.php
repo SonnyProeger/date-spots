@@ -56,7 +56,7 @@ class Review extends Model
 		'datespot_id',
 		'user_id',
 		'title',
-		'content',
+		'comment',
 		'rating',
 		'date_visited',
 	];

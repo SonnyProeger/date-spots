@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Services\UserDatespotService;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
-class ReviewController extends Controller
+class UserReviewController extends Controller
 {
 
 	private UserDatespotService $datespotService;
@@ -58,7 +61,34 @@ class ReviewController extends Controller
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
-		//
+//		$this->authorize('create', Review::class);
+
+		$validatedData = $request->validate([
+			'datespotId' => 'required',
+			'reviewTitle' => 'required|string|min:5|max:50',
+			'reviewText' => 'required|string|min:150|max:1000',
+			'rating' => 'required|integer|min:1|max:5',
+			'selectedDate' => 'required|date_format:Y-m',
+		]);
+
+		$datespotId = $validatedData['datespotId'];
+		$datespotName = $this->datespotService->getDatespotNameById($datespotId);
+
+		$dateVisited = Carbon::createFromFormat('Y-m', $validatedData['selectedDate'])->startOfMonth();
+
+		Review::create([
+			'user_id' => Auth::user()->id,
+			'datespot_id' => $datespotId,
+			'title' => $validatedData['reviewTitle'],
+			'comment' => $validatedData['reviewText'],
+			'rating' => $validatedData['rating'],
+			'date_visited' => $dateVisited,
+		]);
+
+		return Redirect::route('user-datespots.show', [
+			'name' => $datespotName,
+			'id' => $datespotId
+		])->with('success', 'Review created.');
 	}
 
 	/**
