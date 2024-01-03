@@ -59,7 +59,7 @@ export default {
 	},
 	methods: {
 		store() {
-			this.form.post('/admin/categories')
+			this.form.post(route('categories.store'));
 		},
 	},
 }

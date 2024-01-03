@@ -75,16 +75,16 @@ export default {
 	},
 	methods: {
 		update() {
-			this.form.post(`/admin/categories/${this.category.id}`)
+			this.form.post(route('categories.update', this.category.id));
 		},
 		destroy() {
 			if (confirm('Are you sure you want to delete this category?')) {
-				this.$inertia.delete(`/admin/categories/${this.category.id}`)
+				this.$inertia.delete(route('categories.destroy', this.category.id));
 			}
 		},
 		restore() {
 			if (confirm('Are you sure you want to restore this category?')) {
-				this.$inertia.put(`/admin/categories/${this.category.id}/restore`)
+				this.$inertia.put(route('categories.restore', this.category.id));
 			}
 		},
 	},
