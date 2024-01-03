@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use App\Traits\CrudOperationsTrait;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -19,12 +19,12 @@ class UserController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize('viewAny', User::class);
 		$user = Auth::user();
 
+		$filters = $request->only('search', 'role', 'trashed');
 
-		$filters = Request::all('search', 'role', 'trashed');
 
 		$query = $this->commonIndexLogic(User::class, $filters);
 
@@ -68,34 +68,21 @@ class UserController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store() {
-
+	public function store(Request $request) {
 		$this->authorize('create', User::class);
 
-		Request::validate([
+		$validatedData = $request->validate([
 			'name' => ['required', 'max:50'],
 			'email' => ['required', 'max:50', 'email', Rule::unique('users')],
 			'password' => ['required', 'min:8'],
 			'role_id' => ['required', 'int'],
 		]);
 
-		User::create([
-			'name' => Request::get('name'),
-			'email' => Request::get('email'),
-			'password' => Request::get('password'),
-			'role_id' => Request::get('role_id'),
-		]);
+		User::create($validatedData);
 
 		return Redirect::route('users.index')->with('success', 'User created.');
 	}
 
-	/**
-	 * Display the specified resource.
-	 */
-	public function show(User $user) {
-
-
-	}
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -112,30 +99,24 @@ class UserController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(User $user) {
-//		$user = User::findOrFail($id);
+	public function update(Request $request, User $user) {
 		$this->authorize('update', $user);
 
-
-		Request::validate([
+		$validatedData = $request->validate([
 			'name' => ['required', 'max:50'],
 			'email' => ['required', 'max:50', 'email'],
-			'password' => ['nullable',],
+			'password' => ['nullable', 'min:8'],
 			'role_id' => ['required', 'int'],
 		]);
 
-		// Conditionally modify email validation rule
-		if ($user->email !== request('email')) {
-			// Only apply unique rule if the email being updated is different from the user's current email
+		//generate password
+		$validatedData['password'] = bcrypt('password');
+
+		if ($user->email !== $validatedData['email']) {
 			$rules['email'][] = Rule::unique('users');
 		}
 
-		$user->update(Request::only('name', 'email', 'role_id'));
-
-
-		if (Request::get('password')) {
-			$user->update(['password' => Request::get('password')]);
-		}
+		$user->update($validatedData);
 
 		return Redirect::back()->with('success', 'User updated.');
 	}

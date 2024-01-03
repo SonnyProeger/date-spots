@@ -60,16 +60,13 @@ export default {
 		category: Object,
 		types: Object,
 	},
-	created() {
-		console.log(this.category)
-	},
 	remember: 'form',
 	data() {
 		return {
 			form: this.$inertia.form({
 				_method: 'put',
 				name: this.category.name,
-				type: this.category.type.id
+				type_id: this.category.type.id
 			}),
 		}
 	},

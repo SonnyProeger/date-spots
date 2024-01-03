@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Type;
 use App\Traits\CrudOperationsTrait;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -17,10 +17,10 @@ class TypeController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize('viewAny', Type::class);
 
-		$filters = Request::all('search', 'trashed');
+		$filters = $request->only('search', 'trashed');
 
 		$query = $this->commonIndexLogic(Type::class, $filters);
 
@@ -56,13 +56,11 @@ class TypeController extends Controller
 	public function store(Request $request) {
 		$this->authorize('create', Type::class);
 
-		Request::validate([
+		$validatedData = $request->validate([
 			'name' => ['required', 'max:50', Rule::unique('types')],
 		]);
 
-		Type::create([
-			'name' => Request::get('name'),
-		]);
+		Type::create($validatedData);
 
 		return Redirect::route('types.index')->with('success', 'Type created.');
 	}
@@ -85,11 +83,11 @@ class TypeController extends Controller
 	public function update(Request $request, Type $type) {
 		$this->authorize('update', $type);
 
-		Request::validate([
-			'name' => ['required', 'max:50'],
+		$validatedData = $request->validate([
+			'name' => ['required', 'max:50', Rule::unique('types')->ignore($type->id)],
 		]);
 
-		$type->update(Request::only('name'));
+		$type->update($validatedData);
 
 		return Redirect::back()->with('success', 'Type updated.');
 	}
