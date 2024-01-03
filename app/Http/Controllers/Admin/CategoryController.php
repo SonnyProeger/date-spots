@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Type;
 use App\Traits\CrudOperationsTrait;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -18,10 +18,10 @@ class CategoryController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize('viewAny', Category::class);
 
-		$filters = Request::all('search', 'trashed');
+		$filters = $request->only('search', 'trashed');
 
 		$query = $this->commonIndexLogic(Category::class, $filters);
 
@@ -60,15 +60,12 @@ class CategoryController extends Controller
 	public function store(Request $request) {
 		$this->authorize('viewAny', Category::class);
 
-		Request::validate([
+		$validatedData = $request->validate([
 			'name' => ['required', 'max:50', Rule::unique('categories')],
 			'type_id' => ['required']
 		]);
 
-		Category::create([
-			'name' => Request::get('name'),
-			'type_id' => Request::get('type_id'),
-		]);
+		Category::create($validatedData);
 
 		return Redirect::route('categories.index')->with('success', 'Category created.');
 	}
@@ -92,14 +89,12 @@ class CategoryController extends Controller
 	public function update(Request $request, Category $category) {
 		$this->authorize('update', $category);
 
-		Request::validate([
-			'name' => ['required', 'max:50', Rule::unique('categories')],
-			'type_id' => ['numeric']
+		$validatedData = $request->validate([
+			'name' => ['required', 'max:50', Rule::unique('categories')->ignore($category->id)],
+			'type' => ['required']
 		]);
 
-		$category->update(Request::only('name'));
-		$category->update(Request::only('type_id'));
-
+		$category->update($validatedData);
 
 		return Redirect::back()->with('success', 'Category updated.');
 	}
@@ -109,15 +104,15 @@ class CategoryController extends Controller
 	 */
 	public function destroy(Category $category) {
 		$this->authorize('delete', $category);
-
 		$category->delete();
-		return Redirect::route('categories.index')->with('success', "$category->name deleted.");
 
+		return Redirect::route('categories.index')->with('success', "$category->name deleted.");
 	}
 
 	public function restore(Category $category) {
 		$this->authorize('restore', $category);
 		$category->restore();
+
 		return Redirect::back()->with('success', 'Category restored.');
 	}
 }
