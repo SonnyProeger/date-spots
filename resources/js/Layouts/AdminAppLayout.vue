@@ -67,7 +67,7 @@ export default {
 									      name="cheveron-down"/>
 								</div>
 							</template>
-							<template #content>
+							<template #dropdown>
 								<div class="mt-2 py-2 text-sm bg-white rounded shadow-xl">
 									<DropdownLink as="button" :href="route('users.edit', $page.props.auth.user.id)">
 										My Profile

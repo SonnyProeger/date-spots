@@ -45,7 +45,7 @@ class UserController extends Controller
 					'name' => $user->name,
 					'email' => $user->email,
 					'role_id' => $user->role->id,
-					'profile_photo_url' => $user->profile_photo_url,
+					'profile_photo_url' => $user->profile_photo_path,
 					'deleted_at' => $user->deleted_at,
 				];
 			});
