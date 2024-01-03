@@ -1,5 +1,5 @@
 <script>
-import {Link} from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import Icon from '@/Pages/Admin/Shared/Icon.vue'
 import Logo from '@/Pages/Admin/Shared/Logo.vue'
 import Dropdown from '@/Pages/Admin/Shared/Dropdown.vue'
@@ -23,7 +23,7 @@ export default {
 	},
 	methods: {
 		logout() {
-			this.$inertia.post(route('logout'));
+			router.post(route('logout'));
 		}
 	},
 }
@@ -57,7 +57,7 @@ export default {
 					<div
 							class="md:text-md flex items-center justify-between p-4 w-full text-sm bg-white border-b md:px-12 md:py-0">
 						<div class="mr-4 mt-1">{{ $page.props.auth.user.name }}</div>
-						<dropdown class="mt-1" placement="bottom-end">
+						<Dropdown class="mt-1" placement="bottom-end">
 							<template #default>
 								<div class="group flex items-center cursor-pointer select-none">
 									<div class="mr-1 text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 whitespace-nowrap">
@@ -67,7 +67,7 @@ export default {
 									      name="cheveron-down"/>
 								</div>
 							</template>
-							<template #dropdown>
+							<template #content>
 								<div class="mt-2 py-2 text-sm bg-white rounded shadow-xl">
 									<DropdownLink as="button" :href="route('users.edit', $page.props.auth.user.id)">
 										My Profile
@@ -79,7 +79,7 @@ export default {
 									</form>
 								</div>
 							</template>
-						</dropdown>
+						</Dropdown>
 					</div>
 				</div>
 				<div class="md:flex md:flex-grow md:overflow-hidden">
