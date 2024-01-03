@@ -62,18 +62,18 @@
 				<tr v-else class="hover:bg-gray-100 focus-within:bg-gray-100">
 					<td class="border-t">
 						<Link class="flex items-center px-6 py-4 focus:text-indigo-500"
-						      :href="`admin/users/${datespot.user.id}/edit`">
+						      :href="route('users.edit', datespot.user.id)">
 							{{ datespot.user.name }}
 							<icon v-if="datespot.user.deleted_at" name="trash" class="flex-shrink-0 ml-2 w-3 h-3 fill-gray-400"/>
 						</Link>
 					</td>
 					<td class="border-t">
-						<Link class="flex items-center px-6 py-4" :href="`/admin/users/${datespot.user.id}/edit`" tabindex="-1">
+						<Link class="flex items-center px-6 py-4" :href="route('users.edit', datespot.user.id)" tabindex="-1">
 							{{ datespot.user.email }}
 						</Link>
 					</td>
 					<td class="w-px border-t">
-						<Link class="flex items-center px-4" :href="`/admin/user/${datespot.user.id}/edit`" tabindex="-1">
+						<Link class="flex items-center px-4" :href="route('users.edit', datespot.user.id)" tabindex="-1">
 							<icon name="cheveron-right" class="block w-6 h-6 fill-gray-400"/>
 						</Link>
 					</td>
@@ -122,9 +122,6 @@ export default {
 			}
 		}
 	},
-	created() {
-		console.log(this.datespot)
-	},
 	remember: 'form',
 	data() {
 		return {
@@ -145,16 +142,16 @@ export default {
 	},
 	methods: {
 		update() {
-			this.form.put(`/admin/datespots/${this.datespot.id}`)
+			this.form.put(route('datespots.update', this.datespot.id))
 		},
 		destroy() {
 			if (confirm('Are you sure you want to delete this datespot?')) {
-				this.$inertia.delete(`/admin/datespots/${this.datespot.id}`)
+				this.$inertia.delete(route('datespots.destroy', this.datespot.id))
 			}
 		},
 		restore() {
 			if (confirm('Are you sure you want to restore this datespot?')) {
-				this.$inertia.put(`/admin/datespots/${this.datespot.id}/restore`)
+				this.$inertia.put(route('datespots.restore', this.datespot.id))
 			}
 		},
 		handleAddressDetails: _.debounce(function () {

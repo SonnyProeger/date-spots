@@ -79,18 +79,18 @@ export default {
 	},
 	methods: {
 		update() {
-			this.form.post(`/admin/users/${this.user.id}`, {
+			this.form.post(route('users.update', this.user.id), {
 				onSuccess: () => this.form.reset('password', 'photo'),
 			})
 		},
 		destroy() {
 			if (confirm('Are you sure you want to delete this user?')) {
-				this.$inertia.delete(`/admin/users/${this.user.id}`)
+				this.$inertia.delete(route('users.destroy', this.user.id))
 			}
 		},
 		restore() {
 			if (confirm('Are you sure you want to restore this user?')) {
-				this.$inertia.put(`/admin/users/${this.user.id}/restore`)
+				this.$inertia.put(route('users.restore', this.user.id))
 			}
 		},
 	},

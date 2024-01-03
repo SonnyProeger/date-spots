@@ -65,16 +65,16 @@ export default {
 	},
 	methods: {
 		update() {
-			this.form.post(`/admin/types/${this.type.id}`)
+			this.form.post(route('types.update', this.type.id))
 		},
 		destroy() {
 			if (confirm('Are you sure you want to delete this type?')) {
-				this.$inertia.delete(`/admin/types/${this.type.id}`)
+				this.$inertia.delete(route('types.destroy', this.type.id))
 			}
 		},
 		restore() {
 			if (confirm('Are you sure you want to restore this type?')) {
-				this.$inertia.put(`/admin/types/${this.type.id}/restore`)
+				this.$inertia.put(route('types.restore', this.type.id))
 			}
 		},
 	},

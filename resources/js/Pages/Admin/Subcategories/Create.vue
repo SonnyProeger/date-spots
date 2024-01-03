@@ -58,7 +58,7 @@ export default {
 	},
 	methods: {
 		store() {
-			this.form.post('/admin/subcategories')
+			this.form.post(route('subcategories.store'))
 		},
 	},
 }

@@ -108,7 +108,7 @@ export default {
 	},
 	methods: {
 		store() {
-			this.form.post('/admin/datespots')
+			this.form.post(route('datespots.store'));
 		},
 
 
