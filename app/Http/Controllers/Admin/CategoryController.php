@@ -91,7 +91,7 @@ class CategoryController extends Controller
 
 		$validatedData = $request->validate([
 			'name' => ['required', 'max:50', Rule::unique('categories')->ignore($category->id)],
-			'type' => ['required']
+			'type_id' => ['required']
 		]);
 
 		$category->update($validatedData);

@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Traits\CrudOperationsTrait;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -19,10 +19,10 @@ class SubcategoryController extends Controller
 	 * Display a listing of the resource.
 	 */
 
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize('viewAny', Subcategory::class);
 
-		$filters = Request::all('search', 'trashed');
+		$filters = $request->only('search', 'trashed');
 
 		$query = $this->commonIndexLogic(Subcategory::class, $filters);
 
@@ -62,15 +62,12 @@ class SubcategoryController extends Controller
 	public function store(Request $request) {
 		$this->authorize('viewAny', Subcategory::class);
 
-		Request::validate([
+		$validatedData = $request->validate([
 			'name' => ['required', 'max:50', Rule::unique('subcategories')],
 			'category_id' => ['required']
 		]);
 
-		Subcategory::create([
-			'name' => Request::get('name'),
-			'category_id' => Request::get('category_id'),
-		]);
+		Subcategory::create($validatedData);
 
 		return Redirect::route('subcategories.index')->with('success', 'Subcategory created.');
 	}
@@ -94,14 +91,12 @@ class SubcategoryController extends Controller
 	public function update(Request $request, Subcategory $subcategory) {
 		$this->authorize('update', $subcategory);
 
-		Request::validate([
-			'name' => ['required', 'max:50', Rule::unique('subcategories')],
+		$validatedData = $request->validate([
+			'name' => ['required', 'max:50', Rule::unique('subcategories')->ignore($subcategory->id)],
 			'category_id' => ['required'],
 		]);
 
-		$subcategory->update(Request::only('name'));
-		$subcategory->update(Request::only('category_id'));
-
+		$subcategory->update($validatedData);
 
 		return Redirect::back()->with('success', 'Subcategory updated.');
 	}

@@ -70,7 +70,7 @@ export default {
 			form: this.$inertia.form({
 				_method: 'put',
 				name: this.subcategory.name,
-				category: this.subcategory.category.id
+				category_id: this.subcategory.category.id
 			}),
 		}
 	},
