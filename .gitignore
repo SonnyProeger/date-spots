@@ -18,3 +18,4 @@ yarn-error.log
 /.idea
 /.vscode
 /bootstrap/ssr/assets/
+/storage/debugbar
