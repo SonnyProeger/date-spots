@@ -18,28 +18,32 @@ export default {
 				<div class="group relative">
 					<div
 							class="rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:bg-white hover:bg-opacity-50 hover:scale-105 hover:cursor-pointer">
-						<img src="https://placehold.co/350x250" alt="altText"/>
+						<img src="https://datespotsbucket.s3.eu-central-1.amazonaws.com/media/DatespotCities/Amsterdam.png"
+						     alt="altText"/>
 					</div>
 				</div>
 
 				<div class="group relative">
 					<div
 							class="rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:bg-white hover:bg-opacity-50 hover:scale-105 hover:cursor-pointer">
-						<img src="https://placehold.co/350x250" alt="altText"/>
+						<img src="https://datespotsbucket.s3.eu-central-1.amazonaws.com/media/DatespotCities/Den+Haag.png"
+						     alt="altText"/>
 					</div>
 				</div>
 
 				<div class="group relative">
 					<div
 							class="rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:bg-white hover:bg-opacity-50 hover:scale-105 hover:cursor-pointer">
-						<img src="https://placehold.co/350x250" alt="altText"/>
+						<img src="https://datespotsbucket.s3.eu-central-1.amazonaws.com/media/DatespotCities/Rotterdam.png"
+						     alt="altText"/>
 					</div>
 				</div>
 
 				<div class="group relative">
 					<div
 							class="rounded-lg overflow-hidden transition duration-300 ease-in-out transform hover:bg-white hover:bg-opacity-50 hover:scale-105 hover:cursor-pointer">
-						<img src="https://placehold.co/350x250" alt="altText"/>
+						<img src="https://datespotsbucket.s3.eu-central-1.amazonaws.com/media/DatespotCities/Utrecht.png"
+						     alt="altText"/>
 					</div>
 				</div>
 			</div>

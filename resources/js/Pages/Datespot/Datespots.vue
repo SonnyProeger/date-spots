@@ -24,8 +24,8 @@ export default {
 	},
 	props: {
 		datespots: Object,
-		categories: Object,
-		subcategories: Object,
+		cities: Array,
+		types: Object,
 	},
 }
 </script>
