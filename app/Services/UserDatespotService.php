@@ -232,4 +232,15 @@ class UserDatespotService
 		return $datespot->name;
 	}
 
+	public function getTopFourCities(): Collection|array {
+		$cities = [
+			'Amsterdam',
+			'Rotterdam',
+			'Utrecht',
+			'Den Haag',
+		];
+
+		return $cities;
+	}
+
 }

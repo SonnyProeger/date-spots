@@ -24,8 +24,13 @@ class UserDatespotController extends Controller
 	public function index() {
 		$datespots = $this->datespotService->getAllDatespotsWithTypes();
 
+		$cities = $this->datespotService->getTopFourCities();
+		$types = $this->datespotService->getAllTypesWithCategoriesAndSubcategories();
+
 		return Inertia::render('Datespot/Datespots', [
 			'datespots' => $datespots,
+			'cities' => $cities,
+			'types' => $types,
 		]);
 	}
 
