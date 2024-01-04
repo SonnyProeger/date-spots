@@ -44,11 +44,7 @@ class UserDatespotService
 			$mediaItem->temporary_url = $temporaryUrl;
 		}
 
-		if ($datespot->media->count() > 0) {
-			$datespot->first_media_item = $datespot->media->first()->getTemporaryUrl(Carbon::now()->addMinutes(5));
-		} else {
-			$datespot->first_media_item = 'https://lh3.googleusercontent.com/places/ANXAkqHMtdv-0Lgtb08rKatMMCJ97kCQnm0QlQAiOWNy90yhK7BWs7E3ATHnTs65S0Lt38ZV4hIEY0bIAW_eV9NgkDjnVWf80qvSCtc=s1600-w4032';
-		}
+		$datespot->first_media_item = $datespot->media->first()->getTemporaryUrl(Carbon::now()->addMinutes(5));;
 
 		return $datespot;
 	}
