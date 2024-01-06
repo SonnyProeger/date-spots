@@ -37,7 +37,6 @@ export default {
 			}
 		},
 		handleDatespotClick(datespot) {
-			console.log('datespot:', datespot)
 			this.$inertia.visit(route('user-review.create', {
 				id: datespot.id,
 				name: datespot.formatted_name,
@@ -45,6 +44,13 @@ export default {
 		},
 		handleMissingPlaceClick() {
 			this.$inertia.visit(route('user-datespots.suggest'));
+		},
+		closeSuggestions() {
+			this.wasSuggestionsVisible = this.showSuggestions;
+			this.showSuggestions = false;
+		},
+		openSuggestions() {
+			this.showSuggestions = this.wasSuggestionsVisible;
 		},
 	},
 }
@@ -70,6 +76,9 @@ export default {
 				class="w-full text-center md:text-left pl-10 md:pl-12 py-2 rounded-lg border-gray-300 focus:border-roseGold focus:ring-darkRoseGold rounded-md shadow-sm z-0"
 				v-model="searchText"
 				@input="fetchAutocompleteResults"
+				@blur="closeSuggestions"
+				@focus="openSuggestions"
+
 				id="ReviewSearchBar"
 				type="text"
 				placeholder="What would you like to review?"
