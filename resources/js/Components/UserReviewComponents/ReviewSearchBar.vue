@@ -53,7 +53,7 @@ export default {
 <template>
 	<div class="relative w-full">
 		<input
-				class="w-2/3 text-center md:w-full md:text-left px-4 py-2 border rounded-md mr-4 focus:outline-none"
+				class="w-2/3 text-center md:w-full md:text-left px-4 py-2 rounded-lg border-gray-300 focus:border-roseGold focus:ring-darkRoseGold rounded-md shadow-sm"
 				v-model="searchText"
 				@input="fetchAutocompleteResults"
 				id="ReviewSearchBar"
