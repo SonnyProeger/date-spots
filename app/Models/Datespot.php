@@ -113,6 +113,14 @@ class Datespot extends Model implements hasMedia
 	];
 
 
+	public function getAddressesAttribute(): string {
+		return $this->street_name.' '.$this->house_number.', '.$this->postal_code.' '.$this->city;
+	}
+
+	public function getCityAndStateAttribute(): string {
+		return $this->city.', '.$this->state;
+	}
+
 	public function reviews(): HasMany {
 		return $this->hasMany(Review::class);
 	}

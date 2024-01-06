@@ -1,5 +1,5 @@
 <script>
-import Hero from "@/Components/Hero.vue";
+import Hero from "@/Components/DatespotHero.vue";
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
 import HowItWorks from "@/Components/HowItWorks.vue";
 

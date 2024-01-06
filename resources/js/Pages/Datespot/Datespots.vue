@@ -7,7 +7,7 @@ import SearchButton from "@/Components/SearchButton.vue";
 import HowItWorks from "@/Components/HowItWorks.vue";
 import DatespotsInCities from "@/Components/DatespotComponents/DatespotsInCities.vue";
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
-import Hero from "@/Components/Hero.vue";
+import Hero from "@/Components/DatespotHero.vue";
 
 export default {
 	name: "Datespots",

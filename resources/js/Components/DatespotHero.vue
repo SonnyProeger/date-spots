@@ -3,7 +3,7 @@ import AddressForm from "@/Components/AddressForm.vue";
 import SearchButton from "@/Components/SearchButton.vue";
 
 export default {
-	name: "Hero",
+	name: "DatespotHero",
 	components: {SearchButton, AddressForm},
 	props: {
 		homeScreen: {

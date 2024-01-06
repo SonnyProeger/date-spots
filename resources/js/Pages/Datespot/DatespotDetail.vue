@@ -1,6 +1,6 @@
 <script>
 import NewAppLayout from "@/Layouts/newAppLayout.vue";
-import Hero from "@/Components/Hero.vue";
+import Hero from "@/Components/DatespotHero.vue";
 import DatespotDetailHeader from "@/Components/DatespotComponents/DatespotDetailHeader.vue";
 import DatespotCard from "@/Components/DatespotComponents/DatespotCard.vue";
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
