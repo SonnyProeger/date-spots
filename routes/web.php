@@ -57,6 +57,8 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 
 // Review routes
+Route::get('/reviews', [UserReviewController::class, 'index'])->name('user-review.index');
+
 Route::middleware([
 	'auth',
 	'verified',

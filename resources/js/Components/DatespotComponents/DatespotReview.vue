@@ -2,7 +2,7 @@
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {Link} from "@inertiajs/vue3";
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
-import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "DatespotReview",
@@ -11,7 +11,7 @@ export default {
 		reviews: Object,
 		datespot: Object,
 	},
-	mixins: [DatespotDetailMixin],
+	mixins: [DatespotMixin],
 }
 
 </script>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\UserDatespotController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('/getAddressDetails', [AddressController::class, 'getAddressDetails']);
+Route::get('/getDatespotsAutocomplete', [UserDatespotController::class, 'autocomplete']);
+
 

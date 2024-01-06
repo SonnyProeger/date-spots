@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Helpers\StringHelper;
 use App\Models\Review;
-use DateTime;
 
 class UserReviewService
 {
@@ -15,9 +15,8 @@ class UserReviewService
 			->paginate(10)
 			->withQueryString()
 			->through(function ($review) {
-				$formattedDate = DateTime::createFromFormat('Y-m-d', $review->date_visited)
-					->format('F Y');
-				$formattedCreatedOn = $review->getFormattedDate();
+				$formattedDate = $review->getFormattedDateForDateVisited();
+				$formattedCreatedOn = $review->getFormattedDateForCreatedOn();
 
 				return [
 					'id' => $review->id,
@@ -29,6 +28,35 @@ class UserReviewService
 					],
 					'rating' => $review->rating,
 					'date_visited' => $formattedDate,
+					'created_on' => $formattedCreatedOn,
+				];
+			});
+		return $reviews;
+	}
+
+	public function getAllReviewsForUser($user_id) {
+		$reviews = Review::query()
+			->where('user_id', $user_id)
+			->with('datespot')
+			->orderByDesc('created_at')
+			->paginate(10)
+			->withQueryString()
+			->through(function ($review) {
+				$formattedCreatedOn = $review->getFormattedDateForCreatedOn();
+
+				return [
+					'id' => $review->id,
+					'title' => $review->title,
+					'content' => $review->comment,
+					'datespot' => [
+						'name' => $review->datespot->name,
+						'formatted_name' => StringHelper::replaceSpacesWithHyphens($review->datespot->name),
+						'id' => $review->datespot->id,
+						'photo_url' => $review->datespot->photo_path,
+						'address' => $review->datespot->getCityAndStateAttribute()
+					],
+					'rating' => $review->rating,
+					'date_visited' => $review->getFormattedDate(),
 					'created_on' => $formattedCreatedOn,
 				];
 			});

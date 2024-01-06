@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\ReviewFactory;
+use DateTime;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -69,7 +70,7 @@ class Review extends Model
 		return $this->belongsTo(Datespot::class);
 	}
 
-	public function getFormattedDate(): string {
+	public function getFormattedDateForCreatedOn(): string {
 		$createdOn = Carbon::parse($this->created_at);
 
 		if ($createdOn->isToday()) {
@@ -77,9 +78,16 @@ class Review extends Model
 		} elseif ($createdOn->isYesterday()) {
 			return 'Yesterday';
 		} elseif ($createdOn->isCurrentYear()) {
-			return $createdOn->format('j F');
+			return 'on '.$createdOn->format('j F');
 		} else {
-			return $createdOn->format('j F Y');
+			return 'on '.$createdOn->format('j F Y');
 		}
+	}
+
+	public function getFormattedDateForDateVisited(): string {
+		$formattedDate = DateTime::createFromFormat('Y-m-d', $this->date_visited)
+			->format('F Y');
+
+		return $formattedDate;
 	}
 }

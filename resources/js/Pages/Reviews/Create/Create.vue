@@ -4,7 +4,7 @@ import ReviewDateSelector from "@/Components/UserReviewComponents/ReviewDateSele
 import ReviewTitleInput from "@/Components/UserReviewComponents/ReviewTitleInput.vue";
 import ReviewTextAreaInput from "@/Components/UserReviewComponents/ReviewTextAreaInput.vue";
 import ReviewHeartRating from "@/Components/UserReviewComponents/ReviewHeartRating.vue";
-import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 import LoadingButton from "@/Pages/Admin/Shared/LoadingButton.vue";
 
 export default {
@@ -17,7 +17,7 @@ export default {
 		ReviewDateSelector,
 		NewAppLayout
 	},
-	mixins: [DatespotDetailMixin],
+	mixins: [DatespotMixin],
 	props: {
 		datespot: Object,
 	},

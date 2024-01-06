@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Services\UserDatespotService;
+use App\Services\UserReviewService;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,16 +15,27 @@ class UserReviewController extends Controller
 {
 
 	private UserDatespotService $datespotService;
+	private UserReviewService $reviewService;
 
-	public function __construct(UserDatespotService $datespotService) {
+	public function __construct(UserDatespotService $datespotService, UserReviewService $reviewService) {
 		$this->datespotService = $datespotService;
+		$this->reviewService = $reviewService;
 	}
 
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		//
+		$user = Auth::user();
+		$reviews = [];
+
+		if ($user) {
+			$reviews = $this->reviewService->getAllReviewsForUser($user->id);
+		};
+
+		return Inertia::render('Reviews/Index', [
+			'reviews' => $reviews,
+		]);
 	}
 
 	/**

@@ -248,4 +248,18 @@ class UserDatespotService
 		return $cities;
 	}
 
+	public function getAutocompleteSuggestions($query) {
+		$datespots = Datespot::where('name', 'like', '%'.$query.'%')
+			->limit(5)
+			->select('id', 'name', 'city', 'province')
+			->get();
+
+		$datespots->map(function ($datespot) {
+			$datespot->address = $datespot->getCityAndStateAttribute();
+			$datespot->photo_url = $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images');
+			$datespot->formatted_name = StringHelper::replaceSpacesWithHyphens($datespot->name);
+		});
+
+		return $datespots;
+	}
 }

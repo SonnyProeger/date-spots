@@ -63,7 +63,7 @@ export default {
 						Datespots
 					</Link>
 
-					<Link class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded" href="#">
+					<Link class="py-2 px-3 ml-2 hover:bg-rose-700 hover:text-white rounded" :href="route('user-review.index')">
 						Review
 					</Link>
 

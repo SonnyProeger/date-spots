@@ -118,7 +118,7 @@ class Datespot extends Model implements hasMedia
 	}
 
 	public function getCityAndStateAttribute(): string {
-		return $this->city.', '.$this->state;
+		return $this->city.', '.$this->province;
 	}
 
 	public function reviews(): HasMany {

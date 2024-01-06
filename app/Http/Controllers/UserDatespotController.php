@@ -82,4 +82,12 @@ class UserDatespotController extends Controller
 			'types' => $types,
 		]);
 	}
+
+	public function autocomplete(Request $request) {
+		$query = $request->input('query');
+
+		$suggestions = $this->datespotService->getAutocompleteSuggestions($query);
+
+		return response()->json($suggestions);
+	}
 }
