@@ -25,13 +25,6 @@ export default {
 			} else {
 				console.error("Invalid geometry information for the selected place:", selectedPlace);
 			}
-			// if (selectedPlace.geometry){
-			//   location = [selectedPlace.geometry.location.lat(),selectedPlace.geometry.location.lng()]
-			//   this.$emit("address-updated", location)
-			// }
-			// else {
-			//   console.error("Invalid geometry information for the selected place:", selectedPlace);
-			// }
 		});
 	},
 }
