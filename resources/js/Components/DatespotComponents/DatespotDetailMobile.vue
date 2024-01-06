@@ -1,6 +1,6 @@
 <script>
 import {Link} from "@inertiajs/vue3";
-import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "DatespotDetailMobile",
@@ -8,7 +8,7 @@ export default {
 	props: {
 		datespot: Object,
 	},
-	mixins: [DatespotDetailMixin],
+	mixins: [DatespotMixin],
 }
 </script>
 

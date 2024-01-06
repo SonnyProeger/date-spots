@@ -1,12 +1,12 @@
 <script>
-import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "DatespotDetailImages",
 	props: {
 		datespot: Object,
 	},
-	mixins: [DatespotDetailMixin],
+	mixins: [DatespotMixin],
 }
 </script>
 <template>

@@ -1,6 +1,6 @@
 <script>
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
-import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "DatespotDetailInfoCards",
@@ -8,7 +8,7 @@ export default {
 	props: {
 		datespot: Object,
 	},
-	mixins: [DatespotDetailMixin],
+	mixins: [DatespotMixin],
 }
 </script>
 

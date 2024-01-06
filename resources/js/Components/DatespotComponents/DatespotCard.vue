@@ -1,12 +1,12 @@
 <script>
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
 import {Link} from "@inertiajs/vue3";
-import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "DatespotCard",
 	components: {HeartRatingComponent, Link},
-	mixins: [DatespotDetailMixin],
+	mixins: [DatespotMixin],
 	props: {
 		datespotId: Number,
 		datespotName: String,

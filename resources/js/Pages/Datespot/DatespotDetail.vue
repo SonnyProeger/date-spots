@@ -4,7 +4,7 @@ import Hero from "@/Components/DatespotHero.vue";
 import DatespotDetailHeader from "@/Components/DatespotComponents/DatespotDetailHeader.vue";
 import DatespotCard from "@/Components/DatespotComponents/DatespotCard.vue";
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";
-import {DatespotDetailMixin} from "@/mixins/DatespotMixin.js";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 import {Link} from "@inertiajs/vue3";
 import DatespotReview from "@/Components/DatespotComponents/DatespotReview.vue";
 import DatespotDetailImages from "@/Components/DatespotComponents/DatespotDetailImages.vue";
@@ -24,7 +24,7 @@ export default {
 		datespot: Object,
 		reviews: Object,
 	},
-	mixins: [DatespotDetailMixin],
+	mixins: [DatespotMixin],
 }
 </script>
 
