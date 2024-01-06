@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\StringHelper;
 use App\Models\Review;
+use Illuminate\Support\Carbon;
 
 class UserReviewService
 {
@@ -39,7 +40,7 @@ class UserReviewService
 			->where('user_id', $user_id)
 			->with('datespot')
 			->orderByDesc('created_at')
-			->paginate(10)
+			->paginate(5)
 			->withQueryString()
 			->through(function ($review) {
 				$formattedCreatedOn = $review->getFormattedDateForCreatedOn();
@@ -52,7 +53,7 @@ class UserReviewService
 						'name' => $review->datespot->name,
 						'formatted_name' => StringHelper::replaceSpacesWithHyphens($review->datespot->name),
 						'id' => $review->datespot->id,
-						'photo_url' => $review->datespot->photo_path,
+						'photo_url' => $review->datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
 						'address' => $review->datespot->getCityAndStateAttribute()
 					],
 					'rating' => $review->rating,

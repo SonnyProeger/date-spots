@@ -6,9 +6,6 @@ import ReviewSearchBar from "@/Components/UserReviewComponents/ReviewSearchBar.v
 export default {
 	name: "UserReviewHero",
 	components: {ReviewSearchBar, SearchButton, AddressForm},
-	props: {
-		datespots: Object,
-	},
 };
 </script>
 
