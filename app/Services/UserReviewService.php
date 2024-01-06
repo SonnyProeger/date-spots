@@ -56,7 +56,7 @@ class UserReviewService
 						'address' => $review->datespot->getCityAndStateAttribute()
 					],
 					'rating' => $review->rating,
-					'date_visited' => $review->getFormattedDate(),
+					'date_visited' => $review->getFormattedDateForDateVisited(),
 					'created_on' => $formattedCreatedOn,
 				];
 			});
