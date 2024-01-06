@@ -7,6 +7,7 @@ import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingCom
 import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 import {Link} from "@inertiajs/vue3";
 import DatespotReview from "@/Components/DatespotComponents/DatespotReview.vue";
+import DatespotReviewItem from "@/Components/DatespotComponents/DatespotReview.vue";
 import DatespotDetailImages from "@/Components/DatespotComponents/DatespotDetailImages.vue";
 import DatespotDetailMobile from "@/Components/DatespotComponents/DatespotDetailMobile.vue";
 import DatespotDetailInfoCards from "@/Components/DatespotComponents/DatespotDetailInfoCards.vue";
@@ -15,6 +16,7 @@ import DatespotDetailInfoCards from "@/Components/DatespotComponents/DatespotDet
 export default {
 	name: "DatespotDetail",
 	components: {
+		DatespotReviewItem,
 		DatespotDetailInfoCards,
 		DatespotDetailMobile,
 		DatespotDetailImages,
@@ -46,7 +48,7 @@ export default {
 
 			<!--reviews-->
 			<div class="bg-white">
-				<DatespotReview :reviews="reviews" :datespot="this.datespot"></DatespotReview>
+				<DatespotReviewItem :reviews="reviews" :datespot="this.datespot"></DatespotReviewItem>
 			</div>
 		</div>
 	</NewAppLayout>
