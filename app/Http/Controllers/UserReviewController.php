@@ -62,7 +62,7 @@ class UserReviewController extends Controller
 
 		$datespot = $this->datespotService->getDatespotByIdAndName($id, $name);
 
-		return Inertia::render('Reviews/Create/Create', [
+		return Inertia::render('Reviews/Create', [
 			'datespot' => $datespot,
 		]);
 
