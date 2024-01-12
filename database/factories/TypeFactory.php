@@ -20,7 +20,7 @@ class TypeFactory extends Factory
 	public function definition(): array {
 
 		$types = [
-			'Food', 'Activities', 'Entertainment', 'Outdoor', 'Special Occasions',
+			'Food', 'Activities', 'Entertainment', 'Outdoor', 'Special Occasions', 'Price'
 		];
 
 		$randomType = $this->faker->randomElement($types);

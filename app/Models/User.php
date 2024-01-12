@@ -162,6 +162,11 @@ class User extends Authenticatable implements MustVerifyEmail
 		return $this->id === $datespot->user_id;
 	}
 
+	public function ownsReview(Review $review): bool {
+		return $this->id === $review->user_id;
+	}
+
+
 	protected static function booted(): void {
 		static::creating(function ($user) {
 			if (!$user->profile_photo_path) {

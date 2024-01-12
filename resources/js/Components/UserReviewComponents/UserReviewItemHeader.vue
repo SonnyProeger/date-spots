@@ -2,13 +2,41 @@
 import {Link} from "@inertiajs/vue3";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import Dropdown from "@/Components/Dropdown.vue";
+import ConfirmationModal from "@/Components/ConfirmationModal.vue";
+import DropdownButton from "@/Components/DropdownButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import {DatespotMixin} from "@/mixins/DatespotMixin.js";
 
 export default {
 	name: "UserReviewItemHeader",
-	components: {Dropdown, DropdownLink, Link},
+	components: {SecondaryButton, DangerButton, DropdownButton, ConfirmationModal, Dropdown, DropdownLink, Link},
 	props: {
 		review: Object
 	},
+	mixins: [DatespotMixin],
+	data() {
+		return {
+			isOpen: false,
+		};
+	},
+	methods: {
+		openModal() {
+			this.isOpen = true;
+		},
+		closeModal() {
+			this.isOpen = false;
+		},
+		deleteReview() {
+			this.$inertia.delete(route('user-review.destroy', {
+				id: this.review.datespot.id,
+				name: this.formattedDatespotName(this.review.datespot.name),
+				reviewId: this.review.id
+			}));
+			this.closeModal();
+		}
+	}
+
 }
 </script>
 
@@ -46,18 +74,44 @@ export default {
 						</button>
 					</template>
 					<template #content>
-						<DropdownLink href="#">
-							Share Review
-						</DropdownLink>
+						<DropdownButton @click="openModal">
+							Edit
+						</DropdownButton>
 
-						<DropdownLink href="#">
-							Delete Review
-						</DropdownLink>
+						<DropdownButton @click="openModal">
+							Delete
+						</DropdownButton>
 					</template>
 				</Dropdown>
 			</div>
 		</div>
 	</div>
+	<ConfirmationModal
+			:show="isOpen"
+			@close="closeModal"
+	>
+		<template #title>
+			Delete Review
+		</template>
+		<template #content>
+			<div class="flex flex-col">
+				<div>
+					<p class="text-sm">Are you sure you want to delete this review?</p>
+				</div>
+				<div class="flex flex-row right-0">
+					<p class="italic text-xs">Deleting a review is permanent and can not be recovered.</p>
+				</div>
+			</div>
+		</template>
+		<template #footer>
+			<button class="bg-gray-500 text-white px-4 py-2 rounded-md" @click="closeModal">
+				No
+			</button>
+			<button class="bg-red-500 text-white px-4 py-2 rounded-md ml-2" @click="deleteReview">
+				Yes
+			</button>
+		</template>
+	</ConfirmationModal>
 
 </template>
 

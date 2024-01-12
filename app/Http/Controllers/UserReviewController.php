@@ -127,7 +127,13 @@ class UserReviewController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(Review $review) {
-		//
+	public function destroy(string $id, string $name, string $reviewId) {
+		$review = Review::query()->findOrFail($reviewId);
+
+		$this->authorize('delete', $review);
+
+		$review->forceDelete();
+
+		return Redirect::back()->with('success', 'Review deleted.');
 	}
 }

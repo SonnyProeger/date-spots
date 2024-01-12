@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Review;
 use App\Models\User;
 
 class ReviewPolicy
@@ -55,11 +56,19 @@ class ReviewPolicy
 	/**
 	 * Determine whether the user can delete the model.
 	 */
-	public function delete(User $user): bool {
-		return
-			$user->isAdmin();
+	public function delete(User $user, ?Review $review = null): bool {
+		$isAdmin = $user->isAdmin();
 
+		if ($review !== null) {
+			if (
+				$user->ownsReview($review)) {
+				return true;
+			}
+		}
+
+		return $isAdmin;
 	}
+
 
 	/**
 	 * Determine whether the user can restore the model.
