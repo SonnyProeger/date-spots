@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Policies\ReviewPolicy;
 use App\Services\UserDatespotService;
 use App\Services\UserReviewService;
 use Auth;
@@ -65,7 +66,6 @@ class UserReviewController extends Controller
 		return Inertia::render('Reviews/Create', [
 			'datespot' => $datespot,
 		]);
-
 	}
 
 
@@ -73,8 +73,6 @@ class UserReviewController extends Controller
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
-//		$this->authorize('create', Review::class);
-
 		$validatedData = $request->validate([
 			'datespotId' => 'required',
 			'reviewTitle' => 'required|string|min:5|max:50',
@@ -84,6 +82,11 @@ class UserReviewController extends Controller
 		]);
 
 		$datespotId = $validatedData['datespotId'];
+
+		$alreadyReviewed = $this->datespotService->datespotAlreadyReviewed($datespotId);
+
+		$this->authorize(ReviewPolicy::class.'@create', $alreadyReviewed);
+
 		$datespotName = $this->datespotService->getDatespotNameById($datespotId);
 
 		$dateVisited = Carbon::createFromFormat('Y-m', $validatedData['selectedDate'])->startOfMonth();
