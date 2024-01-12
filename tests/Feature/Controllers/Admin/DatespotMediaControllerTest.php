@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Admin;
 
 use App\Models\Datespot;
 use App\Models\User;
@@ -25,7 +25,7 @@ class DatespotMediaControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Media/Index')
+			->component('Admin/Media/Index')
 			->has('datespot')
 			->has('media.0', function ($media) {
 				$media->has('id')
@@ -227,7 +227,7 @@ class DatespotMediaControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Media/Index')
+			->component('Admin/Media/Index')
 			->has('datespot')
 			->has('media')
 		);
@@ -354,7 +354,7 @@ class DatespotMediaControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Media/Index')
+			->component('Admin/Media/Index')
 			->has('datespot')
 			->has('media')
 		);

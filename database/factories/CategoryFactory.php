@@ -29,7 +29,7 @@ class CategoryFactory extends Factory
 			],
 			'Activities' => ['spa', 'wellness', 'cooking classes', 'dance classes', 'escape rooms'],
 			'Special Occasions' => [
-				'anniversary', 'birthday celebrations', 'engagement locations', 'hotel'
+				'anniversary', 'engagement locations', 'hotel'
 			],
 		];
 

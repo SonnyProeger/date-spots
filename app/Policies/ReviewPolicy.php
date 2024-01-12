@@ -38,11 +38,11 @@ class ReviewPolicy
 	/**
 	 * Determine whether the user can create models.
 	 */
-	public function create(User $user, ?bool $alreadyReviewed = null): bool {
+	public function create(User $user): bool {
 
-		if ($alreadyReviewed !== null) {
-			return !$alreadyReviewed;
-		}
+//		if ($alreadyReviewed !== null) {
+//			return !$alreadyReviewed;
+//		}
 
 		return $user->isAdmin();
 

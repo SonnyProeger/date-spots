@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Admin;
 
 use App\Models\Category;
 use App\Models\Subcategory;
@@ -25,7 +25,7 @@ class SubcategoryControllerTest extends TestCase
 		$response = $this->get(route('subcategories.index'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Subcategories/Index')
+			->component('Admin/Subcategories/Index')
 			->has('subcategories.data', 1)
 			->has('subcategories.data.0', function ($subcategory) {
 				$subcategory->has('id')
@@ -44,7 +44,7 @@ class SubcategoryControllerTest extends TestCase
 		$response = $this->get(route('subcategories.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Subcategories/Create')
+			->component('Admin/Subcategories/Create')
 		);
 	}
 
@@ -78,7 +78,7 @@ class SubcategoryControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Subcategories/Edit')
+			->component('Admin/Subcategories/Edit')
 			->has('subcategory')
 		);
 	}
@@ -157,7 +157,7 @@ class SubcategoryControllerTest extends TestCase
 		$response = $this->get('/admin/subcategories');
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Subcategories/Index')
+			->component('Admin/Subcategories/Index')
 			->has('subcategories.data')
 			->has('subcategories.data.0', function ($subcategory) {
 				$subcategory->has('id')
@@ -176,7 +176,7 @@ class SubcategoryControllerTest extends TestCase
 		$response = $this->get(route('subcategories.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Subcategories/Create')
+			->component('Admin/Subcategories/Create')
 		);
 	}
 
@@ -213,7 +213,7 @@ class SubcategoryControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Subcategories/Edit')
+			->component('Admin/Subcategories/Edit')
 			->has('subcategory')
 		);
 	}

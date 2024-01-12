@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Admin;
 
 use App\Models\Datespot;
 use App\Models\User;
@@ -20,7 +20,7 @@ class AdminDatespotControllerTest extends TestCase
 		$response = $this->get(route('datespots.index'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Datespots/Index')
+			->component('Admin/Datespots/Index')
 			->has('datespots')
 		);
 	}
@@ -32,7 +32,7 @@ class AdminDatespotControllerTest extends TestCase
 		$response = $this->get(route('datespots.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Datespots/Create')
+			->component('Admin/Datespots/Create')
 		);
 	}
 
@@ -62,7 +62,7 @@ class AdminDatespotControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Datespots/Edit')
+			->component('Admin/Datespots/Edit')
 			->has('datespot')
 		);
 	}
@@ -137,7 +137,7 @@ class AdminDatespotControllerTest extends TestCase
 		$response = $this->get('/admin/datespots');
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Datespots/Index')
+			->component('Admin/Datespots/Index')
 			->has('datespots')
 		);
 	}
@@ -149,7 +149,7 @@ class AdminDatespotControllerTest extends TestCase
 		$response = $this->get(route('datespots.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Datespots/Create')
+			->component('Admin/Datespots/Create')
 		);
 	}
 
@@ -181,7 +181,7 @@ class AdminDatespotControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Datespots/Edit')
+			->component('Admin/Datespots/Edit')
 			->has('datespot')
 		);
 	}
@@ -261,7 +261,7 @@ class AdminDatespotControllerTest extends TestCase
 		$response->assertStatus(200);
 
 		$response->assertInertia(function ($assert) use ($companyDatespot) {
-			$assert->component('Admin/Pages/Datespots/Index')
+			$assert->component('Admin/Datespots/Index')
 				->has('datespots.data', 1)
 				->has('datespots.data.0', function ($datespot) use ($companyDatespot) {
 					$datespot->where('id', $companyDatespot->id)

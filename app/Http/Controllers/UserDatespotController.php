@@ -44,9 +44,11 @@ class UserDatespotController extends Controller
 			$datespot = $this->datespotService->getDatespotByIdAndName($id, $name);
 			$reviews = $this->reviewService->getAllReviewsForDatespot($id);
 		} else {
-			return Inertia::render('Error', [
-				'status' => 404
-			]);
+			return response()->json(['error' => 'Datespot does not exist or Name does not match the ID.'], 404);
+
+//			return Inertia::render('Error', [
+//				'status' => 404,
+//			]);
 		}
 
 		return Inertia::render('Datespot/DatespotDetail', [
@@ -90,4 +92,16 @@ class UserDatespotController extends Controller
 
 		return response()->json($suggestions);
 	}
+
+	/**
+	 * Display the form for suggesting a datespot.
+	 */
+	public function suggest() {
+		$types = $this->datespotService->getAllTypesWithCategoriesAndSubcategories();
+
+		return Inertia::render('Datespot/SuggestDatespot', [
+			'types' => $types,
+		]);
+	}
+
 }

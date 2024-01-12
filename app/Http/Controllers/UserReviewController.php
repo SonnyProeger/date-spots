@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
-use App\Policies\ReviewPolicy;
 use App\Services\UserDatespotService;
 use App\Services\UserReviewService;
 use Auth;
@@ -83,9 +82,9 @@ class UserReviewController extends Controller
 
 		$datespotId = $validatedData['datespotId'];
 
-		$alreadyReviewed = $this->datespotService->datespotAlreadyReviewed($datespotId);
+//		$alreadyReviewed = $this->datespotService->datespotAlreadyReviewed($datespotId);
 
-		$this->authorize(ReviewPolicy::class.'@create', $alreadyReviewed);
+//		$this->authorize(ReviewPolicy::class.'@create', $alreadyReviewed);
 
 		$datespotName = $this->datespotService->getDatespotNameById($datespotId);
 

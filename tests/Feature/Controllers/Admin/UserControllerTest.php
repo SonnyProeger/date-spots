@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Admin;
 
 use Tests\TestCase;
 

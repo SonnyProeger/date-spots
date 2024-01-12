@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Admin;
 
 use App\Models\Type;
 use App\Models\User;
@@ -21,7 +21,7 @@ class TypeControllerTest extends TestCase
 		$response = $this->get(route('types.index'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Types/Index')
+			->component('Admin/Types/Index')
 			->has('types.data', 1)
 			->has('types.data.0', function ($type) {
 				$type->has('id')
@@ -38,7 +38,7 @@ class TypeControllerTest extends TestCase
 		$response = $this->get(route('types.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Types/Create')
+			->component('Admin/Types/Create')
 		);
 	}
 
@@ -69,7 +69,7 @@ class TypeControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Types/Edit')
+			->component('Admin/Types/Edit')
 			->has('type')
 		);
 	}
@@ -137,7 +137,7 @@ class TypeControllerTest extends TestCase
 		$response = $this->get('/admin/types');
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Types/Index')
+			->component('Admin/Types/Index')
 			->has('types.data')
 			->has('types.data.0', function ($type) {
 				$type->has('id')
@@ -154,7 +154,7 @@ class TypeControllerTest extends TestCase
 		$response = $this->get(route('types.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Types/Create')
+			->component('Admin/Types/Create')
 		);
 	}
 
@@ -187,7 +187,7 @@ class TypeControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Types/Edit')
+			->component('Admin/Types/Edit')
 			->has('type')
 		);
 	}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,19 +10,11 @@ class AdminDashboardControllerTest extends TestCase
 {
 	use RefreshDatabase;
 
-	protected function setUp(): void {
-		parent::setUp();
-
-		$this->superAdmin = User::factory()->superAdmin()->make();
-		$this->admin = User::factory()->admin()->make();
-		$this->company = User::factory()->company()->make();
-		$this->regularUser = User::factory()->make();
-	}
-
 	/** @test */
 	public function it_displays_admin_dashboard() {
+		$superAdmin = User::factory()->superAdmin()->make();
 
-		$this->actingAs($this->superAdmin);
+		$this->actingAs($superAdmin);
 
 		$this->withoutExceptionHandling();
 
@@ -30,7 +22,7 @@ class AdminDashboardControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Dashboard/Index')
+			->component('Admin/Dashboard/Index')
 		);
 	}
 

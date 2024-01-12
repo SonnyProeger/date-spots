@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers;
+namespace Tests\Feature\Controllers;
 
 use App\Models\Datespot;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +16,7 @@ class UserDatespotControllerTest extends TestCase
 
 		$response->assertOk();
 		$response->assertInertia(fn($assert) => $assert
-			->component('datespots')
+			->component('Datespot/Datespots')
 		);
 	}
 
@@ -26,7 +26,7 @@ class UserDatespotControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('DatespotDetail')
+			->component('Datespot/DatespotDetail')
 			->has('datespot')
 			->has('reviews')
 		);
@@ -51,7 +51,7 @@ class UserDatespotControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('DatespotsCity')
+			->component('Datespot/DatespotsCity')
 			->has('datespots')
 			->where('city', $city)
 			->has('types')
@@ -62,14 +62,13 @@ class UserDatespotControllerTest extends TestCase
 		$datespot = Datespot::factory()->make();
 		$city = $datespot->city;
 
-
 		$response = $this->post("/datespots/{$city}", [
 			'selectedTypes' => [1, 2],
 		]);
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('DatespotsCity')
+			->component('Datespot/DatespotsCity')
 			->has('datespots')
 			->where('city', $city)
 			->has('types')

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\Admin;
+namespace Tests\Feature\Controllers\Admin;
 
 use App\Models\Category;
 use App\Models\Type;
@@ -22,7 +22,7 @@ class CategoryControllerTest extends TestCase
 		$response = $this->get(route('categories.index'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Categories/Index')
+			->component('Admin/Categories/Index')
 			->has('categories.data', 1)
 			->has('categories.data.0', function ($category) {
 				$category->has('id')
@@ -40,7 +40,7 @@ class CategoryControllerTest extends TestCase
 		$response = $this->get(route('categories.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Categories/Create')
+			->component('Admin/Categories/Create')
 		);
 	}
 
@@ -72,7 +72,7 @@ class CategoryControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Categories/Edit')
+			->component('Admin/Categories/Edit')
 			->has('category')
 		);
 	}
@@ -87,7 +87,8 @@ class CategoryControllerTest extends TestCase
 
 		$updatedData = [
 			'id' => $category->id,
-			'name' => 'Updated Name',
+			'name' => 'Updated',
+			'type_id' => $category->type_id
 		];
 
 		$response = $this
@@ -147,7 +148,7 @@ class CategoryControllerTest extends TestCase
 		$response = $this->get('/admin/categories');
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Categories/Index')
+			->component('Admin/Categories/Index')
 			->has('categories.data')
 			->has('categories.data.0', function ($category) {
 				$category->has('id')
@@ -165,7 +166,7 @@ class CategoryControllerTest extends TestCase
 		$response = $this->get(route('categories.create'));
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Categories/Create')
+			->component('Admin/Categories/Create')
 		);
 	}
 
@@ -200,7 +201,7 @@ class CategoryControllerTest extends TestCase
 
 		$response->assertStatus(200);
 		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Pages/Categories/Edit')
+			->component('Admin/Categories/Edit')
 			->has('category')
 		);
 	}
@@ -216,6 +217,7 @@ class CategoryControllerTest extends TestCase
 		$updatedData = [
 			'id' => $category->id,
 			'name' => 'Updated Name',
+			'type_id' => $category->type_id
 		];
 
 		$response = $this
