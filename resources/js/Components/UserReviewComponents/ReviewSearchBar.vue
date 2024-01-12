@@ -92,7 +92,7 @@ export default {
 					v-if="autocompleteResults.length"
 					v-for="result in autocompleteResults"
 					:key="result.id"
-					@click='handleDatespotClick(result)'
+					@mousedown='handleDatespotClick(result)'
 					class="cursor-pointer py-3 px-4 hover:bg-gray-100 border-b-2"
 			>
 				<div class="flex items-center space-x-4">
@@ -108,7 +108,7 @@ export default {
 			</li>
 			<li
 					class="cursor-pointer py-3 px-4 hover:bg-gray-100 border-b-2"
-					@click="handleMissingPlaceClick"
+					@mousedown="handleMissingPlaceClick"
 			>
 				<div class="flex items-center space-x-4">
 					<div>
