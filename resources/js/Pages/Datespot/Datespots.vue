@@ -3,7 +3,7 @@ import NewAppLayout from "@/Layouts/newAppLayout.vue";
 import DatespotCard from "@/Components/DatespotComponents/DatespotCard.vue";
 import DatespotCityFilter from "@/Components/FilterComponents/DatespotCityFilter.vue";
 import AddressForm from "@/Components/AddressForm.vue";
-import SearchButton from "@/Components/SearchButton.vue";
+import SearchButton from "@/Components/DatespotComponents/SearchButton.vue";
 import HowItWorks from "@/Components/HowItWorks.vue";
 import DatespotsInCities from "@/Components/DatespotComponents/DatespotsInCities.vue";
 import HeartRatingComponent from "@/Components/DatespotComponents/HeartRatingComponent.vue";

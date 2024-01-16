@@ -1,6 +1,6 @@
 <script>
 import AddressForm from "@/Components/AddressForm.vue";
-import SearchButton from "@/Components/SearchButton.vue";
+import SearchButton from "@/Components/DatespotComponents/SearchButton.vue";
 import ReviewSearchBar from "@/Components/UserReviewComponents/ReviewSearchBar.vue";
 
 export default {
