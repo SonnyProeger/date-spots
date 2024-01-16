@@ -44,6 +44,9 @@ Route::get('/datespots/{city}', [UserDatespotController::class, 'showByLocation'
 Route::post('/datespots/{city}', [UserDatespotController::class, 'filterByLocation'])
 	->name('user-datespot.filter-by-location');
 
+Route::get('/suggest-datespot', [UserDatespotController::class, 'suggest'])
+	->name('user-datespot.suggest');
+
 // Email verification
 Route::get('/email/verify', function () {
 	return Inertia::render('Auth/VerifyEmail');

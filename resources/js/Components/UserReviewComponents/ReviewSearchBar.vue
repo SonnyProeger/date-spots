@@ -43,7 +43,7 @@ export default {
 			}))
 		},
 		handleMissingPlaceClick() {
-			this.$inertia.visit(route('user-datespots.suggest'));
+			this.$inertia.visit(route('user-datespot.suggest'));
 		},
 		closeSuggestions() {
 			this.wasSuggestionsVisible = this.showSuggestions;
