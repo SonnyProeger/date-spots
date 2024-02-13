@@ -13,9 +13,6 @@ export default {
 		city: String,
 		types: Object,
 	},
-	created() {
-		console.log(this.datespots[0])
-	},
 	methods: {
 		saveAndCloseFilter(types, categories, subcategories) {
 			const filterData = {
