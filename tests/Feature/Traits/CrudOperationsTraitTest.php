@@ -11,671 +11,763 @@ use Tests\TestCase;
 
 class CrudOperationsTraitTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	// If you're using database-related operations in tests
+    // If you're using database-related operations in tests
 
-	/** @test */
-	public function it_performs_common_index_logic() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_performs_common_index_logic_for_datespots_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic_for_datespots_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		$filters = [
+        $filters = [
 
-		];
+        ];
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_performs_common_index_logic_for_datespots_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic_for_datespots_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		$filters = [
-			'search' => 'test',
-		];
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_performs_common_index_logic_for_datespots_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic_for_datespots_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		$filters = [
-			'role' => '1',
-		];
+        $filters = [
+            'role' => '1',
+        ];
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_performs_common_index_logic_for_datespots_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic_for_datespots_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_performs_common_index_logic_for_datespots_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic_for_datespots_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_performs_common_index_logic_for_datespots_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic_for_datespots_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
+
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+    /** @test */
+    public function it_performs_common_index_logic_for_categories_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-	/** @test */
-	public function it_performs_common_index_logic_for_categories_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+            protected $table = 'categories';
+        };
+
+        $filters = [
 
-			protected $table = 'categories';
-		};
+        ];
+
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		];
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+    /** @test */
+    public function it_performs_common_index_logic_for_categories_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+            protected $table = 'categories';
+        };
+
+        $filters = [
+            'search' => 'test',
+        ];
+
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
+
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_performs_common_index_logic_for_categories_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_performs_common_index_logic_for_categories_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
+
+            protected $table = 'categories';
+        };
+
+        $filters = [
+            'role' => '1',
+        ];
 
-			protected $table = 'categories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'search' => 'test',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_categories_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'categories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_categories_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'categories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'role' => '1',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_categories_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'categories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_categories_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-			protected $table = 'categories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_categories_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'categories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_categories_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'categories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_subcategories_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'subcategories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_categories_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
 
-			protected $table = 'categories';
-		};
+        ];
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+    /** @test */
+    public function it_performs_common_index_logic_for_subcategories_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-	/** @test */
-	public function it_performs_common_index_logic_for_subcategories_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+            protected $table = 'subcategories';
+        };
 
-			protected $table = 'subcategories';
-		};
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$filters = [
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_subcategories_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'subcategories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_subcategories_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'role' => '1',
+        ];
 
-			protected $table = 'subcategories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'search' => 'test',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_subcategories_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'subcategories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_subcategories_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'subcategories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'role' => '1',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_subcategories_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'subcategories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_subcategories_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-			protected $table = 'subcategories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_subcategories_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'subcategories';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_subcategories_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'subcategories';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_types_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'types';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_subcategories_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
 
-			protected $table = 'subcategories';
-		};
+        ];
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+    /** @test */
+    public function it_performs_common_index_logic_for_types_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-	/** @test */
-	public function it_performs_common_index_logic_for_types_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+            protected $table = 'types';
+        };
 
-			protected $table = 'types';
-		};
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$filters = [
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_types_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'types';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_types_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'role' => '1',
+        ];
 
-			protected $table = 'types';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'search' => 'test',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_types_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'types';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_types_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'types';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'role' => '1',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_types_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'types';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_types_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-			protected $table = 'types';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_types_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'types';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_types_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'types';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_users_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'users';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_types_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
 
-			protected $table = 'types';
-		};
+        ];
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+    /** @test */
+    public function it_performs_common_index_logic_for_users_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-	/** @test */
-	public function it_performs_common_index_logic_for_users_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+            protected $table = 'users';
+        };
 
-			protected $table = 'users';
-		};
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$filters = [
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_users_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'users';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_users_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'role' => '1',
+        ];
 
-			protected $table = 'users';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'search' => 'test',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_users_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'users';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_users_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'users';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'role' => '1',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_users_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'users';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_users_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-			protected $table = 'users';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
+    /** @test */
+    public function it_performs_common_index_logic_for_users_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+            protected $table = 'users';
+        };
 
-	/** @test */
-	public function it_performs_common_index_logic_for_users_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-			protected $table = 'users';
-		};
+        $trait = new class
+        {
+            use CrudOperationsTrait;
+        };
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $resultQuery = $trait->commonIndexLogic($mockModel, $filters);
 
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
-
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
-
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
-
-	/** @test */
-	public function it_performs_common_index_logic_for_users_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
-
-			protected $table = 'users';
-		};
-
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
-
-		$trait = new class {
-			use CrudOperationsTrait;
-		};
-
-		$resultQuery = $trait->commonIndexLogic($mockModel, $filters);
-
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
-
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 }

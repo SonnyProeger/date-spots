@@ -23,6 +23,7 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  * @property-read Category $category
+ *
  * @method static SubcategoryFactory factory($count = null, $state = [])
  * @method static Builder|Subcategory newModelQuery()
  * @method static Builder|Subcategory newQuery()
@@ -36,25 +37,25 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @method static Builder|Subcategory whereUpdatedAt($value)
  * @method static Builder|Subcategory withTrashed()
  * @method static Builder|Subcategory withoutTrashed()
+ *
  * @mixin Eloquent
  */
 class Subcategory extends Model
 {
-	use hasFactory;
-	use SoftDeletes;
-	use BelongsToThrough;
-	use HasRelationships;
+    use BelongsToThrough;
+    use hasFactory;
+    use HasRelationships;
+    use SoftDeletes;
 
+    protected $fillable = ['name', 'category_id'];
 
-	protected $fillable = ['name', 'category_id'];
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 
-
-	public function category(): BelongsTo {
-		return $this->belongsTo(Category::class);
-	}
-
-//	public function datespots(): HasManyDeep {
-//		return $this->hasManyDeep(Datespot::class,
-//			['datespot_type', Type::class, Category::class]);
-//	}
+    //	public function datespots(): HasManyDeep {
+    //		return $this->hasManyDeep(Datespot::class,
+    //			['datespot_type', Type::class, Category::class]);
+    //	}
 }

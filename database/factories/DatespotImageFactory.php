@@ -10,17 +10,17 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DatespotImageFactory extends Factory
 {
-	/**
-	 * Define the model's default state.
-	 *
-	 * @return array<string, mixed>
-	 */
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    protected $model = DatespotImage::class;
 
-	protected $model = DatespotImage::class;
-
-	public function definition(): array {
-		return [
-			'url' => "https://placehold.co/600x400",
-		];
-	}
+    public function definition(): array
+    {
+        return [
+            'url' => 'https://placehold.co/600x400',
+        ];
+    }
 }

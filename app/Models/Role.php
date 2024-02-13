@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
+ *
  * @method static Builder|Role newModelQuery()
  * @method static Builder|Role newQuery()
  * @method static Builder|Role onlyTrashed()
@@ -29,17 +30,18 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Role withTrashed()
  * @method static Builder|Role withoutTrashed()
  * @method static \Database\Factories\RoleFactory factory($count = null, $state = [])
+ *
  * @mixin Eloquent
  */
 class Role extends Model
 {
-	use HasFactory;
-	use SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
+    protected $fillable = ['id', 'name'];
 
-	protected $fillable = ['id', 'name'];
-
-	public function getId(): int {
-		return $this->id;
-	}
+    public function getId(): int
+    {
+        return $this->id;
+    }
 }

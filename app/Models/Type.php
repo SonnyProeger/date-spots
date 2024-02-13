@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $datespots_count
  * @property-read Collection<int, Subcategory> $subcategories
  * @property-read int|null $subcategories_count
+ *
  * @method static TypeFactory factory($count = null, $state = [])
  * @method static Builder|Type newModelQuery()
  * @method static Builder|Type newQuery()
@@ -40,44 +41,49 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Type whereUpdatedAt($value)
  * @method static Builder|Type withTrashed()
  * @method static Builder|Type withoutTrashed()
+ *
  * @mixin Eloquent
  */
 class Type extends Model
 {
-	use HasFactory;
-	use SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
-	protected $fillable = ['name'];
+    protected $fillable = ['name'];
 
-	public function datespots(): BelongsToMany {
-		return $this->belongsToMany(Datespot::class, 'datespot_type')->withTrashed();
-	}
+    public function datespots(): BelongsToMany
+    {
+        return $this->belongsToMany(Datespot::class, 'datespot_type')->withTrashed();
+    }
 
-	public function categories(): HasMany {
-		return $this->hasMany(Category::class);
-	}
+    public function categories(): HasMany
+    {
+        return $this->hasMany(Category::class);
+    }
 
-	public function subcategories(): HasManyThrough {
-		return $this->hasManyThrough(Subcategory::class, Category::class, 'type_id', 'category_id');
-	}
+    public function subcategories(): HasManyThrough
+    {
+        return $this->hasManyThrough(Subcategory::class, Category::class, 'type_id', 'category_id');
+    }
 
-	protected static function boot(): void {
-		parent::boot();
+    protected static function boot(): void
+    {
+        parent::boot();
 
-		static::deleting(function ($type) {
-			$type->categories->each(function ($category) {
-				$category->delete();
+        static::deleting(function ($type) {
+            $type->categories->each(function ($category) {
+                $category->delete();
 
-				$category->subcategories()->delete();
-			});
-		});
+                $category->subcategories()->delete();
+            });
+        });
 
-		static::restoring(function ($type) {
-			$type->categories()->withTrashed()->restore();
+        static::restoring(function ($type) {
+            $type->categories()->withTrashed()->restore();
 
-			$type->categories()->withTrashed()->get()->each(function ($category) {
-				$category->subcategories()->withTrashed()->restore();
-			});
-		});
-	}
+            $type->categories()->withTrashed()->get()->each(function ($category) {
+                $category->subcategories()->withTrashed()->restore();
+            });
+        });
+    }
 }

@@ -12,735 +12,825 @@ use Tests\TestCase;
 
 class FilterableTraitTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	/** @test */
-	public function it_applies_filters_to_query_for_datespots_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_datespots_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
+        $filters = [
 
-		];
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_datespots_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_datespots_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-		];
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_datespots_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_datespots_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'role' => '1',
-		];
+        $filters = [
+            'role' => '1',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_datespots_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_datespots_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_datespots_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_datespots_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_datespots_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_datespots_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'datespots';
-		};
+            protected $table = 'datespots';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_categories_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_categories_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'categories';
-		};
+            protected $table = 'categories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
+        $filters = [
 
-		];
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_categories_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_categories_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'categories';
-		};
+            protected $table = 'categories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-		];
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_categories_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_categories_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'categories';
-		};
+            protected $table = 'categories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'role' => '1',
-		];
+        $filters = [
+            'role' => '1',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_categories_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_categories_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'categories';
-		};
+            protected $table = 'categories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_categories_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_categories_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'categories';
-		};
+            protected $table = 'categories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_categories_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_categories_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'categories';
-		};
+            protected $table = 'categories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_subcategories_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_subcategories_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'subcategories';
-		};
+            protected $table = 'subcategories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
+        $filters = [
 
-		];
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_subcategories_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_subcategories_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'subcategories';
-		};
+            protected $table = 'subcategories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-		];
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_subcategories_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_subcategories_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'subcategories';
-		};
+            protected $table = 'subcategories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'role' => '1',
-		];
+        $filters = [
+            'role' => '1',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_subcategories_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_subcategories_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'subcategories';
-		};
+            protected $table = 'subcategories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_subcategories_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_subcategories_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'subcategories';
-		};
+            protected $table = 'subcategories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_subcategories_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_subcategories_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'subcategories';
-		};
+            protected $table = 'subcategories';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_types_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_types_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'types';
-		};
+            protected $table = 'types';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
+        $filters = [
 
-		];
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_types_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_types_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'types';
-		};
+            protected $table = 'types';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-		];
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_types_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_types_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'types';
-		};
+            protected $table = 'types';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'role' => '1',
-		];
+        $filters = [
+            'role' => '1',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_types_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_types_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'types';
-		};
+            protected $table = 'types';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_types_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_types_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'types';
-		};
+            protected $table = 'types';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_types_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_types_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'types';
-		};
+            protected $table = 'types';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_users_with_no_filters() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_users_with_no_filters()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'users';
-		};
+            protected $table = 'users';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
+        $filters = [
 
-		];
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_users_with_search_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_users_with_search_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'users';
-		};
+            protected $table = 'users';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-		];
+        $filters = [
+            'search' => 'test',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_users_with_role_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_users_with_role_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'users';
-		};
+            protected $table = 'users';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'role' => '1',
-		];
+        $filters = [
+            'role' => '1',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_users_with_trashed_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_users_with_trashed_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'users';
-		};
+            protected $table = 'users';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'with',
-		];
+        $filters = [
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_users_with_trashed_only_filter() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_users_with_trashed_only_filter()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'users';
-		};
+            protected $table = 'users';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'trashed' => 'only',
-		];
+        $filters = [
+            'trashed' => 'only',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 
-	/** @test */
-	public function it_applies_filters_to_query_for_users_with_search_role_and_trashed() {
-		$mockModel = new class extends Model {
-			use SoftDeletes;
+    /** @test */
+    public function it_applies_filters_to_query_for_users_with_search_role_and_trashed()
+    {
+        $mockModel = new class extends Model
+        {
+            use SoftDeletes;
 
-			protected $table = 'users';
-		};
+            protected $table = 'users';
+        };
 
-		Schema::shouldReceive('hasColumn')->andReturn(true);
+        Schema::shouldReceive('hasColumn')->andReturn(true);
 
-		$filters = [
-			'search' => 'test',
-			'role' => 1,
-			'trashed' => 'with',
-		];
+        $filters = [
+            'search' => 'test',
+            'role' => 1,
+            'trashed' => 'with',
+        ];
 
-		$trait = new class {
-			use FilterableTrait;
-		};
+        $trait = new class
+        {
+            use FilterableTrait;
+        };
 
-		$query = $mockModel::query();
-		$resultQuery = $trait->applyFilters($query, $filters);
+        $query = $mockModel::query();
+        $resultQuery = $trait->applyFilters($query, $filters);
 
-		$this->assertInstanceOf(Builder::class, $resultQuery);
-	}
+        $this->assertInstanceOf(Builder::class, $resultQuery);
+    }
 }

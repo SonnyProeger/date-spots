@@ -56,6 +56,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read Collection<int, Type> $types
  * @property-read int|null $types_count
  * @property-read User|null $user
+ *
  * @method static DatespotFactory factory($count = null, $state = [])
  * @method static Builder|Datespot newModelQuery()
  * @method static Builder|Datespot newQuery()
@@ -86,84 +87,93 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|Datespot whereWebsite($value)
  * @method static Builder|Datespot withTrashed()
  * @method static Builder|Datespot withoutTrashed()
+ *
  * @mixin Eloquent
  */
 class Datespot extends Model implements hasMedia
 {
-	use InteractsWithMedia;
-	use HasFactory;
-	use SoftDeletes;
+    use HasFactory;
+    use InteractsWithMedia;
+    use SoftDeletes;
 
-	protected $fillable = [
-		'datespot_id',
-		'name',
-		'tagline',
-		'lat',
-		'lng',
-		'street_name',
-		'house_number',
-		'postal_code',
-		'city',
-		'province',
-		'country',
-		'phone_number',
-		'website',
-		'email',
-		'position',
-	];
+    protected $fillable = [
+        'datespot_id',
+        'name',
+        'tagline',
+        'lat',
+        'lng',
+        'street_name',
+        'house_number',
+        'postal_code',
+        'city',
+        'province',
+        'country',
+        'phone_number',
+        'website',
+        'email',
+        'position',
+    ];
 
+    public function getAddressesAttribute(): string
+    {
+        return $this->street_name.' '.$this->house_number.', '.$this->postal_code.' '.$this->city;
+    }
 
-	public function getAddressesAttribute(): string {
-		return $this->street_name.' '.$this->house_number.', '.$this->postal_code.' '.$this->city;
-	}
+    public function getCityAndStateAttribute(): string
+    {
+        return $this->city.', '.$this->province;
+    }
 
-	public function getCityAndStateAttribute(): string {
-		return $this->city.', '.$this->province;
-	}
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
 
-	public function reviews(): HasMany {
-		return $this->hasMany(Review::class);
-	}
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'datespot_category');
+    }
 
-	public function categories(): BelongsToMany {
-		return $this->belongsToMany(Category::class, 'datespot_category');
-	}
+    public function subCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(Subcategory::class, 'datespot_subcategory');
+    }
 
-	public function subCategories(): BelongsToMany {
-		return $this->belongsToMany(Subcategory::class, 'datespot_subcategory');
-	}
+    public function types(): BelongsToMany
+    {
+        return $this->belongsToMany(Type::class, 'datespot_type');
+    }
 
-	public function types(): BelongsToMany {
-		return $this->belongsToMany(Type::class, 'datespot_type');
-	}
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
-	public function user(): BelongsTo {
-		return $this->belongsTo(User::class);
-	}
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
 
-	public function registerMediaConversions(Media $media = null): void {
-		$this
-			->addMediaConversion('preview')
-			->fit(Manipulations::FIT_CROP, 300, 300)
-			->nonQueued();
+        $this->addMediaConversion('thumb')
+            ->width(128)
+            ->height(128)
+            ->sharpen(10);
 
-		$this->addMediaConversion('thumb')
-			->width(128)
-			->height(128)
-			->sharpen(10);
+        $this->addMediaConversion('tiny')
+            ->width(64)
+            ->height(64)
+            ->sharpen(10);
+    }
 
-		$this->addMediaConversion('tiny')
-			->width(64)
-			->height(64)
-			->sharpen(10);
-	}
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images')
+            ->useDisk('s3');
 
-	public function registerMediaCollections(): void {
-		$this->addMediaCollection('images')
-			->useDisk('s3');
-
-		// Define a collection for videos
-		$this->addMediaCollection('videos')
-			->useDisk('s3');
-	}
+        // Define a collection for videos
+        $this->addMediaCollection('videos')
+            ->useDisk('s3');
+    }
 }

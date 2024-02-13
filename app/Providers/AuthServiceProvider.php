@@ -17,23 +17,24 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 
 class AuthServiceProvider extends ServiceProvider
 {
-	/**
-	 * The model to policy mappings for the application.
-	 *
-	 * @var array<class-string, class-string>
-	 */
-	protected $policies = [
-		Datespot::class => datespotPolicy::class,
-		Type::class => TypePolicy::class,
-		Category::class => CategoryPolicy::class,
-		Subcategory::class => SubcategoryPolicy::class,
-		Review::class => ReviewPolicy::class,
-	];
+    /**
+     * The model to policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
+     */
+    protected $policies = [
+        Datespot::class => datespotPolicy::class,
+        Type::class => TypePolicy::class,
+        Category::class => CategoryPolicy::class,
+        Subcategory::class => SubcategoryPolicy::class,
+        Review::class => ReviewPolicy::class,
+    ];
 
-	/**
-	 * Register any authentication / authorization services.
-	 */
-	public function boot(): void {
-		//
-	}
+    /**
+     * Register any authentication / authorization services.
+     */
+    public function boot(): void
+    {
+        //
+    }
 }

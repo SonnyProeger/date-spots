@@ -12,35 +12,36 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DatespotFactory extends Factory
 {
-	protected $model = Datespot::class;
+    protected $model = Datespot::class;
 
-	/**
-	 * Define the model's default state.
-	 *
-	 * @return array<string, mixed>
-	 */
-	public function definition(): array {
-		$faker = FakerFactory::create('nl_NL');
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        $faker = FakerFactory::create('nl_NL');
 
-		$dutchProvider = new DutchFakerProvider($faker);
+        $dutchProvider = new DutchFakerProvider($faker);
 
-		$faker->addProvider($dutchProvider);
+        $faker->addProvider($dutchProvider);
 
-		return [
-			'datespot_id' => $faker->unique()->uuid,
-			'name' => $faker->company,
-			'tagline' => "A small cozy business in a nice city",
-			'lat' => $faker->latitude,
-			'lng' => $faker->longitude,
-			'city' => $faker->dutchCity,
-			'postal_code' => $faker->postcode,
-			'country' => 'Netherlands',
-			'province' => $faker->dutchState,
-			'street_name' => $faker->streetName,
-			'house_number' => $faker->randomNumber(),
-			'phone_number' => $faker->phoneNumber,
-			'website' => $faker->url,
-			'email' => $faker->email,
-		];
-	}
+        return [
+            'datespot_id' => $faker->unique()->uuid,
+            'name' => $faker->company,
+            'tagline' => 'A small cozy business in a nice city',
+            'lat' => $faker->latitude,
+            'lng' => $faker->longitude,
+            'city' => $faker->dutchCity,
+            'postal_code' => $faker->postcode,
+            'country' => 'Netherlands',
+            'province' => $faker->dutchState,
+            'street_name' => $faker->streetName,
+            'house_number' => $faker->randomNumber(),
+            'phone_number' => $faker->phoneNumber,
+            'website' => $faker->url,
+            'email' => $faker->email,
+        ];
+    }
 }

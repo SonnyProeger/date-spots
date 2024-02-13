@@ -8,29 +8,30 @@ use Tests\TestCase;
 
 class AdminDashboardControllerTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	/** @test */
-	public function it_displays_admin_dashboard() {
-		$superAdmin = User::factory()->superAdmin()->make();
+    /** @test */
+    public function it_displays_admin_dashboard()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
 
-		$this->actingAs($superAdmin);
+        $this->actingAs($superAdmin);
 
-		$this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
-		$response = $this->get(route('admin.dashboard'));
+        $response = $this->get(route('admin.dashboard'));
 
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Dashboard/Index')
-		);
-	}
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Dashboard/Index')
+        );
+    }
 
+    /** @test */
+    public function it_requires_authentication_for_admin_dashboard()
+    {
+        $response = $this->get(route('admin.dashboard'));
 
-	/** @test */
-	public function it_requires_authentication_for_admin_dashboard() {
-		$response = $this->get(route('admin.dashboard'));
-
-		$response->assertRedirect('/login');
-	}
+        $response->assertRedirect('/login');
+    }
 }

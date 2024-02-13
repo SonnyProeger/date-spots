@@ -15,251 +15,268 @@ use Illuminate\Support\Facades\DB;
 
 class UserDatespotService
 {
-	public function getAllDatespotsWithTypes(): Collection|array {
-		return Datespot::with('types')->get();
-	}
+    public function getAllDatespotsWithTypes(): Collection|array
+    {
+        return Datespot::with('types')->get();
+    }
 
-	public function getDatespotByIdAndName($id, $name): Model|Collection|Builder|array|null {
-		$datespot = Datespot::where('id', $id)->firstOrFail();
+    public function getDatespotByIdAndName($id, $name): Model|Collection|Builder|array|null
+    {
+        $datespot = Datespot::where('id', $id)->firstOrFail();
 
-		if (!$datespot) {
-			return null;
-		}
+        if (! $datespot) {
+            return null;
+        }
 
-		$formattedName = StringHelper::replaceHyphensWithSpaces($name);
-		if ($datespot->name !== $formattedName) {
-			return null;
-		}
+        $formattedName = StringHelper::replaceHyphensWithSpaces($name);
+        if ($datespot->name !== $formattedName) {
+            return null;
+        }
 
-		$datespot = $datespot->load(['types', 'categories', 'subcategories', 'media'])
-			->loadCount('reviews')
-			->loadAvg('reviews', 'rating');
+        $datespot = $datespot->load(['types', 'categories', 'subcategories', 'media'])
+            ->loadCount('reviews')
+            ->loadAvg('reviews', 'rating');
 
-		$avgRating = $this->formatAvgRating($datespot);
-		$datespot->rating = $avgRating;
-		$datespot->all_datespots = Datespot::where('city', $datespot->city)->count();
+        $avgRating = $this->formatAvgRating($datespot);
+        $datespot->rating = $avgRating;
+        $datespot->all_datespots = Datespot::where('city', $datespot->city)->count();
 
-		foreach ($datespot->media as $mediaItem) {
-			$temporaryUrl = $mediaItem->getTemporaryUrl(Carbon::now()->addMinutes(5));
-			$mediaItem->temporary_url = $temporaryUrl;
-		}
+        foreach ($datespot->media as $mediaItem) {
+            $temporaryUrl = $mediaItem->getTemporaryUrl(Carbon::now()->addMinutes(5));
+            $mediaItem->temporary_url = $temporaryUrl;
+        }
 
-		if ($datespot->media->count() > 0) {
-			$datespot->first_media_item = $datespot->media->first()->getTemporaryUrl(Carbon::now()->addMinutes(5));
-		} else {
-			$datespot->first_media_item = 'https://lh3.googleusercontent.com/places/ANXAkqHMtdv-0Lgtb08rKatMMCJ97kCQnm0QlQAiOWNy90yhK7BWs7E3ATHnTs65S0Lt38ZV4hIEY0bIAW_eV9NgkDjnVWf80qvSCtc=s1600-w4032';
-		}
+        if ($datespot->media->count() > 0) {
+            $datespot->first_media_item = $datespot->media->first()->getTemporaryUrl(Carbon::now()->addMinutes(5));
+        } else {
+            $datespot->first_media_item = 'https://lh3.googleusercontent.com/places/ANXAkqHMtdv-0Lgtb08rKatMMCJ97kCQnm0QlQAiOWNy90yhK7BWs7E3ATHnTs65S0Lt38ZV4hIEY0bIAW_eV9NgkDjnVWf80qvSCtc=s1600-w4032';
+        }
 
+        return $datespot;
+    }
 
-		return $datespot;
-	}
+    public function getDatespotsByLocation($city)
+    {
+        $datespots = Datespot::withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->with('media')
+            ->get()
+            ->where('city', $city)
+            ->map(function ($datespot) {
+                $avgRating = round($datespot->reviews_avg_rating, 2);
+                $allDatespotsCount = Datespot::count();
 
-	public function getDatespotsByLocation($city) {
-		$datespots = Datespot::withCount('reviews')
-			->withAvg('reviews', 'rating')
-			->with('media')
-			->get()
-			->where('city', $city)
-			->map(function ($datespot) {
-				$avgRating = round($datespot->reviews_avg_rating, 2);
-				$allDatespotsCount = Datespot::count();
-				return [
-					'id' => $datespot->id,
-					'name' => $datespot->name,
-					'city' => $datespot->city,
-					'tagline' => $datespot->tagline,
-					'photo_url' => $datespot->photo_url,
-					'rating' => $avgRating,
-					'reviews_count' => $datespot->reviews_count,
-					'all_datespots' => $allDatespotsCount,
-					'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
-				];
-			});
-		return $datespots;
-	}
+                return [
+                    'id' => $datespot->id,
+                    'name' => $datespot->name,
+                    'city' => $datespot->city,
+                    'tagline' => $datespot->tagline,
+                    'photo_url' => $datespot->photo_url,
+                    'rating' => $avgRating,
+                    'reviews_count' => $datespot->reviews_count,
+                    'all_datespots' => $allDatespotsCount,
+                    'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
+                ];
+            });
 
-	public function getAllTypesWithCategoriesAndSubcategories(): Collection|array {
-		return Type::with([
-			'categories' => function ($query) {
-				$query->select('id', 'name', 'type_id');
-			},
-			'categories.subcategories' => function ($query) {
-				$query->select('id', 'name', 'category_id');
-			}
-		])->select('id', 'name')->get();
-	}
+        return $datespots;
+    }
 
-	public function getSubcategoriesForDatespots($datespots): Collection {
-		$datespotIds = collect($datespots)->pluck('id')->toArray();
+    public function getAllTypesWithCategoriesAndSubcategories(): Collection|array
+    {
+        return Type::with([
+            'categories' => function ($query) {
+                $query->select('id', 'name', 'type_id');
+            },
+            'categories.subcategories' => function ($query) {
+                $query->select('id', 'name', 'category_id');
+            },
+        ])->select('id', 'name')->get();
+    }
 
-		$subcategories = Subcategory::whereHas('datespots', function ($query) use ($datespotIds) {
-			$query->whereIn('datespots.id', $datespotIds);
-		})->get();
+    public function getSubcategoriesForDatespots($datespots): Collection
+    {
+        $datespotIds = collect($datespots)->pluck('id')->toArray();
 
-		return $subcategories;
-	}
+        $subcategories = Subcategory::whereHas('datespots', function ($query) use ($datespotIds) {
+            $query->whereIn('datespots.id', $datespotIds);
+        })->get();
 
-	public function getCategoriesForSubcategories($subcategories) {
-		$categoryIds = $subcategories->pluck('category_id')->unique()->toArray();
+        return $subcategories;
+    }
 
-		$categories = Category::whereIn('id', $categoryIds)->get();
+    public function getCategoriesForSubcategories($subcategories)
+    {
+        $categoryIds = $subcategories->pluck('category_id')->unique()->toArray();
 
-		return $categories;
-	}
+        $categories = Category::whereIn('id', $categoryIds)->get();
 
-	public function getTypesForCategories($categories) {
-		$typeIds = $categories->pluck('type_id')->unique()->toArray();
+        return $categories;
+    }
 
-		$types = Type::whereIn('id', $typeIds)->get();
+    public function getTypesForCategories($categories)
+    {
+        $typeIds = $categories->pluck('type_id')->unique()->toArray();
 
-		return $types;
-	}
+        $types = Type::whereIn('id', $typeIds)->get();
 
-	public function filterDatespotsByLocation($city, $request) {
-		$query = Datespot::query();
+        return $types;
+    }
 
-		if ($city) {
-			$query->where('city', $city);
-		}
+    public function filterDatespotsByLocation($city, $request)
+    {
+        $query = Datespot::query();
 
-		$requestData = json_decode($request->getContent(), true);
+        if ($city) {
+            $query->where('city', $city);
+        }
 
+        $requestData = json_decode($request->getContent(), true);
 
-		if (!empty($requestData['selectedTypes']) || !empty($requestData['selectedCategories']) || !empty($requestData['selectedSubcategories'])) {
-			{
-				if ($request->filled('selectedTypes')) {
-					$selectedTypes = $request->input('selectedTypes');
-					$query->whereHas('types', function ($typeQuery) use ($selectedTypes) {
-						$typeQuery->whereIn('types.id', $selectedTypes);
-					});
-				} elseif ($request->filled('selectedCategories')) {
-					// If types are not selected but a category under type is selected
-					$selectedCategories = collect($request->input('selectedCategories'))
-						->map(function ($category) {
-							return explode('-', $category)[1];
-						})
-						->toArray();
+        if (! empty($requestData['selectedTypes']) || ! empty($requestData['selectedCategories']) || ! empty($requestData['selectedSubcategories'])) {
 
-					$query->whereHas('categories', function ($categoryQuery) use ($selectedCategories) {
-						$categoryQuery->whereIn('categories.id', $selectedCategories);
-					});
-				} elseif ($request->filled('selectedSubcategories')) {
-					// If neither types nor categories are selected but a subcategory is selected
-					$selectedSubcategories = collect($request->input('selectedSubcategories'))
-						->map(function ($subcategory) {
-							return explode('-', $subcategory)[1];
-						})
-						->toArray();
+            if ($request->filled('selectedTypes')) {
+                $selectedTypes = $request->input('selectedTypes');
+                $query->whereHas('types', function ($typeQuery) use ($selectedTypes) {
+                    $typeQuery->whereIn('types.id', $selectedTypes);
+                });
+            } elseif ($request->filled('selectedCategories')) {
+                // If types are not selected but a category under type is selected
+                $selectedCategories = collect($request->input('selectedCategories'))
+                    ->map(function ($category) {
+                        return explode('-', $category)[1];
+                    })
+                    ->toArray();
 
-					$query->whereHas('subcategories', function ($subcategoryQuery) use ($selectedSubcategories) {
-						$subcategoryQuery->whereIn('subcategories.id', $selectedSubcategories);
-					});
-				}
-			}
-			$filteredDatespots = $query->with('types', 'categories', 'subcategories')
-				->withCount('reviews')
-				->withAvg('reviews', 'rating')
-				->with('media')
-				->get()
-				->where('city', $city)
-				->map(function ($datespot) {
-					$avgRating = round($datespot->reviews_avg_rating, 2);
-					$allDatespotsCount = Datespot::count();
+                $query->whereHas('categories', function ($categoryQuery) use ($selectedCategories) {
+                    $categoryQuery->whereIn('categories.id', $selectedCategories);
+                });
+            } elseif ($request->filled('selectedSubcategories')) {
+                // If neither types nor categories are selected but a subcategory is selected
+                $selectedSubcategories = collect($request->input('selectedSubcategories'))
+                    ->map(function ($subcategory) {
+                        return explode('-', $subcategory)[1];
+                    })
+                    ->toArray();
 
-					return [
-						'id' => $datespot->id,
-						'name' => $datespot->name,
-						'city' => $datespot->city,
-						'tagline' => $datespot->tagline,
-						'photo_url' => $datespot->photo_url,
-						'rating' => $avgRating,
-						'reviews_count' => $datespot->reviews_count,
-						'all_datespots' => $allDatespotsCount,
-						'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
-					];
-				});
-		} else {
-			$filteredDatespots = $query->withCount('reviews')
-				->addSelect(DB::raw("(SELECT COUNT(*) FROM datespots) AS all_datespots"))
-				->withAvg('reviews', 'rating')
-				->with('media')
-				->get()
-				->where('city', $city)
-				->map(function ($datespot) {
-					$avgRating = round($datespot->reviews_avg_rating, 2);
-					return [
-						'id' => $datespot->id,
-						'name' => $datespot->name,
-						'city' => $datespot->city,
-						'tagline' => $datespot->tagline,
-						'photo_url' => $datespot->photo_url,
-						'rating' => $avgRating,
-						'reviews_count' => $datespot->reviews_count,
-						'all_datespots' => $datespot->all_datespots,
-						'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
-					];
-				});
-		}
-		return $filteredDatespots;
-	}
+                $query->whereHas('subcategories', function ($subcategoryQuery) use ($selectedSubcategories) {
+                    $subcategoryQuery->whereIn('subcategories.id', $selectedSubcategories);
+                });
+            }
 
+            $filteredDatespots = $query->with('types', 'categories', 'subcategories')
+                ->withCount('reviews')
+                ->withAvg('reviews', 'rating')
+                ->with('media')
+                ->get()
+                ->where('city', $city)
+                ->map(function ($datespot) {
+                    $avgRating = round($datespot->reviews_avg_rating, 2);
+                    $allDatespotsCount = Datespot::count();
 
-	public function formatAvgRating(Model|Builder $datespot): string {
-		$avgRating = number_format(round($datespot->reviews_avg_rating, 2),
-			max(1, substr_count(round($datespot->reviews_avg_rating, 2), '.')));
-		return $avgRating;
-	}
+                    return [
+                        'id' => $datespot->id,
+                        'name' => $datespot->name,
+                        'city' => $datespot->city,
+                        'tagline' => $datespot->tagline,
+                        'photo_url' => $datespot->photo_url,
+                        'rating' => $avgRating,
+                        'reviews_count' => $datespot->reviews_count,
+                        'all_datespots' => $allDatespotsCount,
+                        'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
+                    ];
+                });
+        } else {
+            $filteredDatespots = $query->withCount('reviews')
+                ->addSelect(DB::raw('(SELECT COUNT(*) FROM datespots) AS all_datespots'))
+                ->withAvg('reviews', 'rating')
+                ->with('media')
+                ->get()
+                ->where('city', $city)
+                ->map(function ($datespot) {
+                    $avgRating = round($datespot->reviews_avg_rating, 2);
 
-	public function datespotExistsByIdAndName($id, $name): bool {
-		$datespot = Datespot::where('id', $id)
-			->where('name', StringHelper::replaceHyphensWithSpaces($name))
-			->first();
+                    return [
+                        'id' => $datespot->id,
+                        'name' => $datespot->name,
+                        'city' => $datespot->city,
+                        'tagline' => $datespot->tagline,
+                        'photo_url' => $datespot->photo_url,
+                        'rating' => $avgRating,
+                        'reviews_count' => $datespot->reviews_count,
+                        'all_datespots' => $datespot->all_datespots,
+                        'cover_image' => $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images'),
+                    ];
+                });
+        }
 
-		if ($datespot) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+        return $filteredDatespots;
+    }
 
-	public function datespotAlreadyReviewed($id): bool {
-		$datespot = Datespot::where('id', $id)->first();
+    public function formatAvgRating(Model|Builder $datespot): string
+    {
+        $avgRating = number_format(round($datespot->reviews_avg_rating, 2),
+            max(1, substr_count(round($datespot->reviews_avg_rating, 2), '.')));
 
-		if ($datespot->reviews->where('user_id', auth()->user()->id)->count() > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+        return $avgRating;
+    }
 
-	public function getDatespotNameById($id): string {
-		$datespot = Datespot::where('id', $id)->first();
-		return $datespot->name;
-	}
+    public function datespotExistsByIdAndName($id, $name): bool
+    {
+        $datespot = Datespot::where('id', $id)
+            ->where('name', StringHelper::replaceHyphensWithSpaces($name))
+            ->first();
 
-	public function getTopFourCities(): Collection|array {
-		$cities = [
-			'Amsterdam',
-			'Rotterdam',
-			'Utrecht',
-			'Den Haag',
-		];
+        if ($datespot) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-		return $cities;
-	}
+    public function datespotAlreadyReviewed($id): bool
+    {
+        $datespot = Datespot::where('id', $id)->first();
 
-	public function getAutocompleteSuggestions($query) {
-		$datespots = Datespot::where('name', 'like', '%'.$query.'%')
-			->limit(5)
-			->select('id', 'name', 'city', 'province')
-			->get();
+        if ($datespot->reviews->where('user_id', auth()->user()->id)->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-		$datespots->map(function ($datespot) {
-			$datespot->address = $datespot->getCityAndStateAttribute();
-			$datespot->photo_url = $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images');
-			$datespot->formatted_name = StringHelper::replaceSpacesWithHyphens($datespot->name);
-		});
+    public function getDatespotNameById($id): string
+    {
+        $datespot = Datespot::where('id', $id)->first();
 
-		return $datespots;
-	}
+        return $datespot->name;
+    }
+
+    public function getTopFourCities(): Collection|array
+    {
+        $cities = [
+            'Amsterdam',
+            'Rotterdam',
+            'Utrecht',
+            'Den Haag',
+        ];
+
+        return $cities;
+    }
+
+    public function getAutocompleteSuggestions($query)
+    {
+        $datespots = Datespot::where('name', 'like', '%'.$query.'%')
+            ->limit(5)
+            ->select('id', 'name', 'city', 'province')
+            ->get();
+
+        $datespots->map(function ($datespot) {
+            $datespot->address = $datespot->getCityAndStateAttribute();
+            $datespot->photo_url = $datespot->getFirstTemporaryUrl(Carbon::now()->addMinutes(5), 'images');
+            $datespot->formatted_name = StringHelper::replaceSpacesWithHyphens($datespot->name);
+        });
+
+        return $datespots;
+    }
 }

@@ -26,6 +26,7 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @property-read Collection<int, Subcategory> $subCategories
  * @property-read int|null $sub_categories_count
  * @property-read Type $type
+ *
  * @method static CategoryFactory factory($count = null, $state = [])
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()
@@ -39,40 +40,42 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @method static Builder|Category whereUpdatedAt($value)
  * @method static Builder|Category withTrashed()
  * @method static Builder|Category withoutTrashed()
+ *
  * @mixin Eloquent
  */
 class Category extends Model
 {
-	use HasFactory;
-	use SoftDeletes;
-	use BelongsToThrough;
+    use BelongsToThrough;
+    use HasFactory;
+    use SoftDeletes;
 
+    protected $fillable = ['name', 'type_id'];
 
-	protected $fillable = ['name', 'type_id'];
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class)->withTrashed();
+    }
 
+    public function subCategories(): HasMany
+    {
+        return $this->hasMany(Subcategory::class)->withTrashed();
+    }
 
-	public function type(): BelongsTo {
-		return $this->belongsTo(Type::class)->withTrashed();
-	}
+    public function datespot(): \Znck\Eloquent\Relations\BelongsToThrough
+    {
+        return $this->belongsToThrough(Datespot::class, Type::class);
+    }
 
-	public function subCategories(): HasMany {
-		return $this->hasMany(Subcategory::class)->withTrashed();
-	}
+    protected static function boot()
+    {
+        parent::boot();
 
-	public function datespot(): \Znck\Eloquent\Relations\BelongsToThrough {
-		return $this->belongsToThrough(Datespot::class, Type::class);
-	}
+        static::deleting(function ($category) {
+            $category->subcategories()->delete();
+        });
 
-	protected static function boot() {
-		parent::boot();
-
-		static::deleting(function ($category) {
-			$category->subcategories()->delete();
-		});
-
-		static::restoring(function ($category) {
-			$category->subcategories()->restore();
-		});
-	}
-
+        static::restoring(function ($category) {
+            $category->subcategories()->restore();
+        });
+    }
 }

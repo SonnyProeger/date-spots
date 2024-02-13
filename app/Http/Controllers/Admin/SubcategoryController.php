@@ -13,107 +13,115 @@ use Inertia\Inertia;
 
 class SubcategoryController extends Controller
 {
-	use CrudOperationsTrait;
+    use CrudOperationsTrait;
 
-	/**
-	 * Display a listing of the resource.
-	 */
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', Subcategory::class);
 
-	public function index(Request $request) {
-		$this->authorize('viewAny', Subcategory::class);
+        $filters = $request->only('search', 'trashed');
 
-		$filters = $request->only('search', 'trashed');
+        $query = $this->commonIndexLogic(Subcategory::class, $filters);
 
-		$query = $this->commonIndexLogic(Subcategory::class, $filters);
+        $subcategories = $query->with('category.type:id,name', 'category:id,name,type_id')
+            ->paginate(10)
+            ->withQueryString()
+            ->through(function ($subcategory) {
+                return [
+                    'id' => $subcategory->id,
+                    'name' => $subcategory->name,
+                    'category' => $subcategory->category->name,
+                    'type' => $subcategory->category->type->name,
+                    'deleted_at' => $subcategory->deleted_at,
+                ];
+            });
 
-		$subcategories = $query->with('category.type:id,name', 'category:id,name,type_id')
-			->paginate(10)
-			->withQueryString()
-			->through(function ($subcategory) {
-				return [
-					'id' => $subcategory->id,
-					'name' => $subcategory->name,
-					'category' => $subcategory->category->name,
-					'type' => $subcategory->category->type->name,
-					'deleted_at' => $subcategory->deleted_at,
-				];
-			});
+        return Inertia::render('Admin/Subcategories/Index', [
+            'subcategories' => $subcategories,
+            'filters' => $filters,
+        ]);
+    }
 
-		return Inertia::render('Admin/Subcategories/Index', [
-			'subcategories' => $subcategories,
-			'filters' => $filters,
-		]);
-	}
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $this->authorize('create', Subcategory::class);
 
-	/**
-	 * Show the form for creating a new resource.
-	 */
-	public function create() {
-		$this->authorize('create', Subcategory::class);
+        return Inertia::render('Admin/Subcategories/Create', [
+            'categories' => Category::all(),
+        ]);
+    }
 
-		return Inertia::render('Admin/Subcategories/Create', [
-			'categories' => Category::all(),
-		]);
-	}
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $this->authorize('viewAny', Subcategory::class);
 
-	/**
-	 * Store a newly created resource in storage.
-	 */
-	public function store(Request $request) {
-		$this->authorize('viewAny', Subcategory::class);
+        $validatedData = $request->validate([
+            'name' => ['required', 'max:50', Rule::unique('subcategories')],
+            'category_id' => ['required'],
+        ]);
 
-		$validatedData = $request->validate([
-			'name' => ['required', 'max:50', Rule::unique('subcategories')],
-			'category_id' => ['required']
-		]);
+        Subcategory::create($validatedData);
 
-		Subcategory::create($validatedData);
+        return Redirect::route('subcategories.index')->with('success', 'Subcategory created.');
+    }
 
-		return Redirect::route('subcategories.index')->with('success', 'Subcategory created.');
-	}
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $subcategory = Subcategory::with('category')->withTrashed()->find($id);
+        $this->authorize('update', $subcategory);
 
-	/**
-	 * Show the form for editing the specified resource.
-	 */
-	public function edit(string $id) {
-		$subcategory = Subcategory::with('category')->withTrashed()->find($id);
-		$this->authorize('update', $subcategory);
+        return Inertia::render('Admin/Subcategories/Edit', [
+            'subcategory' => $subcategory,
+            'categories' => Category::all(),
+        ]);
+    }
 
-		return Inertia::render('Admin/Subcategories/Edit', [
-			'subcategory' => $subcategory,
-			'categories' => Category::all(),
-		]);
-	}
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Subcategory $subcategory)
+    {
+        $this->authorize('update', $subcategory);
 
-	/**
-	 * Update the specified resource in storage.
-	 */
-	public function update(Request $request, Subcategory $subcategory) {
-		$this->authorize('update', $subcategory);
+        $validatedData = $request->validate([
+            'name' => ['required', 'max:50', Rule::unique('subcategories')->ignore($subcategory->id)],
+            'category_id' => ['required'],
+        ]);
 
-		$validatedData = $request->validate([
-			'name' => ['required', 'max:50', Rule::unique('subcategories')->ignore($subcategory->id)],
-			'category_id' => ['required'],
-		]);
+        $subcategory->update($validatedData);
 
-		$subcategory->update($validatedData);
+        return Redirect::back()->with('success', 'Subcategory updated.');
+    }
 
-		return Redirect::back()->with('success', 'Subcategory updated.');
-	}
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Subcategory $subcategory)
+    {
+        $this->authorize('delete', $subcategory);
 
-	/**
-	 * Remove the specified resource from storage.
-	 */
-	public function destroy(Subcategory $subcategory) {
-		$this->authorize('delete', $subcategory);
+        $subcategory->delete();
 
-		$subcategory->delete();
-		return Redirect::route('subcategories.index')->with('success', "$subcategory->name deleted.");
-	}
+        return Redirect::route('subcategories.index')->with('success', "$subcategory->name deleted.");
+    }
 
-	public function restore(Subcategory $subcategory) {
-		$this->authorize('restore', $subcategory);
-		$subcategory->restore();
-		return Redirect::back()->with('success', 'Subcategory restored.');
-	}
+    public function restore(Subcategory $subcategory)
+    {
+        $this->authorize('restore', $subcategory);
+        $subcategory->restore();
+
+        return Redirect::back()->with('success', 'Subcategory restored.');
+    }
 }

@@ -13,22 +13,23 @@ use Illuminate\Support\Carbon;
  */
 class ReviewFactory extends Factory
 {
-	protected $model = Review::class;
+    protected $model = Review::class;
 
-	/**
-	 * Define the model's default state.
-	 *
-	 * @return array<string, mixed>
-	 */
-	public function definition(): array {
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
 
-		return [
-			'user_id' => User::all()->random(),
-			'datespot_id' => Datespot::all()->random(),
-			'title' => $this->faker->title,
-			'comment' => $this->faker->paragraph,
-			'rating' => $this->faker->numberBetween(1, 5),
-			'date_visited' => Carbon::instance($this->faker->dateTimeBetween('-2 years', 'now'))->format('Y-m-d'),
-		];
-	}
+        return [
+            'user_id' => User::all()->random(),
+            'datespot_id' => Datespot::all()->random(),
+            'title' => $this->faker->title,
+            'comment' => $this->faker->paragraph,
+            'rating' => $this->faker->numberBetween(1, 5),
+            'date_visited' => Carbon::instance($this->faker->dateTimeBetween('-2 years', 'now'))->format('Y-m-d'),
+        ];
+    }
 }

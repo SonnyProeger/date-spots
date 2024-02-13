@@ -11,34 +11,35 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CategoryFactory extends Factory
 {
-	protected $model = Category::class;
+    protected $model = Category::class;
 
-	/**
-	 * Define the model's default state.
-	 *
-	 * @return array<string, mixed>
-	 */
-	public function definition(): array {
-		$categoriesByType = [
-			'Food' => ['restaurant', 'cafe', 'coffee shops'],
-			'Outdoor' => [
-				'nature', 'beach', 'waterfront', 'hiking', 'adventure', 'botanical garden', 'picnic'
-			],
-			'Entertainment' => [
-				'movie theater', 'live music', 'concerts', 'art galleries', 'museums', 'comedy clubs', 'arcades'
-			],
-			'Activities' => ['spa', 'wellness', 'cooking classes', 'dance classes', 'escape rooms'],
-			'Special Occasions' => [
-				'anniversary', 'engagement locations', 'hotel'
-			],
-		];
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        $categoriesByType = [
+            'Food' => ['restaurant', 'cafe', 'coffee shops'],
+            'Outdoor' => [
+                'nature', 'beach', 'waterfront', 'hiking', 'adventure', 'botanical garden', 'picnic',
+            ],
+            'Entertainment' => [
+                'movie theater', 'live music', 'concerts', 'art galleries', 'museums', 'comedy clubs', 'arcades',
+            ],
+            'Activities' => ['spa', 'wellness', 'cooking classes', 'dance classes', 'escape rooms'],
+            'Special Occasions' => [
+                'anniversary', 'engagement locations', 'hotel',
+            ],
+        ];
 
-		$randomType = Type::inRandomOrder()->first();
-		$randomCategory = $this->faker->randomElement($categoriesByType[$randomType->name]);
+        $randomType = Type::inRandomOrder()->first();
+        $randomCategory = $this->faker->randomElement($categoriesByType[$randomType->name]);
 
-		return [
-			'type_id' => $randomType->id,
-			'name' => $randomCategory,
-		];
-	}
+        return [
+            'type_id' => $randomType->id,
+            'name' => $randomCategory,
+        ];
+    }
 }

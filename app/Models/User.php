@@ -47,6 +47,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property-read Role|null $role
  * @property-read Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -68,115 +69,125 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User withTrashed()
  * @method static Builder|User withoutTrashed()
+ *
  * @mixin Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-	use HasApiTokens;
-	use HasFactory;
-	use HasProfilePhoto;
-	use Notifiable;
-	use TwoFactorAuthenticatable;
-	use SoftDeletes;
+    use HasApiTokens;
+    use HasFactory;
+    use HasProfilePhoto;
+    use Notifiable;
+    use SoftDeletes;
+    use TwoFactorAuthenticatable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role_id',
+    ];
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array<int, string>
-	 */
-	protected $fillable = [
-		'name',
-		'email',
-		'password',
-		'role_id',
-	];
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
 
-	/**
-	 * The attributes that should be hidden for serialization.
-	 *
-	 * @var array<int, string>
-	 */
-	protected $hidden = [
-		'password',
-		'remember_token',
-		'two_factor_recovery_codes',
-		'two_factor_secret',
-	];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
-	/**
-	 * The attributes that should be cast.
-	 *
-	 * @var array<string, string>
-	 */
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-	];
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
 
-	/**
-	 * The accessors to append to the model's array form.
-	 *
-	 * @var array<int, string>
-	 */
-	protected $appends = [
-		'profile_photo_url',
-	];
+    protected function defaultProfilePhotoUrl(): string
+    {
+        $name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
+            return mb_substr($segment, 0, 1);
+        })->join(' '));
 
-	protected function defaultProfilePhotoUrl(): string {
-		$name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
-			return mb_substr($segment, 0, 1);
-		})->join(' '));
+        return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=FFFFFF&background=B76E79';
+    }
 
-		return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=FFFFFF&background=B76E79';
-	}
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
-	public function role() {
-		return $this->belongsTo(Role::class);
-	}
+    public function datespots(): HasMany
+    {
+        return $this->hasMany(Datespot::class);
+    }
 
-	public function datespots(): HasMany {
-		return $this->hasMany(Datespot::class);
-	}
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
 
-	public function reviews(): HasMany {
-		return $this->hasMany(Review::class);
-	}
+    public function isSuperAdmin(): bool
+    {
+        return $this->role->name === 'SuperAdmin';
+    }
 
-	public function isSuperAdmin(): bool {
-		return $this->role->name === 'SuperAdmin';
-	}
+    public function isAdmin(): bool
+    {
+        return $this->role->name === 'Admin';
+    }
 
-	public function isAdmin(): bool {
-		return $this->role->name === 'Admin';
-	}
+    public function isCompany(): bool
+    {
+        return $this->role->name === 'Company';
+    }
 
-	public function isCompany(): bool {
-		return $this->role->name === 'Company';
-	}
+    public function isRegularUser(): bool
+    {
+        return $this->role->name === 'User';
+    }
 
-	public function isRegularUser(): bool {
-		return $this->role->name === 'User';
-	}
+    public function ownsDatespot(Datespot $datespot): bool
+    {
+        return $this->id === $datespot->user_id;
+    }
 
-	public function ownsDatespot(Datespot $datespot): bool {
-		return $this->id === $datespot->user_id;
-	}
+    public function ownsReview(Review $review): bool
+    {
+        return $this->id === $review->user_id;
+    }
 
-	public function ownsReview(Review $review): bool {
-		return $this->id === $review->user_id;
-	}
+    protected static function booted(): void
+    {
+        static::creating(function ($user) {
+            if (! $user->profile_photo_path) {
+                $nameInitials = collect(explode(' ', $user->name))
+                    ->map(fn ($segment) => mb_substr($segment, 0, 1))
+                    ->join('');
 
-
-	protected static function booted(): void {
-		static::creating(function ($user) {
-			if (!$user->profile_photo_path) {
-				$nameInitials = collect(explode(' ', $user->name))
-					->map(fn($segment) => mb_substr($segment, 0, 1))
-					->join('');
-
-				$user->profile_photo_path = 'https://ui-avatars.com/api/?name='.
-					urlencode($nameInitials).'&color=BE123B&background=DDBBC0';
-			}
-		});
-	}
+                $user->profile_photo_path = 'https://ui-avatars.com/api/?name='.
+                    urlencode($nameInitials).'&color=BE123B&background=DDBBC0';
+            }
+        });
+    }
 }

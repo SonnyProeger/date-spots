@@ -14,61 +14,67 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SharePermissions
 {
-	/**
-	 * Handle an incoming request.
-	 *
-	 * @param  Closure(Request): (Response)  $next
-	 */
-	public function handle(Request $request, Closure $next): Response {
-		$user = Auth::User();
-		$permissions = $this->mapPermissions($user);
-		Inertia::share([
-			'can' => $permissions,
-		]);
-		return $next($request);
-	}
+    /**
+     * Handle an incoming request.
+     *
+     * @param  Closure(Request): (Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        $user = Auth::User();
+        $permissions = $this->mapPermissions($user);
+        Inertia::share([
+            'can' => $permissions,
+        ]);
 
-	private function mapPermissions($user) {
-		$policies = collect(File::allFiles(app_path('Policies')))
-			->map(function ($file) {
-				$className = 'App\\Policies\\'.pathinfo($file->getPathname(), PATHINFO_FILENAME);
-				return new $className();
-			});
+        return $next($request);
+    }
 
-		$permissions = [];
+    private function mapPermissions($user)
+    {
+        $policies = collect(File::allFiles(app_path('Policies')))
+            ->map(function ($file) {
+                $className = 'App\\Policies\\'.pathinfo($file->getPathname(), PATHINFO_FILENAME);
 
-		$policies->each(function ($policy) use ($user, &$permissions) {
-			$policyName = Str::snake(class_basename($policy));
-			$policyName = str_replace('_policy', '', $policyName);
+                return new $className();
+            });
 
-			$methods = collect(get_class_methods($policy))
-				->reject(function ($method) {
-					return in_array($method, ['__construct', 'handleAuthorizationException']);
-				})
-				->mapWithKeys(function ($method) use ($policy, $user, $policyName) {
-					$methodParams = collect((new ReflectionMethod($policy, $method))->getParameters())->count();
-					if ($methodParams === 2) {
-						$model = $this->getPolicyModel($policy);
-						return [
-							Str::kebab($method).'-'.Str::kebab($policyName) => $policy->$method($user, $model),
-						];
-					} else {
-						return [
-							Str::kebab($method).'-'.Str::kebab($policyName) => $policy->$method($user),
-						];
-					}
-				});
+        $permissions = [];
 
-			$permissions += $methods->toArray();
-		});
+        $policies->each(function ($policy) use ($user, &$permissions) {
+            $policyName = Str::snake(class_basename($policy));
+            $policyName = str_replace('_policy', '', $policyName);
 
-		return $permissions;
-	}
+            $methods = collect(get_class_methods($policy))
+                ->reject(function ($method) {
+                    return in_array($method, ['__construct', 'handleAuthorizationException']);
+                })
+                ->mapWithKeys(function ($method) use ($policy, $user, $policyName) {
+                    $methodParams = collect((new ReflectionMethod($policy, $method))->getParameters())->count();
+                    if ($methodParams === 2) {
+                        $model = $this->getPolicyModel($policy);
 
-	private function getPolicyModel($policyClassName): ?Model {
-		$modelName = Str::replaceLast('Policy', '', class_basename($policyClassName));
-		$modelClassName = 'App\\Models\\'.$modelName;
+                        return [
+                            Str::kebab($method).'-'.Str::kebab($policyName) => $policy->$method($user, $model),
+                        ];
+                    } else {
+                        return [
+                            Str::kebab($method).'-'.Str::kebab($policyName) => $policy->$method($user),
+                        ];
+                    }
+                });
 
-		return class_exists($modelClassName) ? new $modelClassName() : null;
-	}
+            $permissions += $methods->toArray();
+        });
+
+        return $permissions;
+    }
+
+    private function getPolicyModel($policyClassName): ?Model
+    {
+        $modelName = Str::replaceLast('Policy', '', class_basename($policyClassName));
+        $modelClassName = 'App\\Models\\'.$modelName;
+
+        return class_exists($modelClassName) ? new $modelClassName() : null;
+    }
 }

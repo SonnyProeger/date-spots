@@ -7,11 +7,12 @@ use Spatie\ResponseCache\Hasher\DefaultHasher;
 
 class InertiaResponseCacheHasher extends DefaultHasher
 {
-	public function getHashFor(Request $request): string {
-		$baseHash = parent::getHashFor($request);
+    public function getHashFor(Request $request): string
+    {
+        $baseHash = parent::getHashFor($request);
 
-		$contentType = $request->getContentTypeFormat();
+        $contentType = $request->getContentTypeFormat();
 
-		return "{$baseHash}-{$contentType}";
-	}
+        return "{$baseHash}-{$contentType}";
+    }
 }

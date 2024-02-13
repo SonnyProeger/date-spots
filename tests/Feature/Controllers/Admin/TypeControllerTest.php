@@ -9,416 +9,441 @@ use Tests\TestCase;
 
 class TypeControllerTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
+
+    // SuperAdmin
+    public function test_super_admin_can_view_types_index()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
 
-	// SuperAdmin
-	public function test_super_admin_can_view_types_index() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        Type::factory()->create();
 
-		Type::factory()->create();
+        $response = $this->get(route('types.index'));
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Types/Index')
+            ->has('types.data', 1)
+            ->has('types.data.0', function ($type) {
+                $type->has('id')
+                    ->has('name')
+                    ->has('deleted_at');
+            })
+        );
+    }
 
-		$response = $this->get(route('types.index'));
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Types/Index')
-			->has('types.data', 1)
-			->has('types.data.0', function ($type) {
-				$type->has('id')
-					->has('name')
-					->has('deleted_at');
-			})
-		);
-	}
+    public function test_super_admin_can_view_make()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
 
-	public function test_super_admin_can_view_make() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $response = $this->get(route('types.create'));
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Types/Create')
+        );
+    }
 
-		$response = $this->get(route('types.create'));
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Types/Create')
-		);
-	}
+    public function test_super_admin_can_store_type()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
 
-	public function test_super_admin_can_store_type() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        Type::factory()->create();
+        $typeData = Type::factory()->make(['name' => 'tester'])->toArray();
+
+        $response = $this->post(route('types.store'), $typeData);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('types', $typeData);
+
+        $response->assertRedirect(route('types.index'))
+            ->assertSessionHas('success', 'Type created.');
+    }
+
+    public function test_super_admin_can_view_type_detail()
+    {
+        $type = Type::factory()->create();
+
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        $response = $this->get(route('types.edit', $type));
+
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Types/Edit')
+            ->has('type')
+        );
+    }
+
+    public function test_super_admin_can_update_type()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        $type = Type::factory()->create();
+
+        $updatedData = [
+            'id' => $type->id,
+            'name' => 'Updated Name',
+        ];
+
+        $response = $this
+            ->from(route('types.edit', $type))
+            ->put(route('types.update', $type), $updatedData);
 
-		Type::factory()->create();
-		$typeData = Type::factory()->make(['name' => 'tester'])->toArray();
+        $response->assertStatus(302);
 
-		$response = $this->post(route('types.store'), $typeData);
+        $this->assertDatabaseHas('types', $updatedData);
 
-		$response->assertStatus(302);
+        $response->assertRedirect(route('types.edit', $type))
+            ->assertSessionHas('success', 'Type updated.');
+    }
+
+    public function test_super_admin_can_destroy_type()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        $type = Type::factory()->create();
+
+        $response = $this->delete(route('types.destroy', $type));
+
+        $this->assertSoftDeleted('types', $type->toArray());
+
+        $response->assertRedirect(route('types.index'))
+            ->assertSessionHas('success', "$type->name deleted.");
+    }
+
+    public function test_super_admin_can_restore_type()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
 
-		$this->assertDatabaseHas('types', $typeData);
+        $type = Type::factory()->create();
+        $type->delete();
 
-		$response->assertRedirect(route('types.index'))
-			->assertSessionHas('success', 'Type created.');
-	}
+        $response = $this->put(route('types.restore', $type));
 
-	public function test_super_admin_can_view_type_detail() {
-		$type = Type::factory()->create();
+        $this->assertDatabaseHas('types', ['id' => $type->id, 'deleted_at' => null]);
 
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $response->assertRedirect()
+            ->assertSessionHas('success', 'Type restored.');
+    }
 
-		$response = $this->get(route('types.edit', $type));
+    // Admin
+    public function test_admin_can_view_index()
+    {
+        $admin = User::factory()->admin()->make();
+        $this->actingAs($admin);
 
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Types/Edit')
-			->has('type')
-		);
-	}
+        Type::factory()->create();
 
-	public function test_super_admin_can_update_type() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $response = $this->get('/admin/types');
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Types/Index')
+            ->has('types.data')
+            ->has('types.data.0', function ($type) {
+                $type->has('id')
+                    ->has('name')
+                    ->has('deleted_at');
+            })
+        );
+    }
 
-		$type = Type::factory()->create();
+    public function test_admin_can_view_make()
+    {
+        $admin = User::factory()->admin()->make();
+        $this->actingAs($admin);
 
-		$updatedData = [
-			'id' => $type->id,
-			'name' => 'Updated Name',
-		];
+        $response = $this->get(route('types.create'));
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Types/Create')
+        );
+    }
 
-		$response = $this
-			->from(route('types.edit', $type))
-			->put(route('types.update', $type), $updatedData);
+    public function test_admin_can_store_type()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-		$response->assertStatus(302);
+        Type::factory()->create();
+        $typeData = Type::factory()->make(['name' => 'tester'])->toArray();
 
-		$this->assertDatabaseHas('types', $updatedData);
+        $response = $this->post(route('types.store'), $typeData);
 
-		$response->assertRedirect(route('types.edit', $type))
-			->assertSessionHas('success', 'Type updated.');
-	}
+        $response->assertStatus(302);
 
-	public function test_super_admin_can_destroy_type() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $this->assertDatabaseHas('types', [
+            'name' => $typeData['name'],
+        ]);
 
-		$type = Type::factory()->create();
+        $response->assertRedirect(route('types.index'))
+            ->assertSessionHas('success', 'Type created.');
+    }
 
-		$response = $this->delete(route('types.destroy', $type));
+    public function test_admin_can_view_type_detail()
+    {
+        $type = Type::factory()->create();
 
-		$this->assertSoftDeleted('types', $type->toArray());
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-		$response->assertRedirect(route('types.index'))
-			->assertSessionHas('success', "$type->name deleted.");
-	}
+        $response = $this->get(route('types.edit', $type));
 
-	public function test_super_admin_can_restore_type() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Types/Edit')
+            ->has('type')
+        );
+    }
 
-		$type = Type::factory()->create();
-		$type->delete();
+    public function test_admin_can_update_type()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-		$response = $this->put(route('types.restore', $type));
+        $type = Type::factory()->create();
 
-		$this->assertDatabaseHas('types', ['id' => $type->id, 'deleted_at' => null]);
+        $updatedData = [
+            'id' => $type->id,
+            'name' => 'Updated Name',
+        ];
 
-		$response->assertRedirect()
-			->assertSessionHas('success', 'Type restored.');
-	}
+        $response = $this
+            ->from(route('types.edit', $type))
+            ->put(route('types.update', $type), $updatedData);
 
+        $response->assertStatus(302);
 
-	// Admin
-	public function test_admin_can_view_index() {
-		$admin = User::factory()->admin()->make();
-		$this->actingAs($admin);
+        $this->assertDatabaseHas('types', $updatedData);
 
-		Type::factory()->create();
+        $response->assertRedirect(route('types.edit', $type))
+            ->assertSessionHas('success', 'Type updated.');
+    }
 
-		$response = $this->get('/admin/types');
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Types/Index')
-			->has('types.data')
-			->has('types.data.0', function ($type) {
-				$type->has('id')
-					->has('name')
-					->has('deleted_at');
-			})
-		);
-	}
+    public function test_admin_can_destroy_type()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-	public function test_admin_can_view_make() {
-		$admin = User::factory()->admin()->make();
-		$this->actingAs($admin);
+        $type = Type::factory()->create();
 
-		$response = $this->get(route('types.create'));
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Types/Create')
-		);
-	}
+        $response = $this->delete(route('types.destroy', $type));
 
-	public function test_admin_can_store_type() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        $this->assertSoftDeleted('types', $type->toArray());
 
-		Type::factory()->create();
-		$typeData = Type::factory()->make(['name' => 'tester'])->toArray();
+        $response->assertRedirect(route('types.index'))
+            ->assertSessionHas('success', "$type->name deleted.");
+    }
 
-		$response = $this->post(route('types.store'), $typeData);
+    public function test_admin_can_restore_type()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-		$response->assertStatus(302);
+        $type = Type::factory()->create();
+        $type->delete();
 
-		$this->assertDatabaseHas('types', [
-			'name' => $typeData['name'],
-		]);
+        $response = $this->put(route('types.restore', $type));
 
-		$response->assertRedirect(route('types.index'))
-			->assertSessionHas('success', 'Type created.');
-	}
+        $this->assertDatabaseHas('types', ['id' => $type->id, 'deleted_at' => null]);
 
-	public function test_admin_can_view_type_detail() {
-		$type = Type::factory()->create();
+        $response->assertRedirect()
+            ->assertSessionHas('success', 'Type restored.');
+    }
 
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+    //Company
+    public function test_company_cannot_view_types_index()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-		$response = $this->get(route('types.edit', $type));
+        $response = $this->get(route('types.index'));
 
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Types/Edit')
-			->has('type')
-		);
-	}
+        $response->assertStatus(403);
+    }
 
-	public function test_admin_can_update_type() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+    public function test_company_cannot_view_type_make()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-		$type = Type::factory()->create();
+        $response = $this->get(route('types.create'));
+        $response->assertStatus(403);
+    }
 
-		$updatedData = [
-			'id' => $type->id,
-			'name' => 'Updated Name',
-		];
+    public function test_company_cannot_store_type()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-		$response = $this
-			->from(route('types.edit', $type))
-			->put(route('types.update', $type), $updatedData);
+        Type::factory()->create();
+        $typeData = Type::factory()->make(['name' => 'tester'])->toArray();
 
-		$response->assertStatus(302);
+        $response = $this->post(route('types.store'), $typeData);
 
-		$this->assertDatabaseHas('types', $updatedData);
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('types', $typeData);
+    }
 
-		$response->assertRedirect(route('types.edit', $type))
-			->assertSessionHas('success', 'Type updated.');
-	}
+    public function test_company_cannot_view_type_detail_of_others()
+    {
+        $type = Type::factory()->create();
 
-	public function test_admin_can_destroy_type() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        $company = User::factory()->company()->create();
+        $this->actingAs($company);
 
-		$type = Type::factory()->create();
+        $response = $this->get(route('types.edit', $type));
 
-		$response = $this->delete(route('types.destroy', $type));
+        $response->assertStatus(403);
+    }
 
-		$this->assertSoftDeleted('types', $type->toArray());
+    public function test_company_cannot_update_types()
+    {
+        $company = User::factory()->company()->create();
+        $this->actingAs($company);
 
-		$response->assertRedirect(route('types.index'))
-			->assertSessionHas('success', "$type->name deleted.");
-	}
+        $type = Type::factory()->create();
 
-	public function test_admin_can_restore_type() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        $updatedData = [
+            'id' => $type->id,
+            'name' => 'Updated Name',
+        ];
 
-		$type = Type::factory()->create();
-		$type->delete();
+        $response = $this
+            ->from(route('types.edit', $type))
+            ->put(route('types.update', $type), $updatedData);
 
-		$response = $this->put(route('types.restore', $type));
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('types', $updatedData);
+    }
 
-		$this->assertDatabaseHas('types', ['id' => $type->id, 'deleted_at' => null]);
+    public function test_company_cannot_destroy_type()
+    {
+        $company = User::factory()->company()->create();
+        $this->actingAs($company);
 
-		$response->assertRedirect()
-			->assertSessionHas('success', 'Type restored.');
-	}
+        $type = Type::factory()->create();
 
+        $response = $this->delete(route('types.destroy', $type));
 
-	//Company
-	public function test_company_cannot_view_types_index() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
+        $response->assertStatus(403);
 
-		$response = $this->get(route('types.index'));
+        $this->assertNotSoftDeleted('types', $type->toArray());
+    }
 
-		$response->assertStatus(403);
-	}
+    public function test_company_cannot_restore_type()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-	public function test_company_cannot_view_type_make() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
+        $type = Type::factory()->create();
+        $type->delete();
 
-		$response = $this->get(route('types.create'));
-		$response->assertStatus(403);
-	}
+        $response = $this->put(route('types.restore', $type));
 
-	public function test_company_cannot_store_type() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
+        $response->assertStatus(403);
 
-		Type::factory()->create();
-		$typeData = Type::factory()->make(['name' => 'tester'])->toArray();
+        $this->assertDatabaseMissing('types', ['id' => $type->id, 'deleted_at' => null]);
+    }
 
-		$response = $this->post(route('types.store'), $typeData);
+    //User
+    public function test_regular_user_cannot_view_type_index()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('types', $typeData);
-	}
+        $response = $this->get(route('types.index'));
+        $response->assertStatus(403);
+    }
 
-	public function test_company_cannot_view_type_detail_of_others() {
-		$type = Type::factory()->create();
+    public function test_regular_user_cannot_view_type_make()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$company = User::factory()->company()->create();
-		$this->actingAs($company);
+        $response = $this->get(route('types.create'));
+        $response->assertStatus(403);
+    }
 
-		$response = $this->get(route('types.edit', $type));
+    public function test_regular_user_cannot_store_type()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$response->assertStatus(403);
-	}
+        Type::factory()->create();
+        $typeData = Type::factory()->make(['name' => 'tester'])->toArray();
 
+        $response = $this->post(route('types.store'), $typeData);
 
-	public function test_company_cannot_update_types() {
-		$company = User::factory()->company()->create();
-		$this->actingAs($company);
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('types', $typeData);
+    }
 
-		$type = Type::factory()->create();
+    public function test_regular_user_cannot_view_type_detail()
+    {
+        $type = Type::factory()->create();
 
-		$updatedData = [
-			'id' => $type->id,
-			'name' => 'Updated Name',
-		];
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$response = $this
-			->from(route('types.edit', $type))
-			->put(route('types.update', $type), $updatedData);
+        $response = $this->get(route('types.edit', $type));
 
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('types', $updatedData);
-	}
+        $response->assertStatus(403);
+    }
 
-	public function test_company_cannot_destroy_type() {
-		$company = User::factory()->company()->create();
-		$this->actingAs($company);
+    public function test_regular_user_cannot_update_type()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$type = Type::factory()->create();
+        $type = Type::factory()->create();
 
-		$response = $this->delete(route('types.destroy', $type));
+        $updatedData = [
+            'id' => $type->id,
+            'name' => 'Updated Name',
+        ];
 
-		$response->assertStatus(403);
+        $response = $this
+            ->from(route('types.edit', $type))
+            ->put(route('types.update', $type), $updatedData);
 
-		$this->assertNotSoftDeleted('types', $type->toArray());
-	}
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('types', $updatedData);
+    }
 
-	public function test_company_cannot_restore_type() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
+    public function test_regular_user_cannot_destroy_type()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$type = Type::factory()->create();
-		$type->delete();
+        $type = Type::factory()->create();
 
-		$response = $this->put(route('types.restore', $type));
+        $response = $this->delete(route('types.destroy', $type));
 
-		$response->assertStatus(403);
+        $response->assertStatus(403);
 
-		$this->assertDatabaseMissing('types', ['id' => $type->id, 'deleted_at' => null]);
-	}
+        $this->assertNotSoftDeleted('types', $type->toArray());
 
-	//User
-	public function test_regular_user_cannot_view_type_index() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
+    }
 
-		$response = $this->get(route('types.index'));
-		$response->assertStatus(403);
-	}
+    public function test_regular_user_cannot_restore_type()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-	public function test_regular_user_cannot_view_type_make() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
+        $type = Type::factory()->create();
+        $type->delete();
 
-		$response = $this->get(route('types.create'));
-		$response->assertStatus(403);
-	}
+        $response = $this->put(route('types.restore', $type));
 
-	public function test_regular_user_cannot_store_type() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
+        $response->assertStatus(403);
 
-		Type::factory()->create();
-		$typeData = Type::factory()->make(['name' => 'tester'])->toArray();
-
-		$response = $this->post(route('types.store'), $typeData);
-
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('types', $typeData);
-	}
-
-	public function test_regular_user_cannot_view_type_detail() {
-		$type = Type::factory()->create();
-
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-		$response = $this->get(route('types.edit', $type));
-
-		$response->assertStatus(403);
-	}
-
-	public function test_regular_user_cannot_update_type() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-		$type = Type::factory()->create();
-
-		$updatedData = [
-			'id' => $type->id,
-			'name' => 'Updated Name',
-		];
-
-		$response = $this
-			->from(route('types.edit', $type))
-			->put(route('types.update', $type), $updatedData);
-
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('types', $updatedData);
-	}
-
-	public function test_regular_user_cannot_destroy_type() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-		$type = Type::factory()->create();
-
-		$response = $this->delete(route('types.destroy', $type));
-
-		$response->assertStatus(403);
-
-		$this->assertNotSoftDeleted('types', $type->toArray());
-
-	}
-
-	public function test_regular_user_cannot_restore_type() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-		$type = Type::factory()->create();
-		$type->delete();
-
-		$response = $this->put(route('types.restore', $type));
-
-		$response->assertStatus(403);
-
-		$this->assertDatabaseMissing('types', ['id' => $type->id, 'deleted_at' => null]);
-	}
+        $this->assertDatabaseMissing('types', ['id' => $type->id, 'deleted_at' => null]);
+    }
 }

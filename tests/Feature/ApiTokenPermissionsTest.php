@@ -10,33 +10,34 @@ use Tests\TestCase;
 
 class ApiTokenPermissionsTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	public function test_api_token_permissions_can_be_updated(): void {
-		if (!Features::hasApiFeatures()) {
-			$this->markTestSkipped('API support is not enabled.');
+    public function test_api_token_permissions_can_be_updated(): void
+    {
+        if (! Features::hasApiFeatures()) {
+            $this->markTestSkipped('API support is not enabled.');
 
-			return;
-		}
+            return;
+        }
 
-		$this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-		$token = $user->tokens()->create([
-			'name' => 'Test Token',
-			'token' => Str::random(40),
-			'abilities' => ['create', 'read'],
-		]);
+        $token = $user->tokens()->create([
+            'name' => 'Test Token',
+            'token' => Str::random(40),
+            'abilities' => ['create', 'read'],
+        ]);
 
-		$response = $this->put('/user/api-tokens/'.$token->id, [
-			'name' => $token->name,
-			'permissions' => [
-				'delete',
-				'missing-permission',
-			],
-		]);
+        $response = $this->put('/user/api-tokens/'.$token->id, [
+            'name' => $token->name,
+            'permissions' => [
+                'delete',
+                'missing-permission',
+            ],
+        ]);
 
-		$this->assertTrue($user->fresh()->tokens->first()->can('delete'));
-		$this->assertFalse($user->fresh()->tokens->first()->can('read'));
-		$this->assertFalse($user->fresh()->tokens->first()->can('missing-permission'));
-	}
+        $this->assertTrue($user->fresh()->tokens->first()->can('delete'));
+        $this->assertFalse($user->fresh()->tokens->first()->can('read'));
+        $this->assertFalse($user->fresh()->tokens->first()->can('missing-permission'));
+    }
 }

@@ -13,152 +13,159 @@ use Inertia\Inertia;
 
 class AdminDatespotController extends Controller
 {
-	use CrudOperationsTrait;
+    use CrudOperationsTrait;
 
-	/**
-	 * Display a listing of the resource.
-	 */
-	public function index(Request $request) {
-		$this->authorize('viewAny', Datespot::class);
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', Datespot::class);
 
-		$user = Auth::user();
+        $user = Auth::user();
 
-		$filters = $request->all('search', 'trashed');
+        $filters = $request->all('search', 'trashed');
 
-		$query = $this->commonIndexLogic(Datespot::class, $filters);
+        $query = $this->commonIndexLogic(Datespot::class, $filters);
 
-		$userRole = $user->role->name;
+        $userRole = $user->role->name;
 
-		$datespots = $query
-			->select('datespots.id', 'datespots.name', 'datespots.city', 'datespots.deleted_at')
-			->with('types')
-			->when($userRole === 'Company', function ($query) use ($user) {
-				// For Company users, limit to their own datespots
-				return $query->where('user_id', $user->id);
-			})
-			->paginate(10)
-			->withQueryString()
-			->through(function ($datespot) {
-				$firstTypeName = optional($datespot->types->first())->name;
-				return [
-					'id' => $datespot->id,
-					'name' => $datespot->name,
-					'city' => $datespot->city,
-					'type' => $firstTypeName ?? 'No Type',
-					'deleted_at' => $datespot->deleted_at,
-				];
-			});
+        $datespots = $query
+            ->select('datespots.id', 'datespots.name', 'datespots.city', 'datespots.deleted_at')
+            ->with('types')
+            ->when($userRole === 'Company', function ($query) use ($user) {
+                // For Company users, limit to their own datespots
+                return $query->where('user_id', $user->id);
+            })
+            ->paginate(10)
+            ->withQueryString()
+            ->through(function ($datespot) {
+                $firstTypeName = optional($datespot->types->first())->name;
 
+                return [
+                    'id' => $datespot->id,
+                    'name' => $datespot->name,
+                    'city' => $datespot->city,
+                    'type' => $firstTypeName ?? 'No Type',
+                    'deleted_at' => $datespot->deleted_at,
+                ];
+            });
 
-		return Inertia::render('Admin/Datespots/Index', [
-			'filters' => $filters,
-			'datespots' => $datespots,
-		]);
-	}
+        return Inertia::render('Admin/Datespots/Index', [
+            'filters' => $filters,
+            'datespots' => $datespots,
+        ]);
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 */
-	public function create() {
-		$this->authorize('create', Datespot::class);
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $this->authorize('create', Datespot::class);
 
-		return Inertia::render('Admin/Datespots/Create');
-	}
+        return Inertia::render('Admin/Datespots/Create');
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 */
-	public function store(Request $request) {
-		$this->authorize('create', Datespot::class);
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $this->authorize('create', Datespot::class);
 
-		$validatedData = $request->validate([
-			'datespot_id' => 'string',
-			'name' => 'required|string',
-			'tagline' => 'required|string',
-			'email' => 'required|email',
-			'phone_number' => 'required|string',
-			'street_name' => 'required|string',
-			'house_number' => 'required|numeric',
-			'city' => 'required|string',
-			'province' => 'required|string',
-			'postal_code' => 'required|string',
-			'website' => 'required|string',
-			'lat' => 'required|numeric',
-			'lng' => 'required|numeric',
-		]);
+        $validatedData = $request->validate([
+            'datespot_id' => 'string',
+            'name' => 'required|string',
+            'tagline' => 'required|string',
+            'email' => 'required|email',
+            'phone_number' => 'required|string',
+            'street_name' => 'required|string',
+            'house_number' => 'required|numeric',
+            'city' => 'required|string',
+            'province' => 'required|string',
+            'postal_code' => 'required|string',
+            'website' => 'required|string',
+            'lat' => 'required|numeric',
+            'lng' => 'required|numeric',
+        ]);
 
-		if ($validatedData['datespot_id'] === null) {
-			$validatedData['datespot_id'] = Str::uuid();
-		}
+        if ($validatedData['datespot_id'] === null) {
+            $validatedData['datespot_id'] = Str::uuid();
+        }
 
-		Datespot::create($validatedData);
+        Datespot::create($validatedData);
 
-		return Redirect::route('datespots.index')->with('success', 'Datespot created.');
+        return Redirect::route('datespots.index')->with('success', 'Datespot created.');
 
-	}
+    }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 */
-	public function edit(string $id) {
-		$datespot = Datespot::withTrashed()
-			->with([
-				'user' => function ($query) {
-					$query->withTrashed();
-				}
-			])
-			->find($id);
-		$this->authorize('update', $datespot);
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $datespot = Datespot::withTrashed()
+            ->with([
+                'user' => function ($query) {
+                    $query->withTrashed();
+                },
+            ])
+            ->find($id);
+        $this->authorize('update', $datespot);
 
+        return Inertia::render('Admin/Datespots/Edit', [
+            'datespot' => $datespot,
+        ]);
+    }
 
-		return Inertia::render('Admin/Datespots/Edit', [
-			'datespot' => $datespot
-		]);
-	}
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $datespot = Datespot::query()->findOrFail($id);
 
-	/**
-	 * Update the specified resource in storage.
-	 */
-	public function update(Request $request, string $id) {
-		$datespot = Datespot::query()->findOrFail($id);
+        $this->authorize('update', $datespot);
 
-		$this->authorize('update', $datespot);
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone_number' => 'required|string',
+            'street_name' => 'required|string',
+            'house_number' => 'required|numeric',
+            'city' => 'required|string',
+            'province' => 'required|string',
+            'postal_code' => 'required|string',
+            'website' => 'required|string',
+            'lat' => 'required|numeric',
+            'lng' => 'required|numeric',
+        ]);
 
-		$validatedData = $request->validate([
-			'name' => 'required|string',
-			'email' => 'required|email',
-			'phone_number' => 'required|string',
-			'street_name' => 'required|string',
-			'house_number' => 'required|numeric',
-			'city' => 'required|string',
-			'province' => 'required|string',
-			'postal_code' => 'required|string',
-			'website' => 'required|string',
-			'lat' => 'required|numeric',
-			'lng' => 'required|numeric',
-		]);
+        $datespot->update($validatedData);
 
-		$datespot->update($validatedData);
+        return Redirect::back()->with('success', 'Datespot updated.');
+    }
 
-		return Redirect::back()->with('success', 'Datespot updated.');
-	}
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $datespot = Datespot::query()->findOrFail($id);
 
-	/**
-	 * Remove the specified resource from storage.
-	 */
-	public function destroy(string $id) {
-		$datespot = Datespot::query()->findOrFail($id);
+        $this->authorize('delete', $datespot);
 
-		$this->authorize('delete', $datespot);
+        $datespot->delete();
 
-		$datespot->delete();
+        return Redirect::route('datespots.index')->with('success', "$datespot->name deleted.");
+    }
 
-		return Redirect::route('datespots.index')->with('success', "$datespot->name deleted.");
-	}
+    public function restore(Datespot $datespot)
+    {
+        $this->authorize('restore', $datespot);
+        $datespot->restore();
 
-	public function restore(Datespot $datespot) {
-		$this->authorize('restore', $datespot);
-		$datespot->restore();
-		return Redirect::back()->with('success', 'Datespot restored.');
-	}
+        return Redirect::back()->with('success', 'Datespot restored.');
+    }
 }

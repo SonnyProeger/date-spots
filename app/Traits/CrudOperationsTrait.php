@@ -4,11 +4,13 @@ namespace App\Traits;
 
 trait CrudOperationsTrait
 {
-	use FilterableTrait;
+    use FilterableTrait;
 
-	public function commonIndexLogic($model, $filters) {
+    public function commonIndexLogic($model, $filters)
+    {
 
-		$query = $model::query()->orderBy('name');
-		return $this->applyFilters($query, $filters);
-	}
+        $query = $model::query()->orderBy('name');
+
+        return $this->applyFilters($query, $filters);
+    }
 }

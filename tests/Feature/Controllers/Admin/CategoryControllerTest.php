@@ -10,455 +10,466 @@ use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
+
+    // SuperAdmin
+    public function test_super_admin_can_view_categories_index()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        Type::factory()->create();
+        Category::factory()->create();
+        $response = $this->get(route('categories.index'));
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Categories/Index')
+            ->has('categories.data', 1)
+            ->has('categories.data.0', function ($category) {
+                $category->has('id')
+                    ->has('name')
+                    ->has('type')
+                    ->has('deleted_at');
+            })
+        );
+    }
+
+    public function test_super_admin_can_view_make()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        $response = $this->get(route('categories.create'));
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Categories/Create')
+        );
+    }
+
+    public function test_super_admin_can_store_category()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        Type::factory()->create();
+        $categoryData = Category::factory()->make()->toArray();
+
+        $response = $this->post(route('categories.store'), $categoryData);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('categories', $categoryData);
+
+        $response->assertRedirect(route('categories.index'))
+            ->assertSessionHas('success', 'Category created.');
+    }
+
+    public function test_super_admin_can_view_category_detail()
+    {
+        Type::factory()->create();
+        $category = Category::factory()->create();
+
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        $response = $this->get(route('categories.edit', $category));
+
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Categories/Edit')
+            ->has('category')
+        );
+    }
+
+    public function test_super_admin_can_update_category()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        Type::factory()->create();
+        $category = Category::factory()->create();
+
+        $updatedData = [
+            'id' => $category->id,
+            'name' => 'Updated',
+            'type_id' => $category->type_id,
+        ];
+
+        $response = $this
+            ->from(route('categories.edit', $category))
+            ->put(route('categories.update', $category), $updatedData);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('categories', $updatedData);
+
+        $response->assertRedirect(route('categories.edit', $category))
+            ->assertSessionHas('success', 'Category updated.');
+    }
+
+    public function test_super_admin_can_destroy_category()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-	// SuperAdmin
-	public function test_super_admin_can_view_categories_index() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $response = $this->delete(route('categories.destroy', $category));
+
+        $this->assertSoftDeleted('categories', $category->toArray());
 
-		Type::factory()->create();
-		Category::factory()->create();
-		$response = $this->get(route('categories.index'));
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Categories/Index')
-			->has('categories.data', 1)
-			->has('categories.data.0', function ($category) {
-				$category->has('id')
-					->has('name')
-					->has('type')
-					->has('deleted_at');
-			})
-		);
-	}
+        $response->assertRedirect(route('categories.index'))
+            ->assertSessionHas('success', "$category->name deleted.");
+    }
 
-	public function test_super_admin_can_view_make() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+    public function test_super_admin_can_restore_category()
+    {
+        $superAdmin = User::factory()->superAdmin()->make();
+        $this->actingAs($superAdmin);
+
+        Type::factory()->create();
+        $category = Category::factory()->create();
+        $category->delete();
+
+        $response = $this->put(route('categories.restore', $category));
 
-		$response = $this->get(route('categories.create'));
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Categories/Create')
-		);
-	}
+        $this->assertDatabaseHas('categories', ['id' => $category->id, 'deleted_at' => null]);
 
-	public function test_super_admin_can_store_category() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $response->assertRedirect()
+            ->assertSessionHas('success', 'Category restored.');
+    }
 
-		Type::factory()->create();
-		$categoryData = Category::factory()->make()->toArray();
+    // Admin
+    public function test_admin_can_view_index()
+    {
+        $admin = User::factory()->admin()->make();
+        $this->actingAs($admin);
 
-		$response = $this->post(route('categories.store'), $categoryData);
+        Type::factory()->create();
+        Category::factory()->create();
 
-		$response->assertStatus(302);
+        $response = $this->get('/admin/categories');
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Categories/Index')
+            ->has('categories.data')
+            ->has('categories.data.0', function ($category) {
+                $category->has('id')
+                    ->has('name')
+                    ->has('type')
+                    ->has('deleted_at');
+            })
+        );
+    }
 
-		$this->assertDatabaseHas('categories', $categoryData);
+    public function test_admin_can_view_make()
+    {
+        $admin = User::factory()->admin()->make();
+        $this->actingAs($admin);
 
-		$response->assertRedirect(route('categories.index'))
-			->assertSessionHas('success', 'Category created.');
-	}
+        $response = $this->get(route('categories.create'));
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Categories/Create')
+        );
+    }
 
-	public function test_super_admin_can_view_category_detail() {
-		Type::factory()->create();
-		$category = Category::factory()->create();
+    public function test_admin_can_store_category()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        Type::factory()->create();
+        $categoryData = Category::factory()->make()->toArray();
 
-		$response = $this->get(route('categories.edit', $category));
+        $response = $this->post(route('categories.store'), $categoryData);
 
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Categories/Edit')
-			->has('category')
-		);
-	}
+        $response->assertStatus(302);
 
-	public function test_super_admin_can_update_category() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        $this->assertDatabaseHas('categories', [
+            'name' => $categoryData['name'],
+        ]);
 
+        $response->assertRedirect(route('categories.index'))
+            ->assertSessionHas('success', 'Category created.');
+    }
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
+    public function test_admin_can_view_category_detail()
+    {
 
-		$updatedData = [
-			'id' => $category->id,
-			'name' => 'Updated',
-			'type_id' => $category->type_id
-		];
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-		$response = $this
-			->from(route('categories.edit', $category))
-			->put(route('categories.update', $category), $updatedData);
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-		$response->assertStatus(302);
+        $response = $this->get(route('categories.edit', $category));
 
-		$this->assertDatabaseHas('categories', $updatedData);
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Admin/Categories/Edit')
+            ->has('category')
+        );
+    }
 
-		$response->assertRedirect(route('categories.edit', $category))
-			->assertSessionHas('success', 'Category updated.');
-	}
+    public function test_admin_can_update_category()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
-	public function test_super_admin_can_destroy_category() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
+        $updatedData = [
+            'id' => $category->id,
+            'name' => 'Updated Name',
+            'type_id' => $category->type_id,
+        ];
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
+        $response = $this
+            ->from(route('categories.edit', $category))
+            ->put(route('categories.update', $category), $updatedData);
 
-		$response = $this->delete(route('categories.destroy', $category));
+        $response->assertStatus(302);
 
-		$this->assertSoftDeleted('categories', $category->toArray());
+        $this->assertDatabaseHas('categories', $updatedData);
 
-		$response->assertRedirect(route('categories.index'))
-			->assertSessionHas('success', "$category->name deleted.");
-	}
+        $response->assertRedirect(route('categories.edit', $category))
+            ->assertSessionHas('success', 'Category updated.');
+    }
 
-	public function test_super_admin_can_restore_category() {
-		$superAdmin = User::factory()->superAdmin()->make();
-		$this->actingAs($superAdmin);
+    public function test_admin_can_destroy_category()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
-		$category->delete();
+        $response = $this->delete(route('categories.destroy', $category));
 
-		$response = $this->put(route('categories.restore', $category));
+        $this->assertSoftDeleted('categories', $category->toArray());
 
-		$this->assertDatabaseHas('categories', ['id' => $category->id, 'deleted_at' => null]);
+        $response->assertRedirect(route('categories.index'))
+            ->assertSessionHas('success', "$category->name deleted.");
+    }
 
-		$response->assertRedirect()
-			->assertSessionHas('success', 'Category restored.');
-	}
+    public function test_admin_can_restore_category()
+    {
+        $admin = User::factory()->superAdmin()->make();
+        $this->actingAs($admin);
 
+        Type::factory()->create();
+        $category = Category::factory()->create();
+        $category->delete();
 
-	// Admin
-	public function test_admin_can_view_index() {
-		$admin = User::factory()->admin()->make();
-		$this->actingAs($admin);
+        $response = $this->put(route('categories.restore', $category));
 
-		Type::factory()->create();
-		Category::factory()->create();
+        $this->assertDatabaseHas('categories', ['id' => $category->id, 'deleted_at' => null]);
 
-		$response = $this->get('/admin/categories');
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Categories/Index')
-			->has('categories.data')
-			->has('categories.data.0', function ($category) {
-				$category->has('id')
-					->has('name')
-					->has('type')
-					->has('deleted_at');
-			})
-		);
-	}
+        $response->assertRedirect()
+            ->assertSessionHas('success', 'Category restored.');
+    }
 
-	public function test_admin_can_view_make() {
-		$admin = User::factory()->admin()->make();
-		$this->actingAs($admin);
+    //Company
+    public function test_company_cannot_view_categories_index()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-		$response = $this->get(route('categories.create'));
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Categories/Create')
-		);
-	}
+        $response = $this->get(route('categories.index'));
 
-	public function test_admin_can_store_category() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        $response->assertStatus(403);
+    }
 
-		Type::factory()->create();
-		$categoryData = Category::factory()->make()->toArray();
+    public function test_company_cannot_view_category_make()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-		$response = $this->post(route('categories.store'), $categoryData);
+        $response = $this->get(route('categories.create'));
+        $response->assertStatus(403);
+    }
 
-		$response->assertStatus(302);
+    public function test_company_cannot_store_category()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-		$this->assertDatabaseHas('categories', [
-			'name' => $categoryData['name'],
-		]);
+        Type::factory()->create();
+        $categoryData = Category::factory()->make()->toArray();
 
-		$response->assertRedirect(route('categories.index'))
-			->assertSessionHas('success', 'Category created.');
-	}
+        $response = $this->post(route('categories.store'), $categoryData);
 
-	public function test_admin_can_view_category_detail() {
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('categories', $categoryData);
+    }
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
+    public function test_company_cannot_view_category_detail_of_others()
+    {
 
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-		$response = $this->get(route('categories.edit', $category));
+        $company = User::factory()->company()->create();
+        $this->actingAs($company);
 
-		$response->assertStatus(200);
-		$response->assertInertia(fn($assert) => $assert
-			->component('Admin/Categories/Edit')
-			->has('category')
-		);
-	}
+        $response = $this->get(route('categories.edit', $category));
 
-	public function test_admin_can_update_category() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        $response->assertStatus(403);
+    }
 
+    public function test_company_cannot_update_categories()
+    {
+        $company = User::factory()->company()->create();
+        $this->actingAs($company);
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-		$updatedData = [
-			'id' => $category->id,
-			'name' => 'Updated Name',
-			'type_id' => $category->type_id
-		];
+        $updatedData = [
+            'id' => $category->id,
+            'name' => 'Updated Name',
+        ];
 
-		$response = $this
-			->from(route('categories.edit', $category))
-			->put(route('categories.update', $category), $updatedData);
+        $response = $this
+            ->from(route('categories.edit', $category))
+            ->put(route('categories.update', $category), $updatedData);
 
-		$response->assertStatus(302);
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('categories', $updatedData);
+    }
 
-		$this->assertDatabaseHas('categories', $updatedData);
+    public function test_company_cannot_destroy_category()
+    {
+        $company = User::factory()->company()->create();
+        $this->actingAs($company);
 
-		$response->assertRedirect(route('categories.edit', $category))
-			->assertSessionHas('success', 'Category updated.');
-	}
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-	public function test_admin_can_destroy_category() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        $response = $this->delete(route('categories.destroy', $category));
 
+        $response->assertStatus(403);
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
+        $this->assertNotSoftDeleted('categories', $category->toArray());
 
-		$response = $this->delete(route('categories.destroy', $category));
+    }
 
-		$this->assertSoftDeleted('categories', $category->toArray());
+    public function test_company_cannot_restore_category()
+    {
+        $company = User::factory()->company()->make();
+        $this->actingAs($company);
 
-		$response->assertRedirect(route('categories.index'))
-			->assertSessionHas('success', "$category->name deleted.");
-	}
+        Type::factory()->create();
+        $category = Category::factory()->create();
+        $category->delete();
 
-	public function test_admin_can_restore_category() {
-		$admin = User::factory()->superAdmin()->make();
-		$this->actingAs($admin);
+        $response = $this->put(route('categories.restore', $category));
 
+        $response->assertStatus(403);
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
-		$category->delete();
+        $this->assertDatabaseMissing('categories', ['id' => $category->id, 'deleted_at' => null]);
+    }
 
-		$response = $this->put(route('categories.restore', $category));
+    //User
+    public function test_regular_user_cannot_view_category_index()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$this->assertDatabaseHas('categories', ['id' => $category->id, 'deleted_at' => null]);
+        $response = $this->get(route('categories.index'));
+        $response->assertStatus(403);
+    }
 
-		$response->assertRedirect()
-			->assertSessionHas('success', 'Category restored.');
-	}
+    public function test_regular_user_cannot_view_category_make()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
+        $response = $this->get(route('categories.create'));
+        $response->assertStatus(403);
+    }
 
-	//Company
-	public function test_company_cannot_view_categories_index() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
+    public function test_regular_user_cannot_store_category()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
+        Type::factory()->create();
+        $categoryData = Category::factory()->make()->toArray();
 
-		$response = $this->get(route('categories.index'));
+        $response = $this->post(route('categories.store'), $categoryData);
 
-		$response->assertStatus(403);
-	}
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('categories', $categoryData);
+    }
 
-	public function test_company_cannot_view_category_make() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
+    public function test_regular_user_cannot_view_category_detail()
+    {
 
-		$response = $this->get(route('categories.create'));
-		$response->assertStatus(403);
-	}
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-	public function test_company_cannot_store_category() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		Type::factory()->create();
-		$categoryData = Category::factory()->make()->toArray();
+        $response = $this->get(route('categories.edit', $category));
 
-		$response = $this->post(route('categories.store'), $categoryData);
+        $response->assertStatus(403);
+    }
 
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('categories', $categoryData);
-	}
+    public function test_regular_user_cannot_update_category()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-	public function test_company_cannot_view_category_detail_of_others() {
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
+        $updatedData = [
+            'id' => $category->id,
+            'name' => 'Updated Name',
+        ];
 
-		$company = User::factory()->company()->create();
-		$this->actingAs($company);
+        $response = $this
+            ->from(route('categories.edit', $category))
+            ->put(route('categories.update', $category), $updatedData);
 
-		$response = $this->get(route('categories.edit', $category));
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('categories', $updatedData);
+    }
 
-		$response->assertStatus(403);
-	}
+    public function test_regular_user_cannot_destroy_category()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
+        Type::factory()->create();
+        $category = Category::factory()->create();
 
-	public function test_company_cannot_update_categories() {
-		$company = User::factory()->company()->create();
-		$this->actingAs($company);
+        $response = $this->delete(route('categories.destroy', $category));
 
+        $response->assertStatus(403);
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
+        $this->assertNotSoftDeleted('categories', $category->toArray());
 
-		$updatedData = [
-			'id' => $category->id,
-			'name' => 'Updated Name',
-		];
+    }
 
-		$response = $this
-			->from(route('categories.edit', $category))
-			->put(route('categories.update', $category), $updatedData);
+    public function test_regular_user_cannot_restore_category()
+    {
+        $regularUser = User::factory()->user()->make();
+        $this->actingAs($regularUser);
 
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('categories', $updatedData);
-	}
+        Type::factory()->create();
+        $category = Category::factory()->create();
+        $category->delete();
 
-	public function test_company_cannot_destroy_category() {
-		$company = User::factory()->company()->create();
-		$this->actingAs($company);
+        $response = $this->put(route('categories.restore', $category));
 
+        $response->assertStatus(403);
 
-		Type::factory()->create();
-		$category = Category::factory()->create();
-
-		$response = $this->delete(route('categories.destroy', $category));
-
-		$response->assertStatus(403);
-
-		$this->assertNotSoftDeleted('categories', $category->toArray());
-
-	}
-
-	public function test_company_cannot_restore_category() {
-		$company = User::factory()->company()->make();
-		$this->actingAs($company);
-
-
-		Type::factory()->create();
-		$category = Category::factory()->create();
-		$category->delete();
-
-		$response = $this->put(route('categories.restore', $category));
-
-		$response->assertStatus(403);
-
-		$this->assertDatabaseMissing('categories', ['id' => $category->id, 'deleted_at' => null]);
-	}
-
-	//User
-	public function test_regular_user_cannot_view_category_index() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-
-		$response = $this->get(route('categories.index'));
-		$response->assertStatus(403);
-	}
-
-	public function test_regular_user_cannot_view_category_make() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-		$response = $this->get(route('categories.create'));
-		$response->assertStatus(403);
-	}
-
-	public function test_regular_user_cannot_store_category() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-		Type::factory()->create();
-		$categoryData = Category::factory()->make()->toArray();
-
-		$response = $this->post(route('categories.store'), $categoryData);
-
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('categories', $categoryData);
-	}
-
-	public function test_regular_user_cannot_view_category_detail() {
-
-		Type::factory()->create();
-		$category = Category::factory()->create();
-
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-		$response = $this->get(route('categories.edit', $category));
-
-		$response->assertStatus(403);
-	}
-
-	public function test_regular_user_cannot_update_category() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-
-		Type::factory()->create();
-		$category = Category::factory()->create();
-
-		$updatedData = [
-			'id' => $category->id,
-			'name' => 'Updated Name',
-		];
-
-		$response = $this
-			->from(route('categories.edit', $category))
-			->put(route('categories.update', $category), $updatedData);
-
-		$response->assertStatus(403);
-		$this->assertDatabaseMissing('categories', $updatedData);
-	}
-
-	public function test_regular_user_cannot_destroy_category() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-
-		Type::factory()->create();
-		$category = Category::factory()->create();
-
-		$response = $this->delete(route('categories.destroy', $category));
-
-		$response->assertStatus(403);
-
-		$this->assertNotSoftDeleted('categories', $category->toArray());
-
-	}
-
-	public function test_regular_user_cannot_restore_category() {
-		$regularUser = User::factory()->user()->make();
-		$this->actingAs($regularUser);
-
-
-		Type::factory()->create();
-		$category = Category::factory()->create();
-		$category->delete();
-
-		$response = $this->put(route('categories.restore', $category));
-
-		$response->assertStatus(403);
-
-		$this->assertDatabaseMissing('categories', ['id' => $category->id, 'deleted_at' => null]);
-	}
+        $this->assertDatabaseMissing('categories', ['id' => $category->id, 'deleted_at' => null]);
+    }
 }

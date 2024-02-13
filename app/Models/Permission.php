@@ -13,9 +13,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Permission newModelQuery()
  * @method static Builder|Permission newQuery()
  * @method static Builder|Permission query()
+ *
  * @mixin Eloquent
  */
 class Permission extends Model
 {
-	use HasFactory;
+    use HasFactory;
 }
